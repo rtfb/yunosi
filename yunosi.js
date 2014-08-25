@@ -77,6 +77,7 @@ var kittenGenerator = {
   }
 };
 
+/*
 document.getElementById("deimperialize").addEventListener("click", function deimperialize() {
     chrome.tabs.query({active: true}, function(tabs) {
         chrome.tabs.sendRequest(tabs[0].id, {method: "getText"}, function(response) {
@@ -85,4 +86,43 @@ document.getElementById("deimperialize").addEventListener("click", function deim
             }
         });
     })
+});
+*/
+
+window.addEventListener("DOMContentLoaded", function() {
+    var inp = document.getElementById("search");
+    var btn = document.getElementById("searchBtn");
+
+    btn.addEventListener("click", function() {
+        var searchTerm = inp.value;
+        if (!inp.value) {
+            alert("Please, enter a term to search for !");
+        } else {
+            // Get the active tab
+            chrome.tabs.query({
+                active: true,
+                currentWindow: true
+            }, function(tabs) {
+                // If there is an active tab...
+                if (tabs.length > 0) {
+                    // ...send a message requesting the DOM...
+                    chrome.tabs.sendMessage(tabs[0].id, {
+                        method: "getDOM"
+                    }, function(response) {
+                        if (chrome.runtime.lastError) {
+                            // An error occurred :(
+                            console.log("ERROR: ", chrome.runtime.lastError);
+                        } else {
+                            // Do something useful with the HTML content
+                            console.log([
+                                    "<html>",
+                                    response.htmlContent,
+                                    "</html>"
+                                    ].join("\n"));
+                        }
+                    });
+                }
+            });
+        }
+    });
 });
