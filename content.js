@@ -7,12 +7,8 @@ function textNodesUnder(el) {
     return a;
 }
 
-// Listen for message...
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-    console.log("chrome.runtime.onMessage.addListener");
-    // If the request asks for the DOM content...
-    if (request.method && (request.method === "getDOM")) {
-        // ...send back the content of the <html> element
+    if (request.method && (request.method === "highlightImperial")) {
         // (Note: You can't send back the current '#document',
         //  because it is recognised as a circular object and
         //  cannot be converted to a JSON string.)
