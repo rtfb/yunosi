@@ -18,6 +18,13 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         //textNodesUnder(document.body);
         highlight("Spanish");
         sendResponse({"text": "ok"});
+    } else if (request.method && (request.method === "convertToSI")) {
+        // (Note: You can't send back the current '#document',
+        //  because it is recognised as a circular object and
+        //  cannot be converted to a JSON string.)
+        var html = document.all[0];
+        document.body.innerHTML = html.innerHTML.replace("Spanish", "Polish");
+        sendResponse({"text": "ok"});
     }
 });
 

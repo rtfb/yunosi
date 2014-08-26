@@ -89,9 +89,8 @@ document.getElementById("deimperialize").addEventListener("click", function deim
 });
 */
 
-window.addEventListener("DOMContentLoaded", function() {
-    var highlight = document.getElementById("highlight");
-    highlight.addEventListener("click", function() {
+function mkSendMessageToActiveTab(msg) {
+    return function() {
         // Get the active tab
         chrome.tabs.query({
             active: true,
@@ -101,7 +100,7 @@ window.addEventListener("DOMContentLoaded", function() {
             if (tabs.length > 0) {
                 // ...send a message requesting the DOM...
                 chrome.tabs.sendMessage(tabs[0].id, {
-                    method: "highlightImperial"
+                    method: msg
                 }, function(response) {
                     if (chrome.runtime.lastError) {
                         // An error occurred :(
@@ -113,5 +112,13 @@ window.addEventListener("DOMContentLoaded", function() {
                 });
             }
         });
-    });
+    };
+}
+
+window.addEventListener("DOMContentLoaded", function() {
+    var highlight = document.getElementById("highlight");
+    highlight.addEventListener("click", mkSendMessageToActiveTab("highlightImperial"));
+
+    var deimperialize = document.getElementById("deimperialize");
+    deimperialize.addEventListener("click", mkSendMessageToActiveTab("convertToSI"));
 });
