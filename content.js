@@ -16,7 +16,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         //sendResponse({ "htmlContent": html.innerHTML });
         //sendResponse({"text": textNodesUnder(document.body)});
         //textNodesUnder(document.body);
-        highlight("Spanish");
+        document.body.innerHTML = highlight(document.body.innerHTML, "Spanish");
         sendResponse({"text": "ok"});
     } else if (request.method && (request.method === "convertToSI")) {
         // (Note: You can't send back the current '#document',
@@ -28,15 +28,14 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     }
 });
 
-function highlight(text) {
-    var innerHTML = document.body.innerHTML;
-    var index = innerHTML.indexOf(text);
+function highlight(where, text) {
+    var index = where.indexOf(text);
     if (index >= 0) {
-        innerHTML = innerHTML.substring(0, index)
+        return where.substring(0, index)
             + "<span style='background-color: yellow;'>"
-            + innerHTML.substring(index, index + text.length)
+            + where.substring(index, index + text.length)
             + "</span>"
-            + innerHTML.substring(index + text.length);
-        document.body.innerHTML = innerHTML;
+            + where.substring(index + text.length);
     }
+    return where;
 }
