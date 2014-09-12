@@ -91,5 +91,5 @@ function replace(where) {
 }
 
 function milesToKilometers(miles) {
-    return miles * 1.60934;
+    return miles * 1.6 + " kilometers";
 }

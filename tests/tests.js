@@ -6,6 +6,10 @@ test("highlight", function() {
     equal(result, "<body><p>foo <span style='background-color: yellow;'>1,200 mile</span> trip</p></body>");
 });
 
+test("conversions", function() {
+    equal(milesToKilometers(10), "16 kilometers");
+});
+
 module("Search with regexps");
 
 test("simple search", function() {
