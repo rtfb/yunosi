@@ -44,17 +44,20 @@ test("multiple occurrence search", function() {
                 {
                     index: 4,
                     match: "1 mile",
-                    numeral: 1
+                    numeral: 1,
+                    units: "mile"
                 },
                 {
                     index: 11,
                     match: "2 miles",
-                    numeral: 2
+                    numeral: 2,
+                    units: "miles"
                 },
                 {
                     index: 19,
                     match: "3 miles",
-                    numeral: 3
+                    numeral: 3,
+                    units: "miles"
                 }
             ]
         },
@@ -64,12 +67,14 @@ test("multiple occurrence search", function() {
                 {
                     index: 4,
                     match: "3,600 miles",
-                    numeral: 3600
+                    numeral: 3600,
+                    units: "miles"
                 },
                 {
                     index: 25,
                     match: "3 miles",
-                    numeral: 3
+                    numeral: 3,
+                    units: "miles"
                 }
             ]
         }

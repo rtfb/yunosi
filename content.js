@@ -38,14 +38,15 @@ function searchImperial(where) {
 }
 
 function multisearch(where) {
-    var re = /[0-9,]+\s+miles?/ig;
+    var re = /([0-9,]+)\s+(miles?)/ig;
     var result;
     var results = [];
     while ((result = re.exec(where)) !== null) {
         results.push({
             index: result.index,
             match: result[0],
-            numeral: interpretInt(result[0].split()[0])
+            units: result[2].toLowerCase(),
+            numeral: interpretInt(result[1])
         });
     }
     return results;
