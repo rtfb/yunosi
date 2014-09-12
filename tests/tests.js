@@ -35,3 +35,35 @@ test("simple search", function() {
         equal(searchImperial(testCase.text), testCase.expected, testCase.text);
     });
 });
+
+test("multiple occurrence search", function() {
+    var cases = [
+        {
+            text: "foo 1 mile 2 miles 3 miles baz",
+            expected: [
+                {
+                    index: 4,
+                    match: "1 mile",
+                    numeral: 1
+                },
+                {
+                    index: 11,
+                    match: "2 miles",
+                    numeral: 2
+                },
+                {
+                    index: 19,
+                    match: "3 miles",
+                    numeral: 3
+                }
+            ]
+        }
+    ]
+    cases.forEach(function(testCase) {
+        results = multisearch(testCase.text)
+        equal(results.length, testCase.expected.length, "results length must match");
+        for (var i = 0; i < results.length; ++i) {
+            deepEqual(results[i], testCase.expected[i], testCase.text + " " + i + "th search");
+        }
+    });
+});

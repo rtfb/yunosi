@@ -37,6 +37,20 @@ function searchImperial(where) {
     return where.indexOf("mile");
 }
 
+function multisearch(where) {
+    var re = /[0-9,]+\s+miles?/ig;
+    var result;
+    var results = [];
+    while ((result = re.exec(where)) !== null) {
+        results.push({
+            index: result.index,
+            match: result[0],
+            numeral: parseInt(result[0].split()[0])
+        });
+    }
+    return results;
+}
+
 function highlight(where, text) {
     var index = where.indexOf(text);
     if (index >= 0) {
