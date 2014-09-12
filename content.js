@@ -38,7 +38,7 @@ function searchImperial(where) {
 }
 
 function multisearch(where) {
-    var re = /([0-9,]+)[\s-]*(miles?)/ig;
+    var re = /([0-9,]+)[\s-]*(miles?|foot|feet|fahrenheit|yards?|gallons?|ounce|oz|pounds?)/ig;
     var result;
     var results = [];
     while ((result = re.exec(where)) !== null) {
@@ -84,12 +84,39 @@ function replace(where) {
     matches.forEach(function(match) {
         where = where.replace(match.match,
             "<span style='background-color: yellow;'>"
-            + milesToKilometers(match.numeral)
-            + " kilometers</span>")
+            + convertImperialToSI(match.units, match.numeral)
+            + "</span>")
     });
     return where;
 }
 
 function milesToKilometers(miles) {
     return miles * 1.6 + " kilometers";
+}
+
+function convertImperialToSI(units, value) {
+    switch (units) {
+        case "mile":
+        case "miles":
+            return milesToKilometers(value);
+        case "foot":
+        case "feet":
+            return value * 0.3 + " meters";
+        case "fahrenheit":
+            return "";
+        case "yard":
+        case "yards":
+            return value * 0.9 + " meters";
+        case "gallon":
+        case "gallons":
+            return value * 3.78541 + " liters";
+        case "ounce":
+        case "oz":
+            return value * 28.3495 + " grams";
+        case "pound":
+        case "pounds":
+            return value * 0.453592 + " kilograms";
+        default:
+            return value + " " + units;
+    }
 }

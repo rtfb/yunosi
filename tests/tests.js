@@ -81,6 +81,29 @@ test("multiple occurrence search", function() {
                     units: "miles"
                 }
             ]
+        },
+        {
+            text: "fly 100 yards and walk 1000 feet 40 Fahrenheit",
+            expected: [
+                {
+                    index: 4,
+                    match: "100 yards",
+                    numeral: 100,
+                    units: "yards"
+                },
+                {
+                    index: 23,
+                    match: "1000 feet",
+                    numeral: 1000,
+                    units: "feet"
+                },
+                {
+                    index: 33,
+                    match: "40 Fahrenheit",
+                    numeral: 40,
+                    units: "fahrenheit"
+                }
+            ]
         }
     ]
     cases.forEach(function(testCase) {
