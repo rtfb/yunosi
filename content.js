@@ -45,10 +45,15 @@ function multisearch(where) {
         results.push({
             index: result.index,
             match: result[0],
-            numeral: parseInt(result[0].split()[0])
+            numeral: interpretInt(result[0].split()[0])
         });
     }
     return results;
+}
+
+function interpretInt(what) {
+    what = what.replace(",", "");
+    return parseInt(what);
 }
 
 function highlight(where, text) {

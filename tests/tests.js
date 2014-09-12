@@ -57,6 +57,21 @@ test("multiple occurrence search", function() {
                     numeral: 3
                 }
             ]
+        },
+        {
+            text: "fly 3,600 miles and walk 3 miles",
+            expected: [
+                {
+                    index: 4,
+                    match: "3,600 miles",
+                    numeral: 3600
+                },
+                {
+                    index: 25,
+                    match: "3 miles",
+                    numeral: 3
+                }
+            ]
         }
     ]
     cases.forEach(function(testCase) {
