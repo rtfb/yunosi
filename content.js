@@ -28,6 +28,15 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     }
 });
 
+function searchImperial(where) {
+    var re = /[0-9,]+\s+miles?/i;
+    var index = where.search(re);
+    if (index >= 0) {
+        return index;
+    }
+    return where.indexOf("mile");
+}
+
 function highlight(where, text) {
     var index = where.indexOf(text);
     if (index >= 0) {
