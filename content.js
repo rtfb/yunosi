@@ -23,7 +23,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         //  because it is recognised as a circular object and
         //  cannot be converted to a JSON string.)
         var html = document.all[0];
-        document.body.innerHTML = html.innerHTML.replace("Spanish", "Polish");
+        document.body.innerHTML = replace(document.body.innerHTML);
         sendResponse({"text": "ok"});
     }
 });
@@ -76,4 +76,19 @@ function highlight(where, text) {
             + where.substring(index + text.length);
     }
     return where;
+}
+
+function replace(where) {
+    matches = multisearch(where);
+    matches.forEach(function(match) {
+        where = where.replace(match.match,
+            "<span style='background-color: yellow;'>"
+            + milesToKilometers(match.numeral)
+            + " kilometers</span>")
+    });
+    return where;
+}
+
+function milesToKilometers(miles) {
+    return miles * 1.60934;
 }
