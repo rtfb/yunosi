@@ -38,7 +38,7 @@ function searchImperial(where) {
 }
 
 function multisearch(where) {
-    var re = /([0-9,]+)\s+(miles?)/ig;
+    var re = /([0-9,]+)[\s-]*(miles?)/ig;
     var result;
     var results = [];
     while ((result = re.exec(where)) !== null) {
