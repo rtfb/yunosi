@@ -16,7 +16,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         //sendResponse({ "htmlContent": html.innerHTML });
         //sendResponse({"text": textNodesUnder(document.body)});
         //textNodesUnder(document.body);
-        document.body.innerHTML = highlight(document.body.innerHTML, "Spanish");
+        document.body.innerHTML = highlight(document.body.innerHTML, null);
         sendResponse({"text": "ok"});
     } else if (request.method && (request.method === "convertToSI")) {
         // (Note: You can't send back the current '#document',
@@ -57,6 +57,16 @@ function interpretInt(what) {
 }
 
 function highlight(where, text) {
+    if (text == null) {
+        matches = multisearch(where);
+        matches.forEach(function(match) {
+            where = where.replace(match.match,
+                "<span style='background-color: yellow;'>"
+                + match.match
+                + "</span>")
+        });
+        return where;
+    }
     var index = where.indexOf(text);
     if (index >= 0) {
         return where.substring(0, index)

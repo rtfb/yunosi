@@ -1,9 +1,9 @@
 module("Basic Tests");
 
 test("highlight", function() {
-    var html = "<body><p>foo</p></body>";
-    var result = highlight(html, "foo");
-    equal(result, "<body><p><span style='background-color: yellow;'>foo</span></p></body>");
+    var html = "<body><p>foo 1,200 mile trip</p></body>";
+    var result = highlight(html, null);
+    equal(result, "<body><p>foo <span style='background-color: yellow;'>1,200 mile</span> trip</p></body>");
 });
 
 module("Search with regexps");
