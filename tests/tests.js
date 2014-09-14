@@ -4,6 +4,8 @@ test("highlight", function() {
     var html = "<body><p>foo 1,200 mile trip</p></body>";
     var result = highlight(html, null);
     equal(result, "<body><p>foo <span style='background-color: yellow;'>1,200 mile</span> trip</p></body>");
+    html = "xyzzy goo";
+    equal(highlight(html, null), html);
 });
 
 test("conversions", function() {
@@ -104,6 +106,10 @@ test("multiple occurrence search", function() {
                     units: "fahrenheit"
                 }
             ]
+        },
+        {
+            text: "foo bar baz",
+            expected: []
         }
     ]
     cases.forEach(function(testCase) {
