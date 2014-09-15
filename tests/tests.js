@@ -12,6 +12,12 @@ test("conversions", function() {
     equal(milesToKilometers(10), "16 kilometers");
 });
 
+test("singularization", function() {
+    var str = "mile miles foot feet fahrenheit fahrenheits yard yards gallon gallons ounce ounces pound pounds";
+    var exp = "mile mile foot foot fahrenheit fahrenheit yard yard gallon gallon ounce ounce pound pound";
+    equal(singularizeUnits(str), exp);
+});
+
 module("Search with regexps");
 
 test("simple search", function() {
@@ -57,13 +63,13 @@ test("multiple occurrence search", function() {
                     index: 11,
                     match: "2 miles",
                     numeral: 2,
-                    units: "miles"
+                    units: "mile"
                 },
                 {
                     index: 19,
                     match: "3 miles",
                     numeral: 3,
-                    units: "miles"
+                    units: "mile"
                 }
             ]
         },
@@ -74,13 +80,13 @@ test("multiple occurrence search", function() {
                     index: 4,
                     match: "3,600 miles",
                     numeral: 3600,
-                    units: "miles"
+                    units: "mile"
                 },
                 {
                     index: 25,
                     match: "3 miles",
                     numeral: 3,
-                    units: "miles"
+                    units: "mile"
                 }
             ]
         },
@@ -91,13 +97,13 @@ test("multiple occurrence search", function() {
                     index: 4,
                     match: "100 yards",
                     numeral: 100,
-                    units: "yards"
+                    units: "yard"
                 },
                 {
                     index: 23,
                     match: "1000 feet",
                     numeral: 1000,
-                    units: "feet"
+                    units: "foot"
                 },
                 {
                     index: 33,

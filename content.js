@@ -45,7 +45,7 @@ function multisearch(where) {
         results.push({
             index: result.index,
             match: result[0],
-            units: result[2].toLowerCase(),
+            units: singularizeUnits(result[2].toLowerCase()),
             numeral: interpretInt(result[1])
         });
     }
@@ -94,27 +94,32 @@ function milesToKilometers(miles) {
     return miles * 1.6 + " kilometers";
 }
 
+function singularizeUnits(units) {
+    return units.replace("miles", "mile")
+        .replace("feet", "foot")
+        .replace("fahrenheits", "fahrenheit")
+        .replace("yards", "yard")
+        .replace("gallons", "gallon")
+        .replace("ounces", "ounce")
+        .replace("pounds", "pound");
+}
+
 function convertImperialToSI(units, value) {
     switch (units) {
         case "mile":
-        case "miles":
             return milesToKilometers(value);
         case "foot":
-        case "feet":
             return value * 0.3 + " meters";
         case "fahrenheit":
             return "";
         case "yard":
-        case "yards":
             return value * 0.9 + " meters";
         case "gallon":
-        case "gallons":
             return value * 3.78541 + " liters";
         case "ounce":
         case "oz":
             return value * 28.3495 + " grams";
         case "pound":
-        case "pounds":
             return value * 0.453592 + " kilograms";
         default:
             return value + " " + units;
