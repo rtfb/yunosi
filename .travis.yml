@@ -1,0 +1,11 @@
+# Travis CI (http://travis-ci.org/) is a continuous integration service for
+# open source projects. This file configures it to run unit tests for yunosi.
+
+language: javascript
+
+before_install:
+    - npm install -g grunt-cli
+    - npm install
+
+script:
+    - grunt qunit
