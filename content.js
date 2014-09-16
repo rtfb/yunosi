@@ -111,7 +111,8 @@ function convertImperialToSI(units, value) {
         case "foot":
             return value * 0.3 + " meters";
         case "fahrenheit":
-            return "";
+            // TODO: make better rounding, for everything
+            return Math.round((value - 32) / 1.8) + " Celsius";
         case "yard":
             return value * 0.9 + " meters";
         case "gallon":
