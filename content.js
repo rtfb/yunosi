@@ -38,7 +38,7 @@ function searchImperial(where) {
 }
 
 function multisearch(where) {
-    var re = /([0-9,]+)[\s-]*(miles?|foot|feet|fahrenheit|yards?|gallons?|ounce|oz|pounds?)/ig;
+    var re = /([0-9,]+)[\s-]*(miles?|foot|feet|fahrenheit|yards?|gallons?|ounce|oz|pounds?|inches|inch|in)/ig;
     var result;
     var results = [];
     while ((result = re.exec(where)) !== null) {
@@ -101,7 +101,8 @@ function singularizeUnits(units) {
         .replace("yards", "yard")
         .replace("gallons", "gallon")
         .replace("ounces", "ounce")
-        .replace("pounds", "pound");
+        .replace("pounds", "pound")
+        .replace("inches", "inch");
 }
 
 function convertImperialToSI(units, value) {
@@ -122,6 +123,9 @@ function convertImperialToSI(units, value) {
             return value * 28.3495 + " grams";
         case "pound":
             return value * 0.453592 + " kilograms";
+        case "inch":
+        case "in":
+            return value * 2.54 + " centimeters";
         default:
             return value + " " + units;
     }

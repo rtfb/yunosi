@@ -15,8 +15,10 @@ test("conversions", function() {
 });
 
 test("singularization", function() {
-    var str = "mile miles foot feet fahrenheit fahrenheits yard yards gallon gallons ounce ounces pound pounds";
-    var exp = "mile mile foot foot fahrenheit fahrenheit yard yard gallon gallon ounce ounce pound pound";
+    var str = "mile miles foot feet fahrenheit fahrenheits yard yards "
+        + "gallon gallons ounce ounces pound pounds inch inches";
+    var exp = "mile mile foot foot fahrenheit fahrenheit yard yard "
+        + "gallon gallon ounce ounce pound pound inch inch";
     equal(singularizeUnits(str), exp);
 });
 
@@ -118,13 +120,36 @@ test("multiple occurrence search", function() {
         {
             text: "foo bar baz",
             expected: []
+        },
+        {
+            text: "60-inch telescope, 12 inches, 1 inch",
+            expected: [
+                {
+                    index: 0,
+                    match: "60-inch",
+                    numeral: 60,
+                    units: "inch"
+                },
+                {
+                    index: 19,
+                    match: "12 inches",
+                    numeral: 12,
+                    units: "inch"
+                },
+                {
+                    index: 30,
+                    match: "1 inch",
+                    numeral: 1,
+                    units: "inch"
+                }
+            ]
         }
     ]
     cases.forEach(function(testCase) {
         results = multisearch(testCase.text)
         equal(results.length, testCase.expected.length, "results length must match");
         for (var i = 0; i < results.length; ++i) {
-            deepEqual(results[i], testCase.expected[i], testCase.text + " " + i + "th search");
+            deepEqual(results[i], testCase.expected[i], testCase.text + ". " + i + "th search");
         }
     });
 });
