@@ -20,3 +20,7 @@ and click through.
 You will need [node](http://nodejs.org/) to run tests. `sudo npm install -g
 grunt-cli`, `npm install` and you're ready to `grunt` to run tests once or
 `grunt watch` to run them continuously.
+
+## License
+
+AGPL, see [LICENSE](LICENSE).
