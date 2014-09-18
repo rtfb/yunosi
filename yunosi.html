@@ -15,6 +15,22 @@
             width: 75px;
             height: 75px;
         }
+
+        input.center {
+            display: block;
+            margin: 0 auto;
+            width: 30%;
+        }
+
+        div.left {
+            width: 50%;
+            float: left;
+        }
+
+        div.right {
+            width: 50%;
+            float: right;
+        }
         </style>
 
         <!--
@@ -26,15 +42,121 @@
         <script src="yunosi.js"></script>
     </head>
     <body>
+    <!--
+    +----------------------------------------------------+
+    |                                                    |
+    |                [Y U NO SI?!]                       |
+    |                                                    |
+    + - [v Options] - - - - - - - - - - - - - - - - - - -+
+    |                                                    |
+    | [x] Highlight              [Show license]          |
+    |                                                    |
+    + - - - - - - - - - - - - - - - - - - - - - - - - - -+
+    |                                                    |
+    | [ ] Use Kelvin                                     |
+    |                                                    |
+    | [x] Convert miles       [x] Convert feet           |
+    |                                                    |
+    | [x] Convert yards       [x] Convert gallons        |
+    |                                                    |
+    | [x] Convert Fahrenheit  [x] Convert ounces         |
+    |                                                    |
+    | [x] Convert inches      [x] Convert pounds         |
+    |                                                    |
+    +----------------------------------------------------+
+    -->
         <input
+            class="center"
             id="deimperialize"
             type="button"
             value="Y U NO SI?!"
             />
-        <input
-            id="highlight"
-            type="button"
-            value="Highlight"
-            />
+        <hr />
+
+        <div class="left">
+            <input
+                id="highlight"
+                type="checkbox"
+                checked="checked"
+                />
+                Highlight
+            <br />
+        </div>
+        <div class="right">
+            <input
+                id="show-license"
+                type="button"
+                value="Show License"
+                />
+        </div>
+        <hr style="width: 100%;" />
+
+        <div class="left">
+            <input
+                id="use-kelvin"
+                type="checkbox"
+                />
+                Use Kelvin
+            <br />
+            <input
+                id="convert-miles"
+                type="checkbox"
+                checked="checked"
+                />
+                Convert miles
+            <br />
+            <input
+                id="convert-yards"
+                type="checkbox"
+                checked="checked"
+                />
+                Convert yards
+            <br />
+            <input
+                id="convert-fahrenheit"
+                type="checkbox"
+                checked="checked"
+                />
+                Convert Fahrenheit
+            <br />
+            <input
+                id="convert-inches"
+                type="checkbox"
+                checked="checked"
+                />
+                Convert inches
+            <br />
+        </div>
+        <div class="right">
+            <br />
+            <input
+                id="convert-feet"
+                type="checkbox"
+                checked="checked"
+                />
+                Convert feet
+            <br />
+            <input
+                id="convert-gallons"
+                type="checkbox"
+                checked="checked"
+                />
+                Convert gallons
+            <br />
+            <input
+                id="convert-ounces"
+                type="checkbox"
+                checked="checked"
+                />
+                Convert ounces
+            <br />
+            <input
+                id="convert-pounds"
+                type="checkbox"
+                checked="checked"
+                />
+                Convert pounds
+            <br />
+        </div>
     </body>
 </html>
