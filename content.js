@@ -38,7 +38,21 @@ function searchImperial(where) {
 }
 
 function multisearch(where) {
-    var re = /([0-9,]+)[\s-]*(miles?|foot|feet|fahrenheit|yards?|gallons?|ounce|oz|pounds?|inches|inch|in)/ig;
+    var units = [
+        "miles?",
+        "foot",
+        "feet",
+        "fahrenheit",
+        "yards?",
+        "gallons?",
+        "ounce",
+        "oz",
+        "pounds?",
+        "inches",
+        "inch",
+        "in"
+    ];
+    var re = new RegExp("([0-9,]+)[\\s-]*(" + units.join("|") + ")", "gi");
     var result;
     var results = [];
     while ((result = re.exec(where)) !== null) {
