@@ -1,4 +1,4 @@
-SRC=content.js icon.png yunosi.js yunosi.html manifest.json
+SRC=content.js icon.png yunosi.js yunosi.html yunosi.css manifest.json
 
 all: test yunosi.zip
 
