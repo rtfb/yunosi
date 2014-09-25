@@ -7,8 +7,13 @@
     "offline_enabled": true,
 
     "permissions": [
+        "storage",
         "tabs"
         ],
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": true
+    },
     "content_scripts": [
         {
             "matches": [

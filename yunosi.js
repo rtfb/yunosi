@@ -121,4 +121,34 @@ window.addEventListener("DOMContentLoaded", function() {
 
     var deimperialize = document.getElementById("deimperialize");
     deimperialize.addEventListener("click", mkSendMessageToActiveTab("convertToSI"));
+
+    var inputs = document.getElementsByTagName("input");
+    for (var i = 0; i < inputs.length; ++i) {
+        var elem = inputs[i];
+        if (elem.type === "checkbox") {
+            console.log(elem.id + " - " + elem.type);
+            elem.addEventListener("click", function() {
+                var checkboxState = {
+                    action: "checkbox-state",
+                    id: this.id,
+                    state: this.checked
+                }
+                chrome.runtime.sendMessage(checkboxState, function(response) {
+                    if (response.success) {
+                        console.log("Saved successfully");
+                    } else {
+                        console.log("There was an error while saving");
+                    }
+                });
+            });
+        }
+    }
+
+    chrome.runtime.sendMessage({action: "get-ui-state"}, function(response) {
+        console.log("response: " + JSON.stringify(response, null, 4));
+        for (key in response) {
+            var elem = document.getElementById(key);
+            elem.checked = response[key];
+        }
+    });
 });
