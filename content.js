@@ -22,8 +22,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         // (Note: You can't send back the current '#document',
         //  because it is recognised as a circular object and
         //  cannot be converted to a JSON string.)
-        var html = document.all[0];
-        document.body.innerHTML = replace(document.body.innerHTML);
+        var html = document.body.innerHTML;
+        document.body.innerHTML = replace(html, request.highlight);
         sendResponse({"text": "ok"});
     }
 });
@@ -93,13 +93,27 @@ function highlight(where, text) {
     return where;
 }
 
-function replace(where) {
+function openSpan(highlight) {
+    if (highlight) {
+        return "<span style='background-color: yellow;'>";
+    }
+    return "";
+}
+
+function closeSpan(highlight) {
+    if (highlight) {
+        return "</span>";
+    }
+    return "";
+}
+
+function replace(where, highlight) {
     matches = multisearch(where);
     matches.forEach(function(match) {
         where = where.replace(match.match,
-            "<span style='background-color: yellow;'>"
+            openSpan(highlight)
             + convertImperialToSI(match.units, match.numeral)
-            + "</span>")
+            + closeSpan(highlight));
     });
     return where;
 }
