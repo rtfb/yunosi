@@ -147,9 +147,11 @@ test("multiple occurrence search", function() {
     ]
     cases.forEach(function(testCase) {
         results = multisearch(testCase.text)
-        equal(results.length, testCase.expected.length, "results length must match");
+        equal(results.length, testCase.expected.length,
+            "results length must match for test '" + testCase.text + "'");
         for (var i = 0; i < results.length; ++i) {
-            deepEqual(results[i], testCase.expected[i], testCase.text + ". " + i + "th search");
+            deepEqual(results[i], testCase.expected[i],
+                testCase.text + ". " + i + "th search");
         }
     });
 });
