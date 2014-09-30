@@ -10,8 +10,12 @@ document.getElementById("deimperialize").addEventListener("click", function deim
 });
 */
 
-function mkSendMessageToActiveTab(msg) {
-    return function() {
+window.addEventListener("DOMContentLoaded", function() {
+    var deimperialize = document.getElementById("deimperialize");
+    deimperialize.addEventListener("click", function() {
+        var highlight = document.getElementById("highlight");
+        var highlightChecked = highlight.checked;
+        console.log("highlightChecked = " + highlightChecked);
         // Get the active tab
         chrome.tabs.query({
             active: true,
@@ -21,7 +25,8 @@ function mkSendMessageToActiveTab(msg) {
             if (tabs.length > 0) {
                 // ...send a message requesting the DOM...
                 chrome.tabs.sendMessage(tabs[0].id, {
-                    method: msg
+                    method: "convertToSI",
+                    highlight: highlightChecked
                 }, function(response) {
                     if (chrome.runtime.lastError) {
                         // An error occurred :(
@@ -33,15 +38,7 @@ function mkSendMessageToActiveTab(msg) {
                 });
             }
         });
-    };
-}
-
-window.addEventListener("DOMContentLoaded", function() {
-    var highlight = document.getElementById("highlight");
-    highlight.addEventListener("click", mkSendMessageToActiveTab("highlightImperial"));
-
-    var deimperialize = document.getElementById("deimperialize");
-    deimperialize.addEventListener("click", mkSendMessageToActiveTab("convertToSI"));
+    });
 
     var inputs = document.getElementsByTagName("input");
     for (var i = 0; i < inputs.length; ++i) {
