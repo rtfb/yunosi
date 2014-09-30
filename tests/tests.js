@@ -165,6 +165,13 @@ test("multiple occurrence search", function() {
                     units: "mile"
                 }
             ]
+        },
+        {
+            // A bug used to match this, treating "." as a malformed number and
+            // "In" as inches. Adding this negative test here to guard against
+            // regressions.
+            text: "follow. Instead",
+            expected: []
         }
     ]
     cases.forEach(function(testCase) {

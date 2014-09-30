@@ -52,7 +52,7 @@ function multisearch(where) {
         "inch",
         "in"
     ];
-    var re = new RegExp("([0-9,.]+)[\\s-]*(" + units.join("|") + ")", "gi");
+    var re = new RegExp("([\\d,]*\\.?\\d+)[\\s-]*(" + units.join("|") + ")", "gi");
     var result;
     var results = [];
     while ((result = re.exec(where)) !== null) {
