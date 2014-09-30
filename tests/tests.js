@@ -143,6 +143,28 @@ test("multiple occurrence search", function() {
                     units: "inch"
                 }
             ]
+        },
+        {
+            text: "The 1.35 mile self-guided nature trail",
+            expected: [
+                {
+                    index: 4,
+                    match: "1.35 mile",
+                    numeral: 1.35,
+                    units: "mile"
+                }
+            ]
+        },
+        {
+            text: "The Black Bear Trail is 0.6 miles long",
+            expected: [
+                {
+                    index: 24,
+                    match: "0.6 miles",
+                    numeral: 0.6,
+                    units: "mile"
+                }
+            ]
         }
     ]
     cases.forEach(function(testCase) {

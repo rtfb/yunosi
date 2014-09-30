@@ -52,7 +52,7 @@ function multisearch(where) {
         "inch",
         "in"
     ];
-    var re = new RegExp("([0-9,]+)[\\s-]*(" + units.join("|") + ")", "gi");
+    var re = new RegExp("([0-9,.]+)[\\s-]*(" + units.join("|") + ")", "gi");
     var result;
     var results = [];
     while ((result = re.exec(where)) !== null) {
@@ -60,15 +60,15 @@ function multisearch(where) {
             index: result.index,
             match: result[0],
             units: singularizeUnits(result[2].toLowerCase()),
-            numeral: interpretInt(result[1])
+            numeral: interpretNum(result[1])
         });
     }
     return results;
 }
 
-function interpretInt(what) {
+function interpretNum(what) {
     what = what.replace(",", "");
-    return parseInt(what);
+    return parseFloat(what);
 }
 
 function highlight(where, text) {
