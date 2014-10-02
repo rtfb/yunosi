@@ -93,8 +93,18 @@ function singularizeUnits(units) {
         .replace("inches", "inch");
 }
 
+function reduceImperialUnitNames(name) {
+    if (name === "oz") {
+        return "ounce";
+    }
+    if (name === "in") {
+        return "inch";
+    }
+    return name;
+}
+
 function convertImperialToSI(units, value) {
-    switch (units) {
+    switch (reduceImperialUnitNames(units)) {
         case "mile":
             return milesToKilometers(value);
         case "foot":
@@ -107,12 +117,10 @@ function convertImperialToSI(units, value) {
         case "gallon":
             return value * 3.78541 + " liters";
         case "ounce":
-        case "oz":
             return value * 28.3495 + " grams";
         case "pound":
             return value * 0.453592 + " kilograms";
         case "inch":
-        case "in":
             return value * 2.54 + " centimeters";
         default:
             return value + " " + units;
