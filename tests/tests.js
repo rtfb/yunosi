@@ -1,13 +1,5 @@
 module("Basic Tests");
 
-test("highlight", function() {
-    var html = "<body><p>foo 1,200 mile trip</p></body>";
-    var result = highlight(html, null);
-    equal(result, "<body><p>foo <span style='background-color: yellow;'>1,200 mile</span> trip</p></body>");
-    html = "xyzzy goo";
-    equal(highlight(html, null), html);
-});
-
 test("conversions", function() {
     equal(milesToKilometers(10), "16 kilometers");
     equal(convertImperialToSI("fahrenheit", "-40"), "-40 Celsius");
@@ -23,34 +15,6 @@ test("singularization", function() {
 });
 
 module("Search with regexps");
-
-test("simple search", function() {
-    var cases = [
-        {
-            text: "foo mile baz",
-            expected: 4
-        },
-        {
-            text: "foo miles baz",
-            expected: 4
-        },
-        {
-            text: "foo 1 mile baz",
-            expected: 4
-        },
-        {
-            text: "foo 12 miles baz",
-            expected: 4
-        },
-        {
-            text: "foo 3,600 miles baz",
-            expected: 4
-        }
-    ]
-    cases.forEach(function(testCase) {
-        equal(searchImperial(testCase.text), testCase.expected, testCase.text);
-    });
-});
 
 test("multiple occurrence search", function() {
     var cases = [

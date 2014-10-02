@@ -18,15 +18,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     }
 });
 
-function searchImperial(where) {
-    var re = /[0-9,]+\s+miles?/i;
-    var index = where.search(re);
-    if (index >= 0) {
-        return index;
-    }
-    return where.indexOf("mile");
-}
-
 function multisearch(where) {
     var units = [
         "miles?",
@@ -59,28 +50,6 @@ function multisearch(where) {
 function interpretNum(what) {
     what = what.replace(",", "");
     return parseFloat(what);
-}
-
-function highlight(where, text) {
-    if (text == null) {
-        matches = multisearch(where);
-        matches.forEach(function(match) {
-            where = where.replace(match.match,
-                "<span style='background-color: yellow;'>"
-                + match.match
-                + "</span>")
-        });
-        return where;
-    }
-    var index = where.indexOf(text);
-    if (index >= 0) {
-        return where.substring(0, index)
-            + "<span style='background-color: yellow;'>"
-            + where.substring(index, index + text.length)
-            + "</span>"
-            + where.substring(index + text.length);
-    }
-    return where;
 }
 
 function openSpan(highlight) {
