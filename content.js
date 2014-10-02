@@ -79,7 +79,7 @@ function replace(where, highlight) {
 }
 
 function milesToKilometers(miles) {
-    return miles * 1.6 + " kilometers";
+    return miles * 1.6;
 }
 
 function singularizeUnits(units) {
@@ -115,8 +115,9 @@ function makeReadable(value, unit) {
         "inch": "centimeters"
     };
     var siUnit = unitMap[unit];
-    // XXX: this is a WIP NOP
-    return value;
+    // TODO: implement rounding here
+    // TODO: implement unit pluralization
+    return value + " " + siUnit;
 }
 
 function convertImperialToSI(units, value) {
@@ -125,26 +126,25 @@ function convertImperialToSI(units, value) {
             return milesToKilometers(value);
         },
         "foot": function(value) {
-            return value * 0.3 + " meters";
+            return value * 0.3;
         },
         "fahrenheit": function(value) {
-            // TODO: make better rounding, for everything
-            return Math.round((value - 32) / 1.8) + " Celsius";
+            return Math.round((value - 32) / 1.8);
         },
         "yard": function(value) {
-            return value * 0.9 + " meters";
+            return value * 0.9;
         },
         "gallon": function(value) {
-            return value * 3.78541 + " liters";
+            return value * 3.78541;
         },
         "ounce": function(value) {
-            return value * 28.3495 + " grams";
+            return value * 28.3495;
         },
         "pound": function(value) {
-            return value * 0.453592 + " kilograms";
+            return value * 0.453592;
         },
         "inch": function(value) {
-            return value * 2.54 + " centimeters";
+            return value * 2.54;
         }
     };
     var reducedUnit = reduceImperialUnitNames(units);
