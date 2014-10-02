@@ -104,25 +104,36 @@ function reduceImperialUnitNames(name) {
 }
 
 function convertImperialToSI(units, value) {
-    switch (reduceImperialUnitNames(units)) {
-        case "mile":
+    var converters = {
+        "mile": function(value) {
             return milesToKilometers(value);
-        case "foot":
+        },
+        "foot": function(value) {
             return value * 0.3 + " meters";
-        case "fahrenheit":
+        },
+        "fahrenheit": function(value) {
             // TODO: make better rounding, for everything
             return Math.round((value - 32) / 1.8) + " Celsius";
-        case "yard":
+        },
+        "yard": function(value) {
             return value * 0.9 + " meters";
-        case "gallon":
+        },
+        "gallon": function(value) {
             return value * 3.78541 + " liters";
-        case "ounce":
+        },
+        "ounce": function(value) {
             return value * 28.3495 + " grams";
-        case "pound":
+        },
+        "pound": function(value) {
             return value * 0.453592 + " kilograms";
-        case "inch":
+        },
+        "inch": function(value) {
             return value * 2.54 + " centimeters";
-        default:
-            return value + " " + units;
+        }
+    };
+    var converter = converters[reduceImperialUnitNames(units)];
+    if (converter) {
+        return converter(value);
     }
+    return value + " " + units;
 }
