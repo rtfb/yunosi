@@ -103,6 +103,22 @@ function reduceImperialUnitNames(name) {
     return name;
 }
 
+function makeReadable(value, unit) {
+    var unitMap = {
+        "mile": "kilometers",
+        "foot": "meters",
+        "fahrenheit": "Celsius",
+        "yard": "meters",
+        "gallon": "liters",
+        "ounce": "grams",
+        "pound": "kilograms",
+        "inch": "centimeters"
+    };
+    var siUnit = unitMap[unit];
+    // XXX: this is a WIP NOP
+    return value;
+}
+
 function convertImperialToSI(units, value) {
     var converters = {
         "mile": function(value) {
@@ -131,9 +147,10 @@ function convertImperialToSI(units, value) {
             return value * 2.54 + " centimeters";
         }
     };
-    var converter = converters[reduceImperialUnitNames(units)];
+    var reducedUnit = reduceImperialUnitNames(units);
+    var converter = converters[reducedUnit];
     if (converter) {
-        return converter(value);
+        return makeReadable(converter(value), reducedUnit);
     }
     return value + " " + units;
 }
