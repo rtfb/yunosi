@@ -1,7 +1,6 @@
 module("Basic Tests");
 
 test("conversions", function() {
-    equal(milesToKilometers(10), "16");
     equal(convertImperialToSI("fahrenheit", "-40"), "-40 Celsius");
     equal(convertImperialToSI("fahrenheit", "33.8"), "1 Celsius");
 

@@ -78,10 +78,6 @@ function replace(where, highlight) {
     return where;
 }
 
-function milesToKilometers(miles) {
-    return miles * 1.6;
-}
-
 function singularizeUnits(units) {
     return units.replace("miles", "mile")
         .replace("feet", "foot")
@@ -123,7 +119,7 @@ function makeReadable(value, unit) {
 function convertImperialToSI(units, value) {
     var converters = {
         "mile": function(value) {
-            return milesToKilometers(value);
+            return value * 1.6;
         },
         "foot": function(value) {
             return value * 0.3;
