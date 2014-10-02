@@ -33,7 +33,8 @@ function multisearch(where) {
         "inch",
         "in"
     ];
-    var re = new RegExp("([\\d,]*\\.?\\d+)[\\s-]*(" + units.join("|") + ")", "gi");
+    var numberRe = "([\\d,]*\\.?\\d+)";
+    var re = new RegExp(numberRe + "[\\s-]*(" + units.join("|") + ")", "gi");
     var result;
     var results = [];
     while ((result = re.exec(where)) !== null) {
