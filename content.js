@@ -8,17 +8,7 @@ function textNodesUnder(el) {
 }
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-    if (request.method && (request.method === "highlightImperial")) {
-        // (Note: You can't send back the current '#document',
-        //  because it is recognised as a circular object and
-        //  cannot be converted to a JSON string.)
-        var html = document.all[0];
-        //sendResponse({ "htmlContent": html.innerHTML });
-        //sendResponse({"text": textNodesUnder(document.body)});
-        //textNodesUnder(document.body);
-        document.body.innerHTML = highlight(document.body.innerHTML, null);
-        sendResponse({"text": "ok"});
-    } else if (request.method && (request.method === "convertToSI")) {
+    if (request.method && (request.method === "convertToSI")) {
         // (Note: You can't send back the current '#document',
         //  because it is recognised as a circular object and
         //  cannot be converted to a JSON string.)
