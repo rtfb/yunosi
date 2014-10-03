@@ -7,10 +7,10 @@ test("conversions", function() {
     equal(convertImperialToSI("mile", "10"), "16 kilometers");
     equal(convertImperialToSI("foot", "10"), "3 meters");
     equal(convertImperialToSI("yard", "10"), "9 meters");
-    equal(convertImperialToSI("gallon", "10"), "37.8541 liters");
-    equal(convertImperialToSI("ounce", "10"), "283.495 grams");
-    equal(convertImperialToSI("oz", "10"), "283.495 grams");
-    equal(convertImperialToSI("pound", "10"), "4.53592 kilograms");
+    equal(convertImperialToSI("gallon", "10"), "37.9 liters");
+    equal(convertImperialToSI("ounce", "10"), "283 grams");
+    equal(convertImperialToSI("oz", "10"), "283 grams");
+    equal(convertImperialToSI("pound", "10"), "4.54 kilograms");
     equal(convertImperialToSI("inch", "10"), "25.4 centimeters");
     equal(convertImperialToSI("in", "10"), "25.4 centimeters");
 

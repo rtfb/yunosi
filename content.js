@@ -154,9 +154,8 @@ function makeReadable(value, unit) {
         "inch": "centimeters"
     };
     var siUnit = unitMap[unit];
-    // TODO: implement rounding here
     // TODO: implement unit pluralization
-    return value + " " + siUnit;
+    return roundForReadability(value) + " " + siUnit;
 }
 
 function convertImperialToSI(units, value) {
