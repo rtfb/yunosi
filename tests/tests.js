@@ -25,6 +25,34 @@ test("singularization", function() {
     equal(singularizeUnits(str), exp);
 });
 
+module("Rounding Tests");
+
+test("basic rounding heuristics", function() {
+    deepEqual(roundDecimal("056000000000001", 2), {decimal: "06", carry: 0});
+    deepEqual(roundDecimal("056000000000001", 3), {decimal: "056", carry: 0});
+    deepEqual(roundDecimal("056000000000001", 5), {decimal: "056", carry: 0});
+    deepEqual(roundDecimal("056009000000001", 5), {decimal: "05601", carry: 0});
+    deepEqual(roundDecimal("056003000000001", 5), {decimal: "056", carry: 0});
+    deepEqual(roundDecimal("956", 1), {decimal: "", carry: 1});
+    deepEqual(roundDecimal("1", 3), {decimal: "1", carry: 0});
+    deepEqual(roundDecimal("100", 3), {decimal: "1", carry: 0});
+
+    equal(roundForReadability(0.5), 0.5);
+    equal(roundForReadability(0.55), 0.55);
+    equal(roundForReadability(0.555), 0.56);
+    equal(roundForReadability(0.553), 0.55);
+    equal(roundForReadability(0.999), 1);
+    equal(roundForReadability(5), 5);
+    equal(roundForReadability(5.056000000000001), 5.06);
+    equal(roundForReadability(7.996), 8);
+    equal(roundForReadability(9.996), 10);
+    equal(roundForReadability(10.056000000000001), 10.1);
+    equal(roundForReadability(25.056000000000001), 25.1);
+    equal(roundForReadability(25.956), 26);
+    equal(roundForReadability(125.956), 126);
+    equal(roundForReadability(125.1), 125);
+});
+
 module("Search with regexps");
 
 test("multiple occurrence search", function() {

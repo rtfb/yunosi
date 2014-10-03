@@ -99,6 +99,49 @@ function reduceImperialUnitNames(name) {
     return name;
 }
 
+function roundDecimal(decimalStr, pos) {
+    var dec = decimalStr.substring(0, pos).replace(/0+$/g, '');
+    var trailing = decimalStr.substring(pos, pos + 1);
+    if (trailing && parseInt(trailing) >= 5) {
+        var rounded = parseFloat("0." + dec) + Math.pow(10, -pos);
+        var carry = 0;
+        if (rounded >= 1.0) {
+            carry = 1;
+        }
+        return {
+            decimal: rounded.toString().substring(2, 2 + pos),
+            carry: carry
+        };
+    }
+    return {
+        decimal: dec,
+        carry: 0
+    };
+}
+
+function roundForReadability(num) {
+    var strRepr = num.toString();
+    var dot = strRepr.indexOf(".");
+    if (dot == -1) {
+        return num;
+    }
+    var parts = strRepr.split(".");
+    var whole = parseInt(parts[0]);
+    var numSigDigits = 0
+    if (whole < 100) {
+        numSigDigits = 1;
+    }
+    if (whole < 10) {
+        numSigDigits = 2;
+    }
+    var roundResult = roundDecimal(parts[1], numSigDigits);
+    var strResult = (whole + roundResult.carry).toString();
+    if (roundResult.decimal !== "") {
+        strResult = strResult + "." + roundResult.decimal;
+    }
+    return strResult;
+}
+
 function makeReadable(value, unit) {
     var unitMap = {
         "mile": "kilometers",
