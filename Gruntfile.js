@@ -13,7 +13,7 @@ module.exports = function(grunt) {
                 'tests/*.html',
                 '*.js'
             ],
-            tasks: ['qunit']
+            tasks: ['qunit', 'jslint']
         },
         jslint: {
             client: {
@@ -38,5 +38,5 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-jslint');
     // register one or more task lists (you should ALWAYS have a "default" task list)
-    grunt.registerTask('default', ['qunit']);
+    grunt.registerTask('default', ['qunit', 'jslint']);
 };
