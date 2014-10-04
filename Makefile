@@ -6,13 +6,13 @@ SRC=background.js \
 	yunosi.css \
 	manifest.json
 
-all: test yunosi.zip
+.PHONY: all
 
-test: node_modules/qunitjs
-	grunt
+all: yunosi.zip
 
 node_modules/qunitjs:
 	npm install
 
-yunosi.zip: ${SRC}
+yunosi.zip: node_modules/qunitjs ${SRC}
+	grunt
 	zip yunosi.zip ${SRC}
