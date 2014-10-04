@@ -9,7 +9,7 @@ SRC=background.js \
 all: test yunosi.zip
 
 test: node_modules/qunitjs
-	grunt qunit
+	grunt
 
 node_modules/qunitjs:
 	npm install
