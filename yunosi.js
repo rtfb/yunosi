@@ -73,8 +73,10 @@
             var key;
             console.log("response: " + JSON.stringify(response, null, 4));
             for (key in response) {
-                var elem = document.getElementById(key);
-                elem.checked = response[key];
+                if (response.hasOwnProperty(key)) {
+                    elem = document.getElementById(key);
+                    elem.checked = response[key];
+                }
             }
         });
     });
