@@ -13,6 +13,21 @@
     });
     */
 
+    function checkboxClickListener() {
+        var checkboxState = {
+            action: "checkbox-state",
+            id: this.id,
+            state: this.checked
+        };
+        chrome.runtime.sendMessage(checkboxState, function(response) {
+            if (response.success) {
+                console.log("Saved successfully");
+            } else {
+                console.log("There was an error while saving");
+            }
+        });
+    }
+
     window.addEventListener("DOMContentLoaded", function() {
         var deimperialize = document.getElementById("deimperialize");
         deimperialize.addEventListener("click", function() {
@@ -48,20 +63,7 @@
             var elem = inputs[i];
             if (elem.type === "checkbox") {
                 console.log(elem.id + " - " + elem.type);
-                elem.addEventListener("click", function() {
-                    var checkboxState = {
-                        action: "checkbox-state",
-                        id: this.id,
-                        state: this.checked
-                    }
-                    chrome.runtime.sendMessage(checkboxState, function(response) {
-                        if (response.success) {
-                            console.log("Saved successfully");
-                        } else {
-                            console.log("There was an error while saving");
-                        }
-                    });
-                });
+                elem.addEventListener("click", checkboxClickListener);
             }
         }
 
