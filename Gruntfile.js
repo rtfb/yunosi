@@ -18,7 +18,8 @@ module.exports = function(grunt) {
         jslint: {
             client: {
                 src: [
-                    'background.js'
+                    'background.js',
+                    'yunosi.js'
                 ],
                 exclude: [
                     'Gruntfile.js'
