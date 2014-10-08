@@ -18,8 +18,7 @@ module.exports = function(grunt) {
         jslint: {
             client: {
                 src: [
-                    'background.js',
-                    'yunosi.js'
+                    '*.js'
                 ],
                 exclude: [
                     'Gruntfile.js'
@@ -29,7 +28,10 @@ module.exports = function(grunt) {
                     predef: [
                         'chrome',
                         'console'
-                    ]
+                    ],
+                    todo: true,
+                    unparam: true,
+                    white: true
                 }
             }
         }
