@@ -40,7 +40,11 @@ var nlp = (function() {
             re = new RegExp(numberRe + "[\\s-]*(" + units.join("|") + ")", "gi"),
             result,
             results = [];
-        while ((result = re.exec(where)) !== null) {
+        while (true) {
+            result = re.exec(where);
+            if (result === null) {
+                break;
+            }
             results.push({
                 index: result.index,
                 match: result[0],
