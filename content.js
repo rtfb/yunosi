@@ -35,11 +35,11 @@ var nlp = (function() {
             "inches",
             "inch",
             "in"
-        ];
-        var numberRe = "([\\d,]*\\.?\\d+)";
-        var re = new RegExp(numberRe + "[\\s-]*(" + units.join("|") + ")", "gi");
-        var result;
-        var results = [];
+        ],
+            numberRe = "([\\d,]*\\.?\\d+)",
+            re = new RegExp(numberRe + "[\\s-]*(" + units.join("|") + ")", "gi"),
+            result,
+            results = [];
         while ((result = re.exec(where)) !== null) {
             results.push({
                 index: result.index,
@@ -71,7 +71,7 @@ var nlp = (function() {
     }
 
     function replace(where, highlight) {
-        matches = multisearch(where);
+        var matches = multisearch(where);
         matches.forEach(function(match) {
             where = where.replace(match.match,
                 openSpan(highlight)
@@ -103,11 +103,12 @@ var nlp = (function() {
     }
 
     function roundDecimal(decimalStr, pos) {
-        var dec = decimalStr.substring(0, pos).replace(/0+$/g, '');
-        var trailing = decimalStr.substring(pos, pos + 1);
+        var dec = decimalStr.substring(0, pos).replace(/0+$/g, ''),
+            trailing = decimalStr.substring(pos, pos + 1),
+            rounded,
+            carry = 0;
         if (trailing && parseInt(trailing) >= 5) {
-            var rounded = parseFloat("0." + dec) + Math.pow(10, -pos);
-            var carry = 0;
+            rounded = parseFloat("0." + dec) + Math.pow(10, -pos);
             if (rounded >= 1.0) {
                 carry = 1;
             }
@@ -123,22 +124,26 @@ var nlp = (function() {
     }
 
     function roundForReadability(num) {
-        var strRepr = num.toString();
-        var dot = strRepr.indexOf(".");
-        if (dot == -1) {
+        var strRepr = num.toString(),
+            dot = strRepr.indexOf("."),
+            parts,
+            whole,
+            numSigDigits = 0,
+            roundResult,
+            strResult;
+        if (dot === -1) {
             return num;
         }
-        var parts = strRepr.split(".");
-        var whole = parseInt(parts[0]);
-        var numSigDigits = 0
+        parts = strRepr.split(".");
+        whole = parseInt(parts[0]);
         if (whole < 100) {
             numSigDigits = 1;
         }
         if (whole < 10) {
             numSigDigits = 2;
         }
-        var roundResult = roundDecimal(parts[1], numSigDigits);
-        var strResult = (whole + roundResult.carry).toString();
+        roundResult = roundDecimal(parts[1], numSigDigits);
+        strResult = (whole + roundResult.carry).toString();
         if (roundResult.decimal !== "") {
             strResult = strResult + "." + roundResult.decimal;
         }
@@ -155,8 +160,8 @@ var nlp = (function() {
             "ounce": "grams",
             "pound": "kilograms",
             "inch": "centimeters"
-        };
-        var siUnit = unitMap[unit];
+        },
+            siUnit = unitMap[unit];
         // TODO: implement unit pluralization
         return roundForReadability(value) + " " + siUnit;
     }
@@ -187,9 +192,9 @@ var nlp = (function() {
             "inch": function(value) {
                 return value * 2.54;
             }
-        };
-        var reducedUnit = reduceImperialUnitNames(units);
-        var converter = converters[reducedUnit];
+        },
+            reducedUnit = reduceImperialUnitNames(units),
+            converter = converters[reducedUnit];
         if (converter) {
             return makeReadable(converter(value), reducedUnit);
         }
