@@ -1,15 +1,6 @@
 var nlp = (function() {
     'use strict';
 
-    function textNodesUnder(el) {
-        var n, a = [], walk = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
-        while (n = walk.nextNode()) {
-            a.push(n);
-            console.log("text node: " + n);
-        }
-        return a;
-    }
-
     function singularizeUnits(units) {
         return units.replace("miles", "mile")
             .replace("feet", "foot")
