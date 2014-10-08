@@ -1,20 +1,20 @@
 module("Basic Tests");
 
 test("conversions", function() {
-    equal(convertImperialToSI("fahrenheit", "-40"), "-40 Celsius");
-    equal(convertImperialToSI("fahrenheit", "33.8"), "1 Celsius");
+    equal(nlp.convertImperialToSI("fahrenheit", "-40"), "-40 Celsius");
+    equal(nlp.convertImperialToSI("fahrenheit", "33.8"), "1 Celsius");
 
-    equal(convertImperialToSI("mile", "10"), "16 kilometers");
-    equal(convertImperialToSI("foot", "10"), "3 meters");
-    equal(convertImperialToSI("yard", "10"), "9 meters");
-    equal(convertImperialToSI("gallon", "10"), "37.9 liters");
-    equal(convertImperialToSI("ounce", "10"), "283 grams");
-    equal(convertImperialToSI("oz", "10"), "283 grams");
-    equal(convertImperialToSI("pound", "10"), "4.54 kilograms");
-    equal(convertImperialToSI("inch", "10"), "25.4 centimeters");
-    equal(convertImperialToSI("in", "10"), "25.4 centimeters");
+    equal(nlp.convertImperialToSI("mile", "10"), "16 kilometers");
+    equal(nlp.convertImperialToSI("foot", "10"), "3 meters");
+    equal(nlp.convertImperialToSI("yard", "10"), "9 meters");
+    equal(nlp.convertImperialToSI("gallon", "10"), "37.9 liters");
+    equal(nlp.convertImperialToSI("ounce", "10"), "283 grams");
+    equal(nlp.convertImperialToSI("oz", "10"), "283 grams");
+    equal(nlp.convertImperialToSI("pound", "10"), "4.54 kilograms");
+    equal(nlp.convertImperialToSI("inch", "10"), "25.4 centimeters");
+    equal(nlp.convertImperialToSI("in", "10"), "25.4 centimeters");
 
-    equal(convertImperialToSI("disexisting-unit", "10"), "10 disexisting-unit");
+    equal(nlp.convertImperialToSI("disexisting-unit", "10"), "10 disexisting-unit");
 });
 
 test("singularization", function() {
@@ -22,35 +22,35 @@ test("singularization", function() {
         + "gallon gallons ounce ounces pound pounds inch inches";
     var exp = "mile mile foot foot fahrenheit fahrenheit yard yard "
         + "gallon gallon ounce ounce pound pound inch inch";
-    equal(singularizeUnits(str), exp);
+    equal(nlp.singularizeUnits(str), exp);
 });
 
 module("Rounding Tests");
 
 test("basic rounding heuristics", function() {
-    deepEqual(roundDecimal("056000000000001", 2), {decimal: "06", carry: 0});
-    deepEqual(roundDecimal("056000000000001", 3), {decimal: "056", carry: 0});
-    deepEqual(roundDecimal("056000000000001", 5), {decimal: "056", carry: 0});
-    deepEqual(roundDecimal("056009000000001", 5), {decimal: "05601", carry: 0});
-    deepEqual(roundDecimal("056003000000001", 5), {decimal: "056", carry: 0});
-    deepEqual(roundDecimal("956", 1), {decimal: "", carry: 1});
-    deepEqual(roundDecimal("1", 3), {decimal: "1", carry: 0});
-    deepEqual(roundDecimal("100", 3), {decimal: "1", carry: 0});
+    deepEqual(nlp.roundDecimal("056000000000001", 2), {decimal: "06", carry: 0});
+    deepEqual(nlp.roundDecimal("056000000000001", 3), {decimal: "056", carry: 0});
+    deepEqual(nlp.roundDecimal("056000000000001", 5), {decimal: "056", carry: 0});
+    deepEqual(nlp.roundDecimal("056009000000001", 5), {decimal: "05601", carry: 0});
+    deepEqual(nlp.roundDecimal("056003000000001", 5), {decimal: "056", carry: 0});
+    deepEqual(nlp.roundDecimal("956", 1), {decimal: "", carry: 1});
+    deepEqual(nlp.roundDecimal("1", 3), {decimal: "1", carry: 0});
+    deepEqual(nlp.roundDecimal("100", 3), {decimal: "1", carry: 0});
 
-    equal(roundForReadability(0.5), 0.5);
-    equal(roundForReadability(0.55), 0.55);
-    equal(roundForReadability(0.555), 0.56);
-    equal(roundForReadability(0.553), 0.55);
-    equal(roundForReadability(0.999), 1);
-    equal(roundForReadability(5), 5);
-    equal(roundForReadability(5.056000000000001), 5.06);
-    equal(roundForReadability(7.996), 8);
-    equal(roundForReadability(9.996), 10);
-    equal(roundForReadability(10.056000000000001), 10.1);
-    equal(roundForReadability(25.056000000000001), 25.1);
-    equal(roundForReadability(25.956), 26);
-    equal(roundForReadability(125.956), 126);
-    equal(roundForReadability(125.1), 125);
+    equal(nlp.roundForReadability(0.5), 0.5);
+    equal(nlp.roundForReadability(0.55), 0.55);
+    equal(nlp.roundForReadability(0.555), 0.56);
+    equal(nlp.roundForReadability(0.553), 0.55);
+    equal(nlp.roundForReadability(0.999), 1);
+    equal(nlp.roundForReadability(5), 5);
+    equal(nlp.roundForReadability(5.056000000000001), 5.06);
+    equal(nlp.roundForReadability(7.996), 8);
+    equal(nlp.roundForReadability(9.996), 10);
+    equal(nlp.roundForReadability(10.056000000000001), 10.1);
+    equal(nlp.roundForReadability(25.056000000000001), 25.1);
+    equal(nlp.roundForReadability(25.956), 26);
+    equal(nlp.roundForReadability(125.956), 126);
+    equal(nlp.roundForReadability(125.1), 125);
 });
 
 module("Search with regexps");
@@ -178,7 +178,7 @@ test("multiple occurrence search", function() {
         }
     ]
     cases.forEach(function(testCase) {
-        results = multisearch(testCase.text)
+        results = nlp.multisearch(testCase.text)
         equal(results.length, testCase.expected.length,
             "results length must match for test '" + testCase.text + "'");
         for (var i = 0; i < results.length; ++i) {

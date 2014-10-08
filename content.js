@@ -1,4 +1,4 @@
-(function() {
+var nlp = (function() {
     'use strict';
 
     function textNodesUnder(el) {
@@ -195,4 +195,12 @@
         }
         return value + " " + units;
     }
+
+    return {
+        convertImperialToSI: convertImperialToSI,
+        singularizeUnits: singularizeUnits,
+        roundDecimal: roundDecimal,
+        multisearch: multisearch,
+        roundForReadability: roundForReadability
+    };
 }());
