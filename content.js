@@ -111,7 +111,7 @@ var nlp = (function() {
             trailing = decimalStr.substring(pos, pos + 1),
             rounded,
             carry = 0;
-        if (trailing && parseInt(trailing) >= 5) {
+        if (trailing && parseInt(trailing, 10) >= 5) {
             rounded = parseFloat("0." + dec) + Math.pow(10, -pos);
             if (rounded >= 1.0) {
                 carry = 1;
@@ -139,7 +139,7 @@ var nlp = (function() {
             return num;
         }
         parts = strRepr.split(".");
-        whole = parseInt(parts[0]);
+        whole = parseInt(parts[0], 10);
         if (whole < 100) {
             numSigDigits = 1;
         }
