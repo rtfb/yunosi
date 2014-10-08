@@ -10,16 +10,21 @@ var nlp = (function() {
         return a;
     }
 
-    chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-        if (request.method && (request.method === "convertToSI")) {
-            // (Note: You can't send back the current '#document',
-            //  because it is recognised as a circular object and
-            //  cannot be converted to a JSON string.)
-            var html = document.body.innerHTML;
-            document.body.innerHTML = replace(html, request.highlight);
-            sendResponse({"text": "ok"});
-        }
-    });
+    function singularizeUnits(units) {
+        return units.replace("miles", "mile")
+            .replace("feet", "foot")
+            .replace("fahrenheits", "fahrenheit")
+            .replace("yards", "yard")
+            .replace("gallons", "gallon")
+            .replace("ounces", "ounce")
+            .replace("pounds", "pound")
+            .replace("inches", "inch");
+    }
+
+    function interpretNum(what) {
+        what = what.replace(",", "");
+        return parseFloat(what);
+    }
 
     function multisearch(where) {
         var units = [
@@ -55,11 +60,6 @@ var nlp = (function() {
         return results;
     }
 
-    function interpretNum(what) {
-        what = what.replace(",", "");
-        return parseFloat(what);
-    }
-
     function openSpan(highlight) {
         if (highlight) {
             return "<span style='background-color: yellow;'>";
@@ -72,28 +72,6 @@ var nlp = (function() {
             return "</span>";
         }
         return "";
-    }
-
-    function replace(where, highlight) {
-        var matches = multisearch(where);
-        matches.forEach(function(match) {
-            where = where.replace(match.match,
-                openSpan(highlight)
-                + convertImperialToSI(match.units, match.numeral)
-                + closeSpan(highlight));
-        });
-        return where;
-    }
-
-    function singularizeUnits(units) {
-        return units.replace("miles", "mile")
-            .replace("feet", "foot")
-            .replace("fahrenheits", "fahrenheit")
-            .replace("yards", "yard")
-            .replace("gallons", "gallon")
-            .replace("ounces", "ounce")
-            .replace("pounds", "pound")
-            .replace("inches", "inch");
     }
 
     function reduceImperialUnitNames(name) {
@@ -204,6 +182,28 @@ var nlp = (function() {
         }
         return value + " " + units;
     }
+
+    function replace(where, highlight) {
+        var matches = multisearch(where);
+        matches.forEach(function(match) {
+            where = where.replace(match.match,
+                openSpan(highlight)
+                + convertImperialToSI(match.units, match.numeral)
+                + closeSpan(highlight));
+        });
+        return where;
+    }
+
+    chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+        if (request.method && (request.method === "convertToSI")) {
+            // (Note: You can't send back the current '#document',
+            //  because it is recognised as a circular object and
+            //  cannot be converted to a JSON string.)
+            var html = document.body.innerHTML;
+            document.body.innerHTML = replace(html, request.highlight);
+            sendResponse({"text": "ok"});
+        }
+    });
 
     return {
         convertImperialToSI: convertImperialToSI,
