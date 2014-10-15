@@ -187,3 +187,36 @@ test("multiple occurrence search", function() {
         }
     });
 });
+
+module("Text scraper");
+
+test("get all text nodes", function() {
+    var cases = [
+        {
+            input: "<p>This is text.</p>",
+            expected: ["This is text."]
+        },
+        {
+            input: "<p>This is <strong>another</strong> text.</p>",
+            expected: ["This is ", "another", " text."]
+        },
+        {
+            input: "<p>The temperature was <strong>100</strong> degrees Fahrenheit.</p>",
+            expected: ["The temperature was ", "100", " degrees Fahrenheit."]
+        },
+        {
+            input: "<p>They walked 100 <strong>miles</strong>!</p>",
+            expected: ["They walked 100 ", "miles", "!"]
+        }
+    ];
+    cases.forEach(function(testCase) {
+        var div = document.createElement('div');
+        div.innerHTML = testCase.input;
+        var resultNodes = nlp.getAllTextNodes(div);
+        var resultText = [];
+        resultNodes.forEach(function(node) {
+            resultText.push(node.nodeValue);
+        });
+        deepEqual(resultText, testCase.expected, testCase.input);
+    });
+});

@@ -27,7 +27,8 @@ module.exports = function(grunt) {
                     browser: true,
                     predef: [
                         'chrome',
-                        'console'
+                        'console',
+                        'NodeFilter'
                     ],
                     todo: true,
                     unparam: true,

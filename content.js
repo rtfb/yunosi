@@ -185,6 +185,20 @@ var nlp = (function() {
         return where;
     }
 
+    function getAllTextNodes(elem) {
+        var filter = NodeFilter.SHOW_TEXT,
+            walker = document.createTreeWalker(elem, filter, null, false),
+            arr = [],
+            node;
+        while (walker.nextNode()) {
+            node = walker.currentNode;
+            if (!node.isElementContentWhitespace) {
+                arr.push(node);
+            }
+        }
+        return arr;
+    }
+
     chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         if (request.method && (request.method === "convertToSI")) {
             // (Note: You can't send back the current '#document',
@@ -201,6 +215,7 @@ var nlp = (function() {
         singularizeUnits: singularizeUnits,
         roundDecimal: roundDecimal,
         multisearch: multisearch,
+        getAllTextNodes: getAllTextNodes,
         roundForReadability: roundForReadability
     };
 }());
