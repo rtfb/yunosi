@@ -51,20 +51,6 @@ var nlp = (function() {
         return results;
     }
 
-    function openSpan(highlight) {
-        if (highlight) {
-            return "<span style='background-color: yellow;'>";
-        }
-        return "";
-    }
-
-    function closeSpan(highlight) {
-        if (highlight) {
-            return "</span>";
-        }
-        return "";
-    }
-
     function reduceImperialUnitNames(name) {
         if (name === "oz") {
             return "ounce";
@@ -174,17 +160,6 @@ var nlp = (function() {
         return value + " " + units;
     }
 
-    function replace(where, highlight) {
-        var matches = multisearch(where);
-        matches.forEach(function(match) {
-            where = where.replace(match.match,
-                openSpan(highlight)
-                + convertImperialToSI(match.units, match.numeral)
-                + closeSpan(highlight));
-        });
-        return where;
-    }
-
     function getAllTextNodes(elem) {
         var filter = NodeFilter.SHOW_TEXT,
             walker = document.createTreeWalker(elem, filter, null, false),
@@ -197,6 +172,16 @@ var nlp = (function() {
             }
         }
         return arr;
+    }
+
+    function makeTextOrSpanNode(data) {
+        if (!data.span) {
+            return document.createTextNode(data.text);
+        }
+        var span = document.createElement('span');
+        span.setAttribute("style", "background-color: yellow;");
+        span.appendChild(document.createTextNode(data.text));
+        return span;
     }
 
     function splitBySearchResults(text, matches) {
@@ -232,13 +217,36 @@ var nlp = (function() {
         return results;
     }
 
+    function multisearchTextNodes(nodes) {
+        var resultArray = [];
+        nodes.forEach(function(node) {
+            var text = node.nodeValue,
+                searchResults = multisearch(text);
+            if (searchResults.length !== 0) {
+                resultArray.push({
+                    origNode: node,
+                    replacement: splitBySearchResults(text, searchResults)
+                });
+            }
+        });
+        return resultArray;
+    }
+
+    function replaceTextNodes(newData) {
+        newData.forEach(function(result) {
+            var parentNode = result.origNode.parentNode;
+            result.replacement.forEach(function(repl) {
+                var newNode = makeTextOrSpanNode(repl);
+                parentNode.insertBefore(newNode, result.origNode);
+            });
+            parentNode.removeChild(result.origNode);
+        });
+    }
+
     chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         if (request.method && (request.method === "convertToSI")) {
-            // (Note: You can't send back the current '#document',
-            //  because it is recognised as a circular object and
-            //  cannot be converted to a JSON string.)
-            var html = document.body.innerHTML;
-            document.body.innerHTML = replace(html, request.highlight);
+            var textNodes = getAllTextNodes(document.body);
+            replaceTextNodes(multisearchTextNodes(textNodes));
             sendResponse({"text": "ok"});
         }
     });
