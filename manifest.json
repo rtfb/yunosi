@@ -3,7 +3,7 @@
 
     "name": "Y U NO SI?!",
     "description": "This extension converts and rewrites all mentions of imperial units to SI",
-    "version": "0.2",
+    "version": "0.3",
     "offline_enabled": true,
 
     "permissions": [
