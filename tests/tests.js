@@ -220,3 +220,84 @@ test("get all text nodes", function() {
         deepEqual(resultText, testCase.expected, testCase.input);
     });
 });
+
+module("Multireplacer");
+
+test("replace all text nodes", function() {
+    var cases = [
+        {
+            text: "",
+            matches: [],
+            expected: []
+        },
+        {
+            text: "nothing",
+            matches: [],
+            expected: [
+                {
+                    text: "nothing",
+                    span: false
+                }
+            ]
+        },
+        {
+            text: "foo 1 mile 2 miles 3 miles baz",
+        //         012345678901234567890123456789
+        //                   1         2
+            matches: [
+                {
+                    index: 4,
+                    match: "1 mile",
+                    numeral: 1,
+                    units: "mile"
+                },
+                {
+                    index: 11,
+                    match: "2 miles",
+                    numeral: 2,
+                    units: "mile"
+                },
+                {
+                    index: 19,
+                    match: "3 miles",
+                    numeral: 3,
+                    units: "mile"
+                }
+            ],
+            expected: [
+                {
+                    text: "foo ",
+                    span: false
+                },
+                {
+                    text: "1.6 kilometers",
+                    span: true
+                },
+                {
+                    text: " ",
+                    span: false
+                },
+                {
+                    text: "3.2 kilometers",
+                    span: true
+                },
+                {
+                    text: " ",
+                    span: false
+                },
+                {
+                    text: "4.8 kilometers",
+                    span: true
+                },
+                {
+                    text: " baz",
+                    span: false
+                }
+            ]
+        }
+    ];
+    cases.forEach(function(testCase) {
+        deepEqual(nlp.splitBySearchResults(testCase.text, testCase.matches),
+            testCase.expected);
+    });
+});

@@ -199,6 +199,39 @@ var nlp = (function() {
         return arr;
     }
 
+    function splitBySearchResults(text, matches) {
+        var i = 0,
+            match,
+            plainText,
+            si,
+            textIndex = 0,
+            results = [];
+        while (i < matches.length) {
+            match = matches[i];
+            plainText = text.substring(textIndex, match.index);
+            results.push({
+                text: plainText,
+                span: false
+            });
+
+            si = convertImperialToSI(match.units, match.numeral);
+            textIndex = match.index + match.match.length;
+            results.push({
+                text: si,
+                span: true
+            });
+
+            i += 1;
+        }
+        if (textIndex !== text.length) {
+            results.push({
+                text: text.substring(textIndex),
+                span: false
+            });
+        }
+        return results;
+    }
+
     chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         if (request.method && (request.method === "convertToSI")) {
             // (Note: You can't send back the current '#document',
@@ -216,6 +249,7 @@ var nlp = (function() {
         roundDecimal: roundDecimal,
         multisearch: multisearch,
         getAllTextNodes: getAllTextNodes,
+        splitBySearchResults: splitBySearchResults,
         roundForReadability: roundForReadability
     };
 }());
