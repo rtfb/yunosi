@@ -1,4 +1,3 @@
-/*jslint unparam: true */
 (function () {
     'use strict';
 
