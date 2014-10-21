@@ -22,6 +22,7 @@ var nlp = (function() {
             "miles?",
             "foot",
             "feet",
+            "ft",
             "fahrenheit",
             "yards?",
             "gallons?",
@@ -52,11 +53,13 @@ var nlp = (function() {
     }
 
     function reduceImperialUnitNames(name) {
-        if (name === "oz") {
-            return "ounce";
-        }
-        if (name === "in") {
-            return "inch";
+        var abbrevs = {
+            "oz": "ounce",
+            "in": "inch",
+            "ft": "foot"
+        };
+        if (abbrevs.hasOwnProperty(name)) {
+            return abbrevs[name];
         }
         return name;
     }
@@ -252,6 +255,7 @@ var nlp = (function() {
     });
 
     return {
+        reduceImperialUnitNames: reduceImperialUnitNames,
         convertImperialToSI: convertImperialToSI,
         singularizeUnits: singularizeUnits,
         roundDecimal: roundDecimal,

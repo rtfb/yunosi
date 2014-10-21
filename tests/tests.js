@@ -17,6 +17,27 @@ test("conversions", function() {
     equal(nlp.convertImperialToSI("disexisting-unit", "10"), "10 disexisting-unit");
 });
 
+test("reduction", function() {
+    var tests = {
+        "miles": "miles",
+        "foot": "foot",
+        "feet": "feet",
+        "ft": "foot",
+        "fahrenheit": "fahrenheit",
+        "yards": "yards",
+        "gallons": "gallons",
+        "ounce": "ounce",
+        "oz": "ounce",
+        "pounds": "pounds",
+        "inches": "inches",
+        "inch": "inch",
+        "in": "inch"
+    }
+    for (var key in tests) {
+        equal(nlp.reduceImperialUnitNames(key), tests[key]);
+    }
+});
+
 test("singularization", function() {
     var str = "mile miles foot feet fahrenheit fahrenheits yard yards "
         + "gallon gallons ounce ounces pound pounds inch inches";
