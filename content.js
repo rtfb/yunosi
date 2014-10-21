@@ -1,6 +1,22 @@
 var nlp = (function() {
     'use strict';
 
+    var unitsForRegex = [
+        "miles?",
+        "foot",
+        "feet",
+        "ft",
+        "fahrenheit",
+        "yards?",
+        "gallons?",
+        "ounce",
+        "oz",
+        "pounds?",
+        "inches",
+        "inch",
+        "in"
+    ];
+
     function singularizeUnits(units) {
         return units.replace("miles", "mile")
             .replace("feet", "foot")
@@ -18,23 +34,9 @@ var nlp = (function() {
     }
 
     function multisearch(where) {
-        var units = [
-            "miles?",
-            "foot",
-            "feet",
-            "ft",
-            "fahrenheit",
-            "yards?",
-            "gallons?",
-            "ounce",
-            "oz",
-            "pounds?",
-            "inches",
-            "inch",
-            "in"
-        ],
+        var units = unitsForRegex.join("|"),
             numberRe = "([\\d,]*\\.?\\d+)",
-            re = new RegExp(numberRe + "[\\s-]*(" + units.join("|") + ")", "gi"),
+            re = new RegExp(numberRe + "[\\s-]*(" + units + ")", "gi"),
             result,
             results = [];
         while (true) {
@@ -256,6 +258,7 @@ var nlp = (function() {
 
     return {
         reduceImperialUnitNames: reduceImperialUnitNames,
+        unitsForRegex: unitsForRegex,
         convertImperialToSI: convertImperialToSI,
         singularizeUnits: singularizeUnits,
         roundDecimal: roundDecimal,
