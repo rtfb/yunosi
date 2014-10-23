@@ -28,6 +28,7 @@ module.exports = function(grunt) {
                     predef: [
                         'chrome',
                         'console',
+                        'Node',
                         'NodeFilter'
                     ],
                     continue: true,

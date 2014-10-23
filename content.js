@@ -165,6 +165,16 @@ var nlp = (function() {
         return value + " " + units;
     }
 
+    function isScriptNode(node) {
+        if (node.nodeType !== Node.ELEMENT_NODE) {
+            return false;
+        }
+        if (node.nodeName === "SCRIPT") {
+            return true;
+        }
+        return false;
+    }
+
     function getAllTextNodes(elem) {
         var filter = NodeFilter.SHOW_TEXT,
             walker = document.createTreeWalker(elem, filter, null, false),
@@ -172,6 +182,9 @@ var nlp = (function() {
             node;
         while (walker.nextNode()) {
             node = walker.currentNode;
+            if (node.parentNode && isScriptNode(node.parentNode)) {
+                continue;
+            }
             if (!node.isElementContentWhitespace) {
                 arr.push(node);
             }
