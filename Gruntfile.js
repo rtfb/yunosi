@@ -30,6 +30,7 @@ module.exports = function(grunt) {
                         'console',
                         'NodeFilter'
                     ],
+                    continue: true,
                     todo: true,
                     unparam: true,
                     white: true
