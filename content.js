@@ -261,8 +261,8 @@ var nlp = (function() {
         });
     }
 
-    chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-        if (request.method && (request.method === "convertToSI")) {
+    chrome.runtime.onMessage.addListener(function(rq, sender, sendResponse) {
+        if (rq.method && (rq.method === "convertToSI")) {
             var textNodes = getAllTextNodes(document.body);
             replaceTextNodes(multisearchTextNodes(textNodes));
             sendResponse({"text": "ok"});
