@@ -192,8 +192,8 @@ var nlp = (function() {
         return arr;
     }
 
-    function makeTextOrSpanNode(data) {
-        if (!data.span) {
+    function makeTextOrSpanNode(data, highlight) {
+        if (!data.span || !highlight) {
             return document.createTextNode(data.text);
         }
         var span = document.createElement('span');
@@ -250,11 +250,11 @@ var nlp = (function() {
         return resultArray;
     }
 
-    function replaceTextNodes(newData) {
+    function replaceTextNodes(newData, highlight) {
         newData.forEach(function(result) {
             var parentNode = result.origNode.parentNode;
             result.replacement.forEach(function(repl) {
-                var newNode = makeTextOrSpanNode(repl);
+                var newNode = makeTextOrSpanNode(repl, highlight);
                 parentNode.insertBefore(newNode, result.origNode);
             });
             parentNode.removeChild(result.origNode);
@@ -264,7 +264,7 @@ var nlp = (function() {
     chrome.runtime.onMessage.addListener(function(rq, sender, sendResponse) {
         if (rq.method && (rq.method === "convertToSI")) {
             var textNodes = getAllTextNodes(document.body);
-            replaceTextNodes(multisearchTextNodes(textNodes));
+            replaceTextNodes(multisearchTextNodes(textNodes), rq.highlight);
             sendResponse({"text": "ok"});
         }
     });
