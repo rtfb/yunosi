@@ -1,6 +1,7 @@
 SRC=background.js \
 	content.js \
 	icon.png \
+	icon128.png \
 	yunosi.js \
 	yunosi.html \
 	yunosi.css \
