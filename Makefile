@@ -7,7 +7,7 @@ SRC=background.js \
 	yunosi.css \
 	manifest.json
 
-.PHONY: all
+.PHONY: all clean
 
 all: yunosi.zip
 
@@ -17,3 +17,6 @@ node_modules/qunitjs:
 yunosi.zip: node_modules/qunitjs ${SRC}
 	grunt
 	zip yunosi.zip ${SRC}
+
+clean:
+	rm yunosi.zip
