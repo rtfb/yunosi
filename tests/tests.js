@@ -17,6 +17,22 @@ test("conversions", function() {
     equal(nlp.convertImperialToSI("disexisting-unit", "10"), "10 disexisting-unit");
 });
 
+test("whitespace", function() {
+    var tests = [
+        {test: "\n\t\t\t\t\t  ", expected: true},
+        {test: "\n\t\t\t\t\t", expected: true},
+        {test: "\n\t\t\t\t\t\t", expected: true},
+        {test: "\n\t  ", expected: true},
+        {test: "› Full image and caption", expected: false},
+        {test: "\n  ", expected: true},
+        {test: "\n\t", expected: true}
+    ];
+    tests.forEach(function(test) {
+        var tn = document.createTextNode(test.test);
+        equal(nlp.isWhiteSpaceOnly(tn), test.expected);
+    });
+});
+
 test("reduction", function() {
     var tests = {
         "miles": "miles",

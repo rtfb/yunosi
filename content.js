@@ -184,6 +184,13 @@ var nlp = (function() {
         return false;
     }
 
+    function isWhiteSpaceOnly(node) {
+        if (node.nodeValue.replace(/[\n\t ]+/, "") === "") {
+            return true;
+        }
+        return false;
+    }
+
     function getAllTextNodes(elem) {
         var filter = NodeFilter.SHOW_TEXT,
             walker = document.createTreeWalker(elem, filter, null, false),
@@ -194,9 +201,10 @@ var nlp = (function() {
             if (node.parentNode && isScriptNode(node.parentNode)) {
                 continue;
             }
-            if (!node.isElementContentWhitespace) {
-                arr.push(node);
+            if (node.isElementContentWhitespace || isWhiteSpaceOnly(node)) {
+                continue;
             }
+            arr.push(node);
         }
         return arr;
     }
@@ -285,6 +293,7 @@ var nlp = (function() {
         singularizeUnits: singularizeUnits,
         roundDecimal: roundDecimal,
         multisearch: multisearch,
+        isWhiteSpaceOnly: isWhiteSpaceOnly,
         getAllTextNodes: getAllTextNodes,
         splitBySearchResults: splitBySearchResults,
         roundForReadability: roundForReadability
