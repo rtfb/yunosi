@@ -210,6 +210,18 @@ test("multiple occurrence search", function() {
     });
 });
 
+test("multiple occurrence search, negative tests", function() {
+    var tests = [
+        "This turns the ESP8266 into something much better than a UART",
+        "create a Internet of Things thing with just $5 in hardware"
+    ];
+    tests.forEach(function(test) {
+        var results = nlp.multisearch(test);
+        equal(results.length, 0,
+            "expected no results, but got " + JSON.stringify(results, null, 4));
+    });
+});
+
 module("Text scraper");
 
 test("get all text nodes", function() {

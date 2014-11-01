@@ -38,11 +38,20 @@ var nlp = (function() {
             numberRe = "([\\d,]*\\.?\\d+)",
             re = new RegExp(numberRe + "[\\s-]*(" + units + ")", "gi"),
             result,
-            results = [];
+            results = [],
+            preceding;
         while (true) {
             result = re.exec(where);
             if (result === null) {
                 break;
+            }
+            if (result.index > 0) {
+                preceding = where.substring(result.index - 1, result.index);
+                // Only whitespace and punctuation can immediately precede the
+                // number. Make sure that's the case:
+                if (preceding.search(/[\s,.?!'"+\-]/) !== 0) {
+                    continue;
+                }
             }
             results.push({
                 index: result.index,
