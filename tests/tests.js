@@ -200,7 +200,7 @@ test("multiple occurrence search", function() {
         }
     ]
     cases.forEach(function(testCase) {
-        results = nlp.multisearch(testCase.text)
+        var results = nlp.multisearch(testCase.text);
         equal(results.length, testCase.expected.length,
             "results length must match for test '" + testCase.text + "'");
         for (var i = 0; i < results.length; ++i) {
