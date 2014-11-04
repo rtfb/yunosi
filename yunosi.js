@@ -14,7 +14,7 @@
 
     function checkboxClickListener() {
         var checkboxState = {
-            action: "checkbox-state",
+            method: "checkbox-state",
             id: this.id,
             state: this.checked
         };
@@ -68,7 +68,7 @@
             }
         }
 
-        chrome.runtime.sendMessage({action: "get-ui-state"}, function(response) {
+        chrome.runtime.sendMessage({method: "get-ui-state"}, function(response) {
             var key;
             console.log("response: " + JSON.stringify(response, null, 4));
             for (key in response) {
