@@ -45,7 +45,7 @@
                 if (tabs.length > 0) {
                     // ...send a message requesting the DOM...
                     chrome.tabs.sendMessage(tabs[0].id, {
-                        method: "convertToSI",
+                        method: "convert-to-si",
                         highlight: highlightChecked
                     }, function(response) {
                         if (chrome.runtime.lastError) {

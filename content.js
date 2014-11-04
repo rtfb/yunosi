@@ -279,7 +279,7 @@ var nlp = (function() {
     }
 
     chrome.runtime.onMessage.addListener(function(rq, sender, sendResponse) {
-        if (rq.method && (rq.method === "convertToSI")) {
+        if (rq.method && (rq.method === "convert-to-si")) {
             var textNodes = getAllTextNodes(document.body);
             replaceTextNodes(multisearchTextNodes(textNodes), rq.highlight);
             sendResponse({"text": "ok"});
