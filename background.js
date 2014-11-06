@@ -214,11 +214,11 @@ var nlp = (function() {
     function multisearchTextNodes(nodes) {
         var resultArray = [];
         nodes.forEach(function(node) {
-            var text = node.nodeValue,
+            var text = node.text,
                 searchResults = multisearch(text);
             if (searchResults.length !== 0) {
                 resultArray.push({
-                    origNode: node,
+                    origNode: node.index,
                     replacement: splitBySearchResults(text, searchResults)
                 });
             }

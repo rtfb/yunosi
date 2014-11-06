@@ -46,19 +46,28 @@ var content = (function() {
         return span;
     }
 
-    function replaceTextNodes(newData, highlight) {
+    function replaceTextNodes(origNodes, newData, highlight) {
         newData.forEach(function(result) {
-            var parentNode = result.origNode.parentNode;
+            var origNode = origNodes[result.origNode],
+                parentNode = origNode.parentNode;
             result.replacement.forEach(function(repl) {
                 var newNode = makeTextOrSpanNode(repl, highlight);
-                parentNode.insertBefore(newNode, result.origNode);
+                parentNode.insertBefore(newNode, origNode);
             });
-            parentNode.removeChild(result.origNode);
+            parentNode.removeChild(origNode);
         });
     }
 
     function prepareJson(nodes) {
-        return [];
+        var ret = [],
+            i = 0;
+        for (i = 0; i < nodes.length; i += 1) {
+            ret.push({
+                index: i,
+                text: nodes[i].nodeValue
+            });
+        }
+        return ret;
     }
 
     chrome.runtime.onMessage.addListener(function(rq, sender, sendResponse) {
@@ -69,7 +78,7 @@ var content = (function() {
                 data: prepareJson(textNodes)
             }, function(response) {
                 console.log("response: " + JSON.stringify(response, null, 4));
-                replaceTextNodes(response, rq.highlight);
+                replaceTextNodes(textNodes, response, rq.highlight);
                 sendResponse({"text": "ok"});
             });
         }
