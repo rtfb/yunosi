@@ -29,7 +29,7 @@ test("whitespace", function() {
     ];
     tests.forEach(function(test) {
         var tn = document.createTextNode(test.test);
-        equal(nlp.isWhiteSpaceOnly(tn), test.expected);
+        equal(content.isWhiteSpaceOnly(tn), test.expected);
     });
 });
 
@@ -262,7 +262,7 @@ test("get all text nodes", function() {
     cases.forEach(function(testCase) {
         var div = document.createElement('div');
         div.innerHTML = testCase.input;
-        var resultNodes = nlp.getAllTextNodes(div);
+        var resultNodes = content.getAllTextNodes(div);
         var resultText = [];
         resultNodes.forEach(function(node) {
             resultText.push(node.nodeValue);
