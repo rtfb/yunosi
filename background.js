@@ -240,6 +240,9 @@ var nlp = (function() {
                 log("chrome.storage.local.get", result);
                 sendResponse(result);
             });
+        } else if (rq.method === "text-for-processing") {
+            console.log("text-for-processing: " + rq.data);
+            sendResponse(multisearchTextNodes(rq.data));
         } else {
             sendResponse({error: true});
         }

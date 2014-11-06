@@ -57,15 +57,21 @@ var content = (function() {
         });
     }
 
-    function multisearchTextNodes(nodes) {
+    function prepareJson(nodes) {
         return [];
     }
 
     chrome.runtime.onMessage.addListener(function(rq, sender, sendResponse) {
         if (rq.method && (rq.method === "convert-to-si")) {
             var textNodes = getAllTextNodes(document.body);
-            replaceTextNodes(multisearchTextNodes(textNodes), rq.highlight);
-            sendResponse({"text": "ok"});
+            chrome.runtime.sendMessage({
+                method: "text-for-processing",
+                data: prepareJson(textNodes)
+            }, function(response) {
+                console.log("response: " + JSON.stringify(response, null, 4));
+                replaceTextNodes(response, rq.highlight);
+                sendResponse({"text": "ok"});
+            });
         }
     });
 
