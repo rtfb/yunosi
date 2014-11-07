@@ -1,4 +1,4 @@
-SRC=background.js \
+TARGETS=background.js \
 	content.js \
 	icon.png \
 	icon128.png \
@@ -14,9 +14,25 @@ all: yunosi.zip
 node_modules/qunitjs:
 	npm install
 
-yunosi.zip: node_modules/qunitjs ${SRC}
+yunosi.zip: node_modules/qunitjs $(addprefix build/, ${TARGETS})
 	grunt
-	zip yunosi.zip ${SRC}
+	cd build && zip yunosi.zip *
+
+build/%.js: %.js
+	@mkdir -p build
+	cp $< $@
+
+build/%.png: %.png
+	cp $< $@
+
+build/yunosi.html: yunosi.html
+	cp $< $@
+
+build/yunosi.css: yunosi.css
+	cp $< $@
+
+build/manifest.json: manifest.json
+	cp $< $@
 
 clean:
-	rm yunosi.zip
+	rm -r build
