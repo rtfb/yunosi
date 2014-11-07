@@ -1,4 +1,3 @@
-var nlp = (function() {
 'use strict';
 
 var unitsForRegex = [
@@ -249,7 +248,7 @@ chrome.runtime.onMessage.addListener(function(rq, sender, sendResponse) {
     return true;
 });
 
-return {
+module.exports = {
     reduceImperialUnitNames: reduceImperialUnitNames,
     unitsForRegex: unitsForRegex,
     convertImperialToSI: convertImperialToSI,
@@ -260,4 +259,3 @@ return {
     roundDecimal: roundDecimal,
     splitBySearchResults: splitBySearchResults
 };
-}());

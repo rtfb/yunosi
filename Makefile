@@ -1,5 +1,4 @@
-TARGETS=background.js \
-	content.js \
+TARGETS=content.js \
 	icon.png \
 	icon128.png \
 	yunosi.js \

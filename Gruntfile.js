@@ -4,6 +4,20 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'), // the package file to use
 
+        browserify: {
+            dist: {
+                files: {
+                    'build/background.js': [
+                        'background.js'
+                    ],
+                },
+                options: {
+                    browserifyOptions: {
+                        standalone: 'nlp'
+                    }
+                }
+            }
+        },
         qunit: { // internal task or name of a plugin (like "qunit")
             all: ['tests/*.html']
         },
@@ -13,7 +27,7 @@ module.exports = function(grunt) {
                 'tests/*.html',
                 '*.js'
             ],
-            tasks: ['qunit', 'jslint']
+            tasks: ['browserify', 'qunit', 'jslint']
         },
         jslint: {
             client: {
@@ -21,7 +35,8 @@ module.exports = function(grunt) {
                     '*.js'
                 ],
                 exclude: [
-                    'Gruntfile.js'
+                    'Gruntfile.js',
+                    'background.js'
                 ],
                 directives: {
                     browser: true,
@@ -36,6 +51,21 @@ module.exports = function(grunt) {
                     unparam: true,
                     white: true
                 }
+            },
+            server: {
+                src: [
+                    'background.js'
+                ],
+                directives: {
+                    continue: true,
+                    predef: [
+                        'chrome'
+                    ],
+                    node: true,
+                    todo: true,
+                    unparam: true,
+                    white: true
+                }
             }
         }
     });
@@ -43,6 +73,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-qunit');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-jslint');
+    grunt.loadNpmTasks('grunt-browserify');
     // register one or more task lists (you should ALWAYS have a "default" task list)
-    grunt.registerTask('default', ['qunit', 'jslint']);
+    grunt.registerTask('default', ['browserify', 'qunit', 'jslint']);
 };
