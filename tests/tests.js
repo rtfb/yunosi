@@ -63,6 +63,14 @@ test("singularization", function() {
     equal(nlp.singularizeUnits(str), exp);
 });
 
+test("pluralization", function() {
+    equal(nlp.pluralizeUnits('kilometer', 1), 'kilometer');
+    equal(nlp.pluralizeUnits('kilometer', 5), 'kilometers');
+    equal(nlp.pluralizeUnits('kilometer', 1.5), 'kilometers');
+    equal(nlp.pluralizeUnits('kilometer', 0.7), 'kilometers');
+    equal(nlp.pluralizeUnits('meter', 3), 'meters');
+});
+
 module("Rounding Tests");
 
 test("basic rounding heuristics", function() {

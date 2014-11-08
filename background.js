@@ -14,7 +14,9 @@ var unitsForRegex = [
     "inches",
     "inch",
     "in"
-];
+],
+    pluralize = require('pluralize');
+pluralize.addIrregularRule('Celsius', 'Celsius');
 
 function log(str, obj) {
     console.log(str + ": " + JSON.stringify(obj, null, 4));
@@ -80,20 +82,23 @@ function roundForReadability(num) {
     return strResult;
 }
 
+function pluralizeUnits(units, value) {
+    return pluralize(units, value);
+}
+
 function makeReadable(value, unit) {
     var unitMap = {
-        "mile": "kilometers",
-        "foot": "meters",
+        "mile": "kilometer",
+        "foot": "meter",
         "fahrenheit": "Celsius",
-        "yard": "meters",
-        "gallon": "liters",
-        "ounce": "grams",
-        "pound": "kilograms",
-        "inch": "centimeters"
+        "yard": "meter",
+        "gallon": "liter",
+        "ounce": "gram",
+        "pound": "kilogram",
+        "inch": "centimeter"
     },
         siUnit = unitMap[unit];
-    // TODO: implement unit pluralization
-    return roundForReadability(value) + " " + siUnit;
+    return roundForReadability(value) + " " + pluralizeUnits(siUnit, value);
 }
 
 function convertImperialToSI(units, value) {
@@ -257,5 +262,6 @@ module.exports = {
     multisearchTextNodes: multisearchTextNodes,
     roundForReadability: roundForReadability,
     roundDecimal: roundDecimal,
-    splitBySearchResults: splitBySearchResults
+    splitBySearchResults: splitBySearchResults,
+    pluralizeUnits: pluralizeUnits
 };
