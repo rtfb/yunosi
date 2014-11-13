@@ -206,7 +206,7 @@ function splitBySearchResults(text, matches) {
 
         i += 1;
     }
-    if (textIndex !== text.length) {
+    if (textIndex < text.length) {
         results.push({
             text: text.substring(textIndex),
             altered: false
