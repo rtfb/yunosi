@@ -37,7 +37,7 @@ var content = (function() {
     }
 
     function makeTextOrSpanNode(data, highlight) {
-        if (!data.span || !highlight) {
+        if (!data.altered || !highlight) {
             return document.createTextNode(data.text);
         }
         var span = document.createElement('span');

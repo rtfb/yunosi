@@ -194,14 +194,14 @@ function splitBySearchResults(text, matches) {
         plainText = text.substring(textIndex, match.index);
         results.push({
             text: plainText,
-            span: false
+            altered: false
         });
 
         si = convertImperialToSI(match.units, match.numeral);
         textIndex = match.index + match.match.length;
         results.push({
             text: si,
-            span: true
+            altered: true
         });
 
         i += 1;
@@ -209,7 +209,7 @@ function splitBySearchResults(text, matches) {
     if (textIndex !== text.length) {
         results.push({
             text: text.substring(textIndex),
-            span: false
+            altered: false
         });
     }
     return results;

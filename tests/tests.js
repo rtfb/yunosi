@@ -294,7 +294,7 @@ test("replace all text nodes", function() {
             expected: [
                 {
                     text: "nothing",
-                    span: false
+                    altered: false
                 }
             ]
         },
@@ -325,31 +325,31 @@ test("replace all text nodes", function() {
             expected: [
                 {
                     text: "foo ",
-                    span: false
+                    altered: false
                 },
                 {
                     text: "1.6 kilometers",
-                    span: true
+                    altered: true
                 },
                 {
                     text: " ",
-                    span: false
+                    altered: false
                 },
                 {
                     text: "3.2 kilometers",
-                    span: true
+                    altered: true
                 },
                 {
                     text: " ",
-                    span: false
+                    altered: false
                 },
                 {
                     text: "4.8 kilometers",
-                    span: true
+                    altered: true
                 },
                 {
                     text: " baz",
-                    span: false
+                    altered: false
                 }
             ]
         }
