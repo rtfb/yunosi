@@ -359,3 +359,28 @@ test("replace all text nodes", function() {
             testCase.expected);
     });
 });
+
+test("split words", function() {
+    var cases = [
+        {
+            text: "",
+            expected: []
+        },
+        {
+            text: "foo 1 mile 2 miles 3 miles baz",
+            expected: ["foo", "1", "mile", "2", "miles", "3", "miles", "baz"]
+        },
+        {
+            text: "This turns the ESP8266 into something much better than a UART",
+            expected: ["This", "turns", "the", "ESP8266", "into", "something",
+                "much", "better", "than", "a", "UART"]
+        },
+        {
+            text: "fly 3,600 miles, walk 3.0 miles.",
+            expected: ["fly", "3,600", "miles", "walk", "3.0", "miles"]
+        }
+    ];
+    cases.forEach(function(testCase) {
+        deepEqual(nlp.splitWords(testCase.text), testCase.expected);
+    });
+});

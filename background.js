@@ -15,7 +15,8 @@ var unitsForRegex = [
     "inch",
     "in"
 ],
-    pluralize = require('pluralize');
+    pluralize = require('pluralize'),
+    fsm = require('./fsmsearch.js');
 pluralize.addIrregularRule('Celsius', 'Celsius');
 
 function log(str, obj) {
@@ -263,5 +264,8 @@ module.exports = {
     roundForReadability: roundForReadability,
     roundDecimal: roundDecimal,
     splitBySearchResults: splitBySearchResults,
-    pluralizeUnits: pluralizeUnits
+    pluralizeUnits: pluralizeUnits,
+    splitWords: function(text) {
+        return fsm.splitWords(text);
+    }
 };

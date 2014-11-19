@@ -36,7 +36,8 @@ module.exports = function(grunt) {
                 ],
                 exclude: [
                     'Gruntfile.js',
-                    'background.js'
+                    'background.js',
+                    'fsmsearch.js'
                 ],
                 directives: {
                     browser: true,
@@ -54,7 +55,8 @@ module.exports = function(grunt) {
             },
             server: {
                 src: [
-                    'background.js'
+                    'background.js',
+                    'fsmsearch.js'
                 ],
                 directives: {
                     continue: true,
