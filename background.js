@@ -231,6 +231,10 @@ function multisearchTextNodes(nodes) {
     return resultArray;
 }
 
+function log(msg, data) {
+    console.log(msg + ": " + JSON.stringify(data, null, 4));
+}
+
 chrome.runtime.onMessage.addListener(function(rq, sender, sendResponse) {
     if (rq.method === "checkbox-state") {
         var value = {};
@@ -246,7 +250,7 @@ chrome.runtime.onMessage.addListener(function(rq, sender, sendResponse) {
             sendResponse(result);
         });
     } else if (rq.method === "text-for-processing") {
-        console.log("text-for-processing: " + rq.data);
+        log("text-for-processing", rq.data);
         sendResponse(multisearchTextNodes(rq.data));
     } else {
         sendResponse({error: true});
