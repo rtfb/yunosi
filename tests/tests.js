@@ -368,16 +368,49 @@ test("split words", function() {
         },
         {
             text: "foo 1 mile 2 miles 3 miles baz",
-            expected: ["foo", "1", "mile", "2", "miles", "3", "miles", "baz"]
+            expected: [
+                {index: 0, word: "foo"},
+                {index: 4, word: "1"},
+                {index: 6, word: "mile"},
+                {index: 11, word: "2"},
+                {index: 13, word: "miles"},
+                {index: 19, word: "3"},
+                {index: 21, word: "miles"},
+                {index: 27, word: "baz"}
+            ]
         },
         {
             text: "This turns the ESP8266 into something much better than a UART",
-            expected: ["This", "turns", "the", "ESP8266", "into", "something",
-                "much", "better", "than", "a", "UART"]
+            expected: [
+                {index: 0, word: "This"},
+                {index: 5, word: "turns"},
+                {index: 11, word: "the"},
+                {index: 15, word: "ESP8266"},
+                {index: 23, word: "into"},
+                {index: 28, word: "something"},
+                {index: 38, word: "much"},
+                {index: 43, word: "better"},
+                {index: 50, word: "than"},
+                {index: 55, word: "a"},
+                {index: 57, word: "UART"}
+            ]
         },
         {
             text: "fly 3,600 miles, walk 3.0 miles.",
-            expected: ["fly", "3,600", "miles", "walk", "3.0", "miles"]
+            expected: [
+                {index: 0, word: "fly"},
+                {index: 4, word: "3,600"},
+                {index: 10, word: "miles"},
+                {index: 17, word: "walk"},
+                {index: 22, word: "3.0"},
+                {index: 26, word: "miles"}
+            ]
+        },
+        {
+            text: "single_word...",
+            expected: [
+                {index: 0, word: "single_word"}
+            ]
         }
     ];
     cases.forEach(function(testCase) {

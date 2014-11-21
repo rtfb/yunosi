@@ -70,17 +70,38 @@ function doFoo() {
     });
 }
 
+function stripPunctuation(word) {
+    var punct = "[.,?:!]+",
+        reLeft = new RegExp("^" + punct),
+        reRight = new RegExp(punct + "$");
+    return word.replace(reLeft, "").replace(reRight, "");
+}
+
 function splitWords(text) {
     if (!text || text === "") {
         return [];
     }
-    var punct = "[.,?:!]+",
-        reLeft = new RegExp("^" + punct),
-        reRight = new RegExp(punct + "$"),
+    var re = new RegExp("(\\s+)", "g"),
+        index = 0,
+        space,
         result = [];
-    text.split(" ").forEach(function(word) {
-        result.push(word.replace(reLeft, "").replace(reRight, ""));
-    });
+    while (true) {
+        space = re.exec(text);
+        if (space === null) {
+            break;
+        }
+        result.push({
+            index: index,
+            word: stripPunctuation(text.substring(index, space.index))
+        });
+        index = space.index + 1;
+    }
+    if (index < text.length) {
+        result.push({
+            index: index,
+            word: stripPunctuation(text.substring(index))
+        });
+    }
     return result;
 }
 
