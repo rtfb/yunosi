@@ -46,6 +46,10 @@ var fsm = StateMachine.create({
         onleaveEnd: function(evt, from, to, msg) {
             logState(evt, from, to, msg);
             console.log(">> yeah, " + value + " " + impunit + ".");
+        },
+        onrestart: function() {
+            value = null;
+            impunit = null;
         }
     }
 });
