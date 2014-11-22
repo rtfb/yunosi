@@ -4,9 +4,9 @@ test("conversions", function() {
     equal(nlp.convertImperialToSI("fahrenheit", "-40"), "-40 Celsius");
     equal(nlp.convertImperialToSI("fahrenheit", "33.8"), "1 Celsius");
 
-    equal(nlp.convertImperialToSI("mile", "10"), "16 kilometers");
-    equal(nlp.convertImperialToSI("foot", "10"), "3 meters");
-    equal(nlp.convertImperialToSI("yard", "10"), "9 meters");
+    equal(nlp.convertImperialToSI("mile", "10"), "16.1 kilometers");
+    equal(nlp.convertImperialToSI("foot", "10"), "3.05 meters");
+    equal(nlp.convertImperialToSI("yard", "10"), "9.14 meters");
     equal(nlp.convertImperialToSI("gallon", "10"), "37.9 liters");
     equal(nlp.convertImperialToSI("ounce", "10"), "283 grams");
     equal(nlp.convertImperialToSI("oz", "10"), "283 grams");
@@ -328,7 +328,7 @@ test("replace all text nodes", function() {
                     altered: false
                 },
                 {
-                    text: "1.6 kilometers",
+                    text: "1.61 kilometers",
                     altered: true
                 },
                 {
@@ -336,7 +336,7 @@ test("replace all text nodes", function() {
                     altered: false
                 },
                 {
-                    text: "3.2 kilometers",
+                    text: "3.22 kilometers",
                     altered: true
                 },
                 {
@@ -344,7 +344,7 @@ test("replace all text nodes", function() {
                     altered: false
                 },
                 {
-                    text: "4.8 kilometers",
+                    text: "4.83 kilometers",
                     altered: true
                 },
                 {

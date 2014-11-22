@@ -105,16 +105,16 @@ function makeReadable(value, unit) {
 function convertImperialToSI(units, value) {
     var converters = {
         "mile": function(value) {
-            return value * 1.6;
+            return value * 1.60934;
         },
         "foot": function(value) {
-            return value * 0.3;
+            return value * 0.3048;
         },
         "fahrenheit": function(value) {
             return Math.round((value - 32) / 1.8);
         },
         "yard": function(value) {
-            return value * 0.9;
+            return value * 0.9144;
         },
         "gallon": function(value) {
             return value * 3.78541;
