@@ -251,6 +251,7 @@ chrome.runtime.onMessage.addListener(function(rq, sender, sendResponse) {
         });
     } else if (rq.method === "text-for-processing") {
         log("text-for-processing", rq.data);
+        log("fsm search results", fsm.search(rq.data));
         sendResponse(multisearchTextNodes(rq.data));
     } else {
         sendResponse({error: true});

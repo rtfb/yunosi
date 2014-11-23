@@ -105,6 +105,80 @@ function splitWords(text) {
     return result;
 }
 
+function isNumber(word) {
+    console.log("isNumber: " + word);
+    if (word === '1' || word === '2') {
+        return true;
+    }
+    return false;
+}
+
+function isUnit(word) {
+    console.log("isUnit: " + word);
+    if (word === 'miles') {
+        return true;
+    }
+    return false;
+}
+
+function interpretNum(what) {
+    what = what.replace(",", "");
+    return parseFloat(what);
+}
+
+function fsmsearch(text) {
+    var results = [];
+    splitWords(text).forEach(function(word) {
+        if (isNumber(word)) {
+            fsm.number(word);
+        } else if (isUnit(word)) {
+            fsm.unit(word);
+            fsm.restart();
+        } else {
+            fsm.something(word);
+        }
+        fsm.onleaveEnd = function(evt, from, to, msg) {
+            logState(evt, from, to, msg);
+            if (!value || !impunit) {
+                return;
+            }
+            results.push({
+                index: 0,
+                match: value + " " + impunit,
+                units: impunit,
+                numeral: interpretNum(value)
+            });
+            console.log(">> yeah, " + value + " " + impunit + ".");
+        };
+    });
+    /*
+        results.push({
+            index: result.index,
+            match: result[0],
+            units: singularizeUnits(result[2].toLowerCase()),
+            numeral: interpretNum(result[1])
+        });
+        */
+    return results;
+}
+
+function search(data) {
+    //fsm.restart();
+    var resultArray = [];
+    data.forEach(function(node) {
+        var text = node.text,
+            searchResults = fsmsearch(text);
+        if (searchResults.length !== 0) {
+            resultArray.push({
+                origNode: node.index,
+                results: searchResults
+            });
+        }
+    });
+    return resultArray;
+}
+
 module.exports = {
+    search: search,
     splitWords: splitWords
 };
