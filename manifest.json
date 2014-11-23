@@ -1,5 +1,6 @@
 {
     "manifest_version": 2,
+    "minimum_chrome_version": "20",
 
     "name": "Y U NO SI?!",
     "description": "This extension converts and rewrites all mentions of imperial units to SI",
