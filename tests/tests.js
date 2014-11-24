@@ -360,6 +360,8 @@ test("replace all text nodes", function() {
     });
 });
 
+module("FSM search");
+
 test("split words", function() {
     var cases = [
         {
@@ -416,4 +418,49 @@ test("split words", function() {
     cases.forEach(function(testCase) {
         deepEqual(nlp.splitWords(testCase.text), testCase.expected);
     });
+});
+
+test("searcher", function() {
+    var text = [
+        {
+            "index": 0,
+            "text": "The quick brown Lorem Ipsum didn't expect a Spanish Inquisition."
+        },
+        {
+            "index": 1,
+            "text": "A 100 bloody "
+        },
+        {
+            "index": 2,
+            "text": "miles"
+        },
+        {
+            "index": 3,
+            "text": "!"
+        },
+        {
+            "index": 4,
+            "text": "foo 1 mile 2 miles 3 miles baz"
+        }
+    ],
+        expected = [
+            {
+            origNode: 4,
+            results: [
+                {
+                    "index": 0,
+                    "match": "2 miles",
+                    "numeral": 2,
+                    "units": "miles"
+                },
+                {
+                    "index": 0,
+                    "match": "3 miles",
+                    "numeral": 3,
+                    "units": "miles"
+                }
+            ]
+        }
+    ];
+    deepEqual(nlp.fsmSearch(text), expected);
 });

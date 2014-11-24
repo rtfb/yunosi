@@ -270,5 +270,6 @@ module.exports = {
     roundDecimal: roundDecimal,
     splitBySearchResults: splitBySearchResults,
     pluralizeUnits: pluralizeUnits,
-    splitWords: fsm.splitWords
+    splitWords: fsm.splitWords,
+    fsmSearch: fsm.search
 };

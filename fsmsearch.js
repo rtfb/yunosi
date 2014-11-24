@@ -128,7 +128,8 @@ function interpretNum(what) {
 
 function fsmsearch(text) {
     var results = [];
-    splitWords(text).forEach(function(word) {
+    splitWords(text).forEach(function(wordInfo) {
+        var word = wordInfo.word;
         if (isNumber(word)) {
             fsm.number(word);
         } else if (isUnit(word)) {
