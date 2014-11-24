@@ -107,10 +107,8 @@ function splitWords(text) {
 
 function isNumber(word) {
     console.log("isNumber: " + word);
-    if (word === '1' || word === '2') {
-        return true;
-    }
-    return false;
+    var numberRe = /-?\+?[\d,]*\.?\d+/g;
+    return word.search(numberRe) !== -1;
 }
 
 function isUnit(word) {
