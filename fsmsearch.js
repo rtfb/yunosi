@@ -131,6 +131,17 @@ function interpretNum(what) {
     return parseFloat(what);
 }
 
+function singularizeUnits(units) {
+    return units.replace("miles", "mile")
+        .replace("feet", "foot")
+        .replace("fahrenheits", "fahrenheit")
+        .replace("yards", "yard")
+        .replace("gallons", "gallon")
+        .replace("ounces", "ounce")
+        .replace("pounds", "pound")
+        .replace("inches", "inch");
+}
+
 function fsmsearch(text) {
     var results = [];
     splitWords(text).forEach(function(wordInfo) {
@@ -151,7 +162,7 @@ function fsmsearch(text) {
             results.push({
                 index: wordInfo.index,
                 match: value + " " + impunit,
-                units: impunit,
+                units: singularizeUnits(impunit),
                 numeral: interpretNum(value)
             });
             log(">> yeah, " + value + " " + impunit + ".");

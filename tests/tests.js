@@ -448,13 +448,13 @@ test("searcher", function() {
                     "index": 11,
                     "match": "2 miles",
                     "numeral": 2,
-                    "units": "miles"
+                    "units": "mile"
                 },
                 {
                     "index": 19,
                     "match": "3 miles",
                     "numeral": 3,
-                    "units": "miles"
+                    "units": "mile"
                 }
             ]
         }
