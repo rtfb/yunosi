@@ -438,12 +438,26 @@ test("searcher", function() {
         {
             "index": 4,
             "text": "foo 1 mile 2 miles 3 miles baz"
+        },
+        {
+            index: 5,
+            text: "The Black Bear Trail is 0.6 miles long"
+        },
+        {
+            index: 6,
+            text: "The 1.35 mile self-guided nature trail"
         }
     ],
         expected = [
             {
             origNode: 4,
             results: [
+                {
+                    "index": 4,
+                    "match": "1 mile",
+                    "numeral": 1,
+                    "units": "mile"
+                },
                 {
                     "index": 11,
                     "match": "2 miles",
@@ -455,6 +469,26 @@ test("searcher", function() {
                     "match": "3 miles",
                     "numeral": 3,
                     "units": "mile"
+                }
+            ]
+        }, {
+            origNode: 5,
+            results: [
+                {
+                    index: 24,
+                    match: "0.6 miles",
+                    numeral: 0.6,
+                    units: "mile"
+                }
+            ]
+        }, {
+            origNode: 6,
+            results: [
+                {
+                    index: 4,
+                    match: "1.35 mile",
+                    numeral: 1.35,
+                    units: "mile"
                 }
             ]
         }

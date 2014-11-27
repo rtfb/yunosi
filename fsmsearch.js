@@ -120,7 +120,7 @@ function isNumber(word) {
 
 function isUnit(word) {
     log("isUnit: " + word);
-    if (word === 'miles') {
+    if (word === 'miles' || word === 'mile') {
         return true;
     }
     return false;
