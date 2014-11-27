@@ -214,13 +214,6 @@ test("multiple occurrence search", function() {
                     units: "mile"
                 }
             ]
-        },
-        {
-            // A bug used to match this, treating "." as a malformed number and
-            // "In" as inches. Adding this negative test here to guard against
-            // regressions.
-            text: "follow. Instead",
-            expected: []
         }
     ]
     cases.forEach(function(testCase) {
@@ -237,7 +230,11 @@ test("multiple occurrence search", function() {
 test("multiple occurrence search, negative tests", function() {
     var tests = [
         "This turns the ESP8266 into something much better than a UART",
-        "create a Internet of Things thing with just $5 in hardware"
+        "create a Internet of Things thing with just $5 in hardware",
+        // A bug used to match this, treating "." as a malformed number and
+        // "In" as inches. Adding this negative test here to guard against
+        // regressions:
+        "follow. Instead"
     ];
     tests.forEach(function(test) {
         var results = nlp.multisearch(test);
