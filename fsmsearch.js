@@ -149,7 +149,7 @@ function fsmsearch(text) {
                 return;
             }
             results.push({
-                index: 0,
+                index: wordInfo.index,
                 match: value + " " + impunit,
                 units: impunit,
                 numeral: interpretNum(value)

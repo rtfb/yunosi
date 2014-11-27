@@ -445,13 +445,13 @@ test("searcher", function() {
             origNode: 4,
             results: [
                 {
-                    "index": 0,
+                    "index": 11,
                     "match": "2 miles",
                     "numeral": 2,
                     "units": "miles"
                 },
                 {
-                    "index": 0,
+                    "index": 19,
                     "match": "3 miles",
                     "numeral": 3,
                     "units": "miles"
