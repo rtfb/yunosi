@@ -2,22 +2,29 @@
 // npm install javascript-state-machine
 'use strict';
 
-var StateMachine = require("javascript-state-machine");
+var StateMachine = require("javascript-state-machine"),
+    debugLog = false;
 
-function log(prefix, evt, from, to, msg) {
+function log(msg) {
+    if (debugLog) {
+        console.log(msg);
+    }
+}
+
+function fsmLog(prefix, evt, from, to, msg) {
     var details = '';
     if (msg) {
         details = ' (' + msg + ')';
     }
-    console.log(prefix + evt + ', ' + from + ' -> ' + to + details);
+    log(prefix + evt + ', ' + from + ' -> ' + to + details);
 }
 
 function logEvt(evt, from, to, msg) {
-    log('!! ', evt, from, to, msg);
+    fsmLog('!! ', evt, from, to, msg);
 }
 
 function logState(evt, from, to, msg) {
-    log('-- ', evt, from, to, msg);
+    fsmLog('-- ', evt, from, to, msg);
 }
 
 var value = null;
@@ -45,7 +52,7 @@ var fsm = StateMachine.create({
         onTmesis: logState,
         onleaveEnd: function(evt, from, to, msg) {
             logState(evt, from, to, msg);
-            console.log(">> yeah, " + value + " " + impunit + ".");
+            log(">> yeah, " + value + " " + impunit + ".");
         },
         onrestart: function() {
             value = null;
@@ -66,7 +73,7 @@ function doFoo() {
         } else {
             fsm.something(word);
         }
-        console.log(word);
+        log(word);
     });
 }
 
@@ -106,13 +113,13 @@ function splitWords(text) {
 }
 
 function isNumber(word) {
-    console.log("isNumber: " + word);
+    log("isNumber: " + word);
     var numberRe = /-?\+?[\d,]*\.?\d+/g;
     return word.search(numberRe) !== -1;
 }
 
 function isUnit(word) {
-    console.log("isUnit: " + word);
+    log("isUnit: " + word);
     if (word === 'miles') {
         return true;
     }
@@ -147,7 +154,7 @@ function fsmsearch(text) {
                 units: impunit,
                 numeral: interpretNum(value)
             });
-            console.log(">> yeah, " + value + " " + impunit + ".");
+            log(">> yeah, " + value + " " + impunit + ".");
         };
     });
     /*
