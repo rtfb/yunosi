@@ -168,14 +168,6 @@ function fsmsearch(text) {
             log(">> yeah, " + value + " " + impunit + ".");
         };
     });
-    /*
-        results.push({
-            index: result.index,
-            match: result[0],
-            units: singularizeUnits(result[2].toLowerCase()),
-            numeral: interpretNum(result[1])
-        });
-        */
     return results;
 }
 
