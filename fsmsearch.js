@@ -127,17 +127,25 @@ function splitWords(text) {
     return result;
 }
 
+function isFullMatch(word, re) {
+    var match = word.match(re);
+    if (match !== null && match.length === 1 && match[0] === word) {
+        return true;
+    }
+    return false;
+}
+
 function isNumber(word) {
     log("isNumber: " + word);
     var numberRe = /-?\+?[\d,]*\.?\d+/g;
-    return word.search(numberRe) !== -1;
+    return isFullMatch(word, numberRe);
 }
 
 function isUnit(word) {
     log("isUnit: " + word);
     var units = unitsForRegex.join("|"),
         re = new RegExp(units, "gi");
-    return word.search(re) !== -1;
+    return isFullMatch(word, re);
 }
 
 function interpretNum(what) {
