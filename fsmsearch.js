@@ -42,8 +42,26 @@ function logState(evt, from, to, msg) {
     fsmLog('-- ', evt, from, to, msg);
 }
 
+function interpretNum(what) {
+    what = what.replace(",", "");
+    return parseFloat(what);
+}
+
+function singularizeUnits(units) {
+    return units.replace("miles", "mile")
+        .replace("feet", "foot")
+        .replace("fahrenheits", "fahrenheit")
+        .replace("yards", "yard")
+        .replace("gallons", "gallon")
+        .replace("ounces", "ounce")
+        .replace("pounds", "pound")
+        .replace("inches", "inch");
+}
+
 var value = null;
 var impunit = null;
+var matchStartIndex = -1;
+var results = [];
 var fsm = StateMachine.create({
     initial: 'AnyWord',
     events: [
@@ -56,7 +74,8 @@ var fsm = StateMachine.create({
     callbacks: {
         onnumber: function(evt, from, to, msg) {
             logEvt(evt, from, to, msg);
-            value = msg;
+            value = msg.word;
+            matchStartIndex = msg.index;
         },
         onunit: function(evt, from, to, msg) {
             logEvt(evt, from, to, msg);
@@ -67,11 +86,21 @@ var fsm = StateMachine.create({
         onTmesis: logState,
         onleaveEnd: function(evt, from, to, msg) {
             logState(evt, from, to, msg);
+            if (!value || !impunit) {
+                return;
+            }
+            results.push({
+                index: matchStartIndex,
+                match: value + " " + impunit,
+                units: singularizeUnits(impunit.toLowerCase()),
+                numeral: interpretNum(value)
+            });
             log(">> yeah, " + value + " " + impunit + ".");
         },
         onrestart: function() {
             value = null;
             impunit = null;
+            matchStartIndex = -1;
         }
     }
 });
@@ -165,30 +194,17 @@ function singularizeUnits(units) {
 }
 
 function fsmsearch(text) {
-    var results = [];
+    results = [];
     splitWords(text).forEach(function(wordInfo) {
         var word = wordInfo.word;
         if (isNumber(word)) {
-            fsm.number(word);
+            fsm.number({word: word, index: wordInfo.index});
         } else if (isUnit(word)) {
             fsm.unit(word);
             fsm.restart();
         } else {
             fsm.something(word);
         }
-        fsm.onleaveEnd = function(evt, from, to, msg) {
-            logState(evt, from, to, msg);
-            if (!value || !impunit) {
-                return;
-            }
-            results.push({
-                index: wordInfo.index,
-                match: value + " " + impunit,
-                units: singularizeUnits(impunit.toLowerCase()),
-                numeral: interpretNum(value)
-            });
-            log(">> yeah, " + value + " " + impunit + ".");
-        };
     });
     return results;
 }
