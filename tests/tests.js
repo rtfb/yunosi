@@ -442,6 +442,14 @@ test("searcher", function() {
         {
             index: 6,
             text: "The 1.35 mile self-guided nature trail"
+        },
+        {
+            index: 7,
+            text: "fly 3,600 miles and walk 3 miles"
+        },
+        {
+            index: 8,
+            text: "fly 100 yards and walk 1000 feet 40 Fahrenheit"
         }
     ],
         expected = [
@@ -485,6 +493,44 @@ test("searcher", function() {
                     match: "1.35 mile",
                     numeral: 1.35,
                     units: "mile"
+                }
+            ]
+        }, {
+            origNode: 7,
+            results: [
+                {
+                    index: 4,
+                    match: "3,600 miles",
+                    numeral: 3600,
+                    units: "mile"
+                },
+                {
+                    index: 25,
+                    match: "3 miles",
+                    numeral: 3,
+                    units: "mile"
+                }
+            ]
+        }, {
+            origNode: 8,
+            results: [
+                {
+                    index: 4,
+                    match: "100 yards",
+                    numeral: 100,
+                    units: "yard"
+                },
+                {
+                    index: 23,
+                    match: "1000 feet",
+                    numeral: 1000,
+                    units: "foot"
+                },
+                {
+                    index: 33,
+                    match: "40 Fahrenheit",
+                    numeral: 40,
+                    units: "fahrenheit"
                 }
             ]
         }

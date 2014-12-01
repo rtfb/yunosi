@@ -3,7 +3,22 @@
 'use strict';
 
 var StateMachine = require("javascript-state-machine"),
-    debugLog = false;
+    debugLog = false,
+    unitsForRegex = [
+        "miles?",
+        "foot",
+        "feet",
+        "ft",
+        "fahrenheit",
+        "yards?",
+        "gallons?",
+        "ounce",
+        "oz",
+        "pounds?",
+        "inches",
+        "inch",
+        "in"
+    ];
 
 function log(msg) {
     if (debugLog) {
@@ -120,10 +135,9 @@ function isNumber(word) {
 
 function isUnit(word) {
     log("isUnit: " + word);
-    if (word === 'miles' || word === 'mile') {
-        return true;
-    }
-    return false;
+    var units = unitsForRegex.join("|"),
+        re = new RegExp(units, "gi");
+    return word.search(re) !== -1;
 }
 
 function interpretNum(what) {
@@ -162,7 +176,7 @@ function fsmsearch(text) {
             results.push({
                 index: wordInfo.index,
                 match: value + " " + impunit,
-                units: singularizeUnits(impunit),
+                units: singularizeUnits(impunit.toLowerCase()),
                 numeral: interpretNum(value)
             });
             log(">> yeah, " + value + " " + impunit + ".");
