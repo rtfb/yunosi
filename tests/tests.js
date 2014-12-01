@@ -167,10 +167,6 @@ test("multiple occurrence search", function() {
             ]
         },
         {
-            text: "foo bar baz",
-            expected: []
-        },
-        {
             text: "60-inch telescope, 12 inches, 1 inch",
             expected: [
                 {
