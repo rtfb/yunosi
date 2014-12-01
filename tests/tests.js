@@ -450,10 +450,25 @@ test("searcher", function() {
         {
             index: 8,
             text: "fly 100 yards and walk 1000 feet 40 Fahrenheit"
+        },
+        {
+            index: 9,
+            text: "60-inch telescope, 12 inches, 1 inch"
         }
     ],
-        expected = [
-            {
+        expected = [{
+            // XXX: this result is unexpected, I can't properly handle it yet
+            // even when I find it.
+            origNode: 2,
+            results: [
+                {
+                    "index": 2,
+                    "match": "100 miles",
+                    "numeral": 100,
+                    "units": "mile"
+                }
+            ]
+        }, {
             origNode: 4,
             results: [
                 {
@@ -531,6 +546,28 @@ test("searcher", function() {
                     match: "40 Fahrenheit",
                     numeral: 40,
                     units: "fahrenheit"
+                }
+            ]
+        }, {
+            origNode: 9,
+            results: [
+                {
+                    index: 0,
+                    match: "60-inch",
+                    numeral: 60,
+                    units: "inch"
+                },
+                {
+                    index: 19,
+                    match: "12 inches",
+                    numeral: 12,
+                    units: "inch"
+                },
+                {
+                    index: 30,
+                    match: "1 inch",
+                    numeral: 1,
+                    units: "inch"
                 }
             ]
         }

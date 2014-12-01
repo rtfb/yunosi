@@ -60,6 +60,7 @@ function singularizeUnits(units) {
 
 var value = null;
 var impunit = null;
+var separator = " ";
 var matchStartIndex = -1;
 var results = [];
 var fsm = StateMachine.create({
@@ -91,7 +92,7 @@ var fsm = StateMachine.create({
             }
             results.push({
                 index: matchStartIndex,
-                match: value + " " + impunit,
+                match: value + separator + impunit,
                 units: singularizeUnits(impunit.toLowerCase()),
                 numeral: interpretNum(value)
             });
@@ -100,6 +101,7 @@ var fsm = StateMachine.create({
         onrestart: function() {
             value = null;
             impunit = null;
+            separator = " ";
             matchStartIndex = -1;
         }
     }
@@ -177,20 +179,25 @@ function isUnit(word) {
     return isFullMatch(word, re);
 }
 
-function interpretNum(what) {
-    what = what.replace(",", "");
-    return parseFloat(what);
+function hasDash(word) {
+    log("hasDash: " + word);
+    return word.search('-') !== -1;
 }
 
-function singularizeUnits(units) {
-    return units.replace("miles", "mile")
-        .replace("feet", "foot")
-        .replace("fahrenheits", "fahrenheit")
-        .replace("yards", "yard")
-        .replace("gallons", "gallon")
-        .replace("ounces", "ounce")
-        .replace("pounds", "pound")
-        .replace("inches", "inch");
+function processDash(word, index) {
+    log("processDash: " + word);
+    var parts = word.split("-");
+    if (parts.length !== 2) {
+        return;
+    }
+    if (isNumber(parts[0])) {
+        fsm.number({word: parts[0], index: index});
+    }
+    if (isUnit(parts[1])) {
+        separator = "-";
+        fsm.unit(parts[1]);
+        fsm.restart();
+    }
 }
 
 function fsmsearch(text) {
@@ -202,6 +209,8 @@ function fsmsearch(text) {
         } else if (isUnit(word)) {
             fsm.unit(word);
             fsm.restart();
+        } else if (hasDash(word)) {
+            processDash(word, wordInfo.index);
         } else {
             fsm.something(word);
         }
