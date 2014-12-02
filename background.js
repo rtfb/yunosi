@@ -231,10 +231,6 @@ function multisearchTextNodes(nodes) {
     return resultArray;
 }
 
-function log(msg, data) {
-    console.log(msg + ": " + JSON.stringify(data, null, 4));
-}
-
 chrome.runtime.onMessage.addListener(function(rq, sender, sendResponse) {
     if (rq.method === "checkbox-state") {
         var value = {};
