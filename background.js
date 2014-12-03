@@ -231,9 +231,24 @@ function multisearchTextNodes(nodes) {
     return resultArray;
 }
 
+function processSearchResults(data, results) {
+    var processed = [];
+    results.forEach(function(result) {
+        var origText = data[result.origNode].text;
+        processed.push({
+            origNode: result.origNode,
+            replacement: splitBySearchResults(origText, result.results)
+        });
+    });
+    return processed;
+}
+
 chrome.runtime.onMessage.addListener(function(rq, sender, sendResponse) {
+    var value = {},
+        fsmResults,
+        tmp = null,
+        tmp2 = null;
     if (rq.method === "checkbox-state") {
-        var value = {};
         value[rq.id] = rq.state;
         chrome.storage.local.set(value, function () {
             log("chrome.storage.local.set", rq);
@@ -247,8 +262,13 @@ chrome.runtime.onMessage.addListener(function(rq, sender, sendResponse) {
         });
     } else if (rq.method === "text-for-processing") {
         log("text-for-processing", rq.data);
-        log("fsm search results", fsm.search(rq.data));
-        sendResponse(multisearchTextNodes(rq.data));
+        fsmResults = fsm.search(rq.data);
+        log("fsm search results", fsmResults);
+        tmp = multisearchTextNodes(rq.data);
+        log("multisearchTextNodes", tmp);
+        tmp2 = processSearchResults(rq.data, fsmResults);
+        log("fsm processed results", tmp2);
+        sendResponse(tmp);
     } else {
         sendResponse({error: true});
     }
