@@ -1,16 +1,5 @@
 (function() {
     'use strict';
-    /*
-    document.getElementById("deimperialize").addEventListener("click", function deimperialize() {
-        chrome.tabs.query({active: true}, function(tabs) {
-            chrome.tabs.sendRequest(tabs[0].id, {method: "getText"}, function(response) {
-                if (response && response.method == "getText"){
-                    alert("deimperialize: " + response.data);
-                }
-            });
-        })
-    });
-    */
 
     function checkboxClickListener() {
         var checkboxState = {
