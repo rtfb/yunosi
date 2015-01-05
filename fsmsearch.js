@@ -84,7 +84,6 @@ var fsm = StateMachine.create({
         },
         onAnyWord: logState,
         onNumberFound: logState,
-        onTmesis: logState,
         onleaveEnd: function(evt, from, to, msg) {
             logState(evt, from, to, msg);
             if (!value || !impunit) {
@@ -106,22 +105,6 @@ var fsm = StateMachine.create({
         }
     }
 });
-
-function doFoo() {
-    var words = ['foo', 'bar', '1', 'baz', '2', 'miles', 'goo'];
-
-    words.forEach(function(word) {
-        if (word === '1' || word === '2') {
-            fsm.number(word);
-        } else if (word === 'miles') {
-            fsm.unit(word);
-            fsm.restart();
-        } else {
-            fsm.something(word);
-        }
-        log(word);
-    });
-}
 
 function stripPunctuation(word) {
     var punct = "[.,?:!]+",
