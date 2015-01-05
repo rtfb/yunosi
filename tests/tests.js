@@ -419,6 +419,7 @@ test("searcher", function() {
             "index": 0,
             "text": "The quick brown Lorem Ipsum didn't expect a Spanish Inquisition."
         },
+    /*
         {
             "index": 1,
             "text": "A 100 bloody "
@@ -431,6 +432,7 @@ test("searcher", function() {
             "index": 3,
             "text": "!"
         },
+        */
         {
             "index": 4,
             "text": "foo 1 mile 2 miles 3 miles baz"

@@ -66,11 +66,15 @@ var results = [];
 var fsm = StateMachine.create({
     initial: 'AnyWord',
     events: [
-        {name: 'number',    from: ['AnyWord', 'NumberFound'], to: 'NumberFound'},
-        {name: 'unit',      from: 'NumberFound',              to: 'End'},
-        {name: 'unit',      from: 'AnyWord',                  to: 'AnyWord'},
-        {name: 'something', from: ['AnyWord', 'NumberFound'], to: 'AnyWord'},
-        {name: 'restart',   from: ['AnyWord', 'NumberFound', 'End'], to: 'AnyWord'}
+{name: 'number',    from: ['AnyWord', 'NumberFound'],     to: 'NumberFound'},
+{name: 'number',    from: 'HaveNumAndInfix',              to: 'AnyWord'},
+{name: 'something', from: ['AnyWord', 'HaveNumAndInfix'], to: 'AnyWord'},
+{name: 'something', from: 'NumberFound',                  to: 'HaveNumAndInfix'},
+{name: 'unit',      from: 'NumberFound',                  to: 'End'},
+{name: 'unit',      from: 'HaveNumAndInfix',              to: 'End'},
+{name: 'unit',      from: 'AnyWord',                      to: 'AnyWord'},
+
+{name: 'restart',   from: ['AnyWord', 'NumberFound', 'HaveNumAndInfix', 'End'], to: 'AnyWord'}
     ],
     callbacks: {
         onnumber: function(evt, from, to, msg) {
