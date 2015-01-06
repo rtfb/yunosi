@@ -414,49 +414,17 @@ test("split words", function() {
 });
 
 test("searcher", function() {
-    var text = [
-        {
-            "index": 0,
-            "text": "The quick brown Lorem Ipsum didn't expect a Spanish Inquisition."
-        },
-    /*
-        {
-            "index": 1,
-            "text": "A 100 bloody "
-        },
-        {
-            "index": 2,
-            "text": "miles"
-        },
-        {
-            "index": 3,
-            "text": "!"
-        },
-        */
-        {
-            "index": 4,
-            "text": "foo 1 mile 2 miles 3 miles baz"
-        },
-        {
-            index: 5,
-            text: "The Black Bear Trail is 0.6 miles long"
-        },
-        {
-            index: 6,
-            text: "The 1.35 mile self-guided nature trail"
-        },
-        {
-            index: 7,
-            text: "fly 3,600 miles and walk 3 miles"
-        },
-        {
-            index: 8,
-            text: "fly 100 yards and walk 1000 feet 40 Fahrenheit"
-        },
-        {
-            index: 9,
-            text: "60-inch telescope, 12 inches, 1 inch"
-        }
+    var nodes = [
+        {nodeValue: "The quick brown Lorem Ipsum didn't expect a Spanish Inquisition."},
+        {nodeValue: "placeholder"}, // "A 100 bloody "},
+        {nodeValue: "placeholder"}, // "miles"},
+        {nodeValue: "!"},
+        {nodeValue: "foo 1 mile 2 miles 3 miles baz"},
+        {nodeValue: "The Black Bear Trail is 0.6 miles long"},
+        {nodeValue: "The 1.35 mile self-guided nature trail"},
+        {nodeValue: "fly 3,600 miles and walk 3 miles"},
+        {nodeValue: "fly 100 yards and walk 1000 feet 40 Fahrenheit"},
+        {nodeValue: "60-inch telescope, 12 inches, 1 inch"}
     ],
         expected = [/*{
             // XXX: this result is unexpected, I can't properly handle it yet
@@ -574,5 +542,5 @@ test("searcher", function() {
             ]
         }
     ];
-    deepEqual(nlp.fsmSearch(text), expected);
+    deepEqual(nlp.fsmSearch(content.nodesToIndexedArray(nodes)), expected);
 });
