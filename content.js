@@ -58,7 +58,7 @@ var content = (function() {
         });
     }
 
-    function prepareJson(nodes) {
+    function nodesToIndexedArray(nodes) {
         var ret = [],
             i = 0;
         for (i = 0; i < nodes.length; i += 1) {
@@ -75,7 +75,7 @@ var content = (function() {
             var textNodes = getAllTextNodes(document.body);
             chrome.runtime.sendMessage({
                 method: "text-for-processing",
-                data: prepareJson(textNodes)
+                data: nodesToIndexedArray(textNodes)
             }, function(response) {
                 console.log("response: " + JSON.stringify(response, null, 4));
                 replaceTextNodes(textNodes, response, rq.highlight);
@@ -86,6 +86,7 @@ var content = (function() {
 
     return {
         isWhiteSpaceOnly: isWhiteSpaceOnly,
-        getAllTextNodes: getAllTextNodes
+        getAllTextNodes: getAllTextNodes,
+        nodesToIndexedArray: nodesToIndexedArray
     };
 }());
