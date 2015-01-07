@@ -16,10 +16,20 @@
         });
     }
 
+    function addCheckboxClickListeners(inputElems) {
+        var i = 0,
+            elem = null;
+        for (i = 0; i < inputElems.length; i += 1) {
+            elem = inputElems[i];
+            if (elem.type === "checkbox") {
+                console.log(elem.id + " - " + elem.type);
+                elem.addEventListener("click", checkboxClickListener);
+            }
+        }
+    }
+
     window.addEventListener("DOMContentLoaded", function() {
         var deimperialize = document.getElementById("deimperialize"),
-            inputs = document.getElementsByTagName("input"),
-            i = 0,
             elem = null;
         deimperialize.addEventListener("click", function() {
             var highlight = document.getElementById("highlight"),
@@ -48,15 +58,7 @@
                 }
             });
         });
-
-        for (i = 0; i < inputs.length; i += 1) {
-            elem = inputs[i];
-            if (elem.type === "checkbox") {
-                console.log(elem.id + " - " + elem.type);
-                elem.addEventListener("click", checkboxClickListener);
-            }
-        }
-
+        addCheckboxClickListeners(document.getElementsByTagName("input"));
         chrome.runtime.sendMessage({method: "get-ui-state"}, function(response) {
             var key;
             console.log("response: " + JSON.stringify(response, null, 4));
