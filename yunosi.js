@@ -28,9 +28,8 @@
         }
     }
 
-    window.addEventListener("DOMContentLoaded", function() {
-        var deimperialize = document.getElementById("deimperialize"),
-            elem = null;
+    function addMainButtonListener() {
+        var deimperialize = document.getElementById("deimperialize");
         deimperialize.addEventListener("click", function() {
             var highlight = document.getElementById("highlight"),
                 highlightChecked = highlight.checked;
@@ -58,16 +57,24 @@
                 }
             });
         });
-        addCheckboxClickListeners(document.getElementsByTagName("input"));
-        chrome.runtime.sendMessage({method: "get-ui-state"}, function(response) {
-            var key;
-            console.log("response: " + JSON.stringify(response, null, 4));
-            for (key in response) {
-                if (response.hasOwnProperty(key)) {
+    }
+
+    function restoreUiState() {
+        chrome.runtime.sendMessage({method: "get-ui-state"}, function(resp) {
+            var key = null, elem = null;
+            console.log("response: " + JSON.stringify(resp, null, 4));
+            for (key in resp) {
+                if (resp.hasOwnProperty(key)) {
                     elem = document.getElementById(key);
-                    elem.checked = response[key];
+                    elem.checked = resp[key];
                 }
             }
         });
+    }
+
+    window.addEventListener("DOMContentLoaded", function() {
+        addMainButtonListener();
+        addCheckboxClickListeners(document.getElementsByTagName("input"));
+        restoreUiState();
     });
 }());
