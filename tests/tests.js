@@ -416,6 +416,71 @@ test("split words", function() {
 test("searcher", function() {
     var nodes = [
         {nodeValue: "The quick brown Lorem Ipsum didn't expect a Spanish Inquisition."},
+        {nodeValue: "foo 1 mile 2 miles 3 miles baz"}
+    ],
+    expected = [
+        {
+            numeral: 1,
+            units: "mile",
+            fragments: [
+                {
+                origNode: 1,
+                index: 4,
+                fragType: "numeral",
+                match: "1",
+                },
+                {
+                origNode: 1,
+                index: 6,
+                fragType: "unit",
+                match: "mile"
+                }
+            ]
+        },
+        {
+            numeral: 2,
+            units: "mile",
+            fragments: [
+                {
+                origNode: 1,
+                index: 11,
+                fragType: "numeral",
+                match: "2",
+                },
+                {
+                origNode: 1,
+                index: 13,
+                fragType: "unit",
+                match: "miles"
+                }
+            ]
+        },
+        {
+            numeral: 3,
+            units: "mile",
+            fragments: [
+                {
+                origNode: 1,
+                index: 19,
+                fragType: "numeral",
+                match: "3",
+                },
+                {
+                origNode: 1,
+                index: 21,
+                fragType: "unit",
+                match: "miles"
+                }
+            ]
+        }
+    ];
+    deepEqual(nlp.fsmSearch(content.nodesToIndexedArray(nodes)), expected);
+});
+
+/*
+test("searcher", function() {
+    var nodes = [
+        {nodeValue: "The quick brown Lorem Ipsum didn't expect a Spanish Inquisition."},
         {nodeValue: "placeholder"}, // "A 100 bloody "},
         {nodeValue: "placeholder"}, // "miles"},
         {nodeValue: "!"},
@@ -426,19 +491,8 @@ test("searcher", function() {
         {nodeValue: "fly 100 yards and walk 1000 feet 40 Fahrenheit"},
         {nodeValue: "60-inch telescope, 12 inches, 1 inch"}
     ],
-        expected = [/*{
-            // XXX: this result is unexpected, I can't properly handle it yet
-            // even when I find it.
-            origNode: 2,
-            results: [
-                {
-                    "index": 2,
-                    "match": "100 miles",
-                    "numeral": 100,
-                    "units": "mile"
-                }
-            ]
-        },*/ {
+        expected = [
+            {
             origNode: 4,
             results: [
                 {
@@ -544,3 +598,4 @@ test("searcher", function() {
     ];
     deepEqual(nlp.fsmSearch(content.nodesToIndexedArray(nodes)), expected);
 });
+*/

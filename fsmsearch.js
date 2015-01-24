@@ -58,10 +58,11 @@ function singularizeUnits(units) {
         .replace("inches", "inch");
 }
 
-var value = null;
-var impunit = null;
-var separator = " ";
-var matchStartIndex = -1;
+var matchGroup = {
+    numeral: -1,
+    units: "",
+    fragments: []
+};
 var results = [];
 var fsm = StateMachine.create({
     initial: 'AnyWord',
@@ -79,33 +80,40 @@ var fsm = StateMachine.create({
     callbacks: {
         onnumber: function(evt, from, to, msg) {
             logEvt(evt, from, to, msg);
-            value = msg.word;
-            matchStartIndex = msg.index;
+            matchGroup.numeral = interpretNum(msg.word);
+            matchGroup.fragments.push({
+                origNode: msg.origNode,
+                index: msg.index,
+                fragType: "numeral",
+                match: msg.word
+            });
         },
         onunit: function(evt, from, to, msg) {
             logEvt(evt, from, to, msg);
-            impunit = msg;
+            matchGroup.units = singularizeUnits(msg.word.toLowerCase());
+            matchGroup.fragments.push({
+                origNode: msg.origNode,
+                index: msg.index,
+                fragType: "unit",
+                match: msg.word
+            });
         },
         onAnyWord: logState,
         onNumberFound: logState,
         onleaveEnd: function(evt, from, to, msg) {
             logState(evt, from, to, msg);
-            if (!value || !impunit) {
+            if (matchGroup.fragments.length !== 2) {
                 return;
             }
-            results.push({
-                index: matchStartIndex,
-                match: value + separator + impunit,
-                units: singularizeUnits(impunit.toLowerCase()),
-                numeral: interpretNum(value)
-            });
-            log(">> yeah, " + value + " " + impunit + ".");
+            results.push(matchGroup);
+            log(">> yeah, " + matchGroup.numeral + " " + matchGroup.units + ".");
         },
         onrestart: function() {
-            value = null;
-            impunit = null;
-            separator = " ";
-            matchStartIndex = -1;
+            matchGroup = {
+                numeral: -1,
+                units: "",
+                fragments: []
+            };
         }
     }
 });
@@ -171,33 +179,48 @@ function hasDash(word) {
     return word.search('-') !== -1;
 }
 
-function processDash(word, index) {
+function processDash(word, index, origNode) {
     log("processDash: " + word);
     var parts = word.split("-");
     if (parts.length !== 2) {
         return;
     }
     if (isNumber(parts[0])) {
-        fsm.number({word: parts[0], index: index});
+        fsm.number({
+            word: parts[0],
+            index: index,
+            origNode: origNode
+        });
     }
     if (isUnit(parts[1])) {
-        separator = "-";
-        fsm.unit(parts[1]);
+        fsm.unit({
+            word: parts[1],
+            index: index + parts[0].length + 1,
+            origNode: origNode
+        });
         fsm.restart();
     }
 }
 
-function fsmsearch(text) {
+function fsmsearch(text, origNode) {
     results = [];
     splitWords(text).forEach(function(wordInfo) {
         var word = wordInfo.word;
         if (isNumber(word)) {
-            fsm.number({word: word, index: wordInfo.index});
+            fsm.number({
+                word: word,
+                index: wordInfo.index,
+                origNode: origNode
+            });
         } else if (isUnit(word)) {
-            fsm.unit(word);
+            fsm.unit({
+                word: word,
+                index: wordInfo.index,
+                origNode: origNode
+            });
             fsm.restart();
         } else if (hasDash(word)) {
-            processDash(word, wordInfo.index);
+            processDash(word, wordInfo.index, origNode);
         } else {
             fsm.something(word);
         }
@@ -210,13 +233,8 @@ function search(data) {
     var resultArray = [];
     data.forEach(function(node) {
         var text = node.text,
-            searchResults = fsmsearch(text);
-        if (searchResults.length !== 0) {
-            resultArray.push({
-                origNode: node.index,
-                results: searchResults
-            });
-        }
+            searchResults = fsmsearch(text, node.index);
+        Array.prototype.push.apply(resultArray, searchResults);
     });
     return resultArray;
 }
