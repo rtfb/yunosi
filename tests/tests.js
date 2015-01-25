@@ -416,7 +416,15 @@ test("split words", function() {
 test("searcher", function() {
     var nodes = [
         {nodeValue: "The quick brown Lorem Ipsum didn't expect a Spanish Inquisition."},
-        {nodeValue: "foo 1 mile 2 miles 3 miles baz"}
+        {nodeValue: "foo 1 mile 2 miles 3 miles baz"},
+        {nodeValue: "A 100 bloody "},
+        {nodeValue: "miles"},
+        {nodeValue: "!"},
+        {nodeValue: "The Black Bear Trail is 0.6 miles long"},
+        {nodeValue: "The 1.35 mile self-guided nature trail"},
+        {nodeValue: "fly 3,600 miles and walk 3 miles"},
+        {nodeValue: "fly 100 yards and walk 1000 feet 40 Fahrenheit"},
+        {nodeValue: "60-inch telescope, 12 inches, 1 inch"}
     ],
     expected = [
         {
@@ -472,130 +480,205 @@ test("searcher", function() {
                 match: "miles"
                 }
             ]
+        },
+        {
+            numeral: 100,
+            units: "mile",
+            fragments: [
+                {
+                origNode: 2,
+                index: 2,
+                fragType: "numeral",
+                match: "100",
+                },
+                {
+                origNode: 3,
+                index: 0,
+                fragType: "unit",
+                match: "miles"
+                }
+            ]
+        },
+        {
+            numeral: 0.6,
+            units: "mile",
+            fragments: [
+                {
+                origNode: 5,
+                index: 24,
+                fragType: "numeral",
+                match: "0.6",
+                },
+                {
+                origNode: 5,
+                index: 28,
+                fragType: "unit",
+                match: "miles"
+                }
+            ]
+        },
+        {
+            numeral: 1.35,
+            units: "mile",
+            fragments: [
+                {
+                origNode: 6,
+                index: 4,
+                fragType: "numeral",
+                match: "1.35",
+                },
+                {
+                origNode: 6,
+                index: 9,
+                fragType: "unit",
+                match: "mile"
+                }
+            ]
+        },
+        {
+            numeral: 3600,
+            units: "mile",
+            fragments: [
+                {
+                origNode: 7,
+                index: 4,
+                fragType: "numeral",
+                match: "3,600",
+                },
+                {
+                origNode: 7,
+                index: 10,
+                fragType: "unit",
+                match: "miles"
+                }
+            ]
+        },
+        {
+            numeral: 3,
+            units: "mile",
+            fragments: [
+                {
+                origNode: 7,
+                index: 25,
+                fragType: "numeral",
+                match: "3",
+                },
+                {
+                origNode: 7,
+                index: 27,
+                fragType: "unit",
+                match: "miles"
+                }
+            ]
+        },
+        {
+            numeral: 100,
+            units: "yard",
+            fragments: [
+                {
+                origNode: 8,
+                index: 4,
+                fragType: "numeral",
+                match: "100",
+                },
+                {
+                origNode: 8,
+                index: 8,
+                fragType: "unit",
+                match: "yards"
+                }
+            ]
+        },
+        {
+            numeral: 1000,
+            units: "foot",
+            fragments: [
+                {
+                origNode: 8,
+                index: 23,
+                fragType: "numeral",
+                match: "1000",
+                },
+                {
+                origNode: 8,
+                index: 28,
+                fragType: "unit",
+                match: "feet"
+                }
+            ]
+        },
+        {
+            numeral: 40,
+            units: "fahrenheit",
+            fragments: [
+                {
+                origNode: 8,
+                index: 33,
+                fragType: "numeral",
+                match: "40",
+                },
+                {
+                origNode: 8,
+                index: 36,
+                fragType: "unit",
+                match: "Fahrenheit"
+                }
+            ]
+        },
+        {
+            numeral: 60,
+            units: "inch",
+            fragments: [
+                {
+                origNode: 9,
+                index: 0,
+                fragType: "numeral",
+                match: "60",
+                },
+                {
+                origNode: 9,
+                index: 3,
+                fragType: "unit",
+                match: "inch"
+                }
+            ]
+        },
+        {
+            numeral: 12,
+            units: "inch",
+            fragments: [
+                {
+                origNode: 9,
+                index: 19,
+                fragType: "numeral",
+                match: "12",
+                },
+                {
+                origNode: 9,
+                index: 22,
+                fragType: "unit",
+                match: "inches"
+                }
+            ]
+        },
+        {
+            numeral: 1,
+            units: "inch",
+            fragments: [
+                {
+                origNode: 9,
+                index: 30,
+                fragType: "numeral",
+                match: "1",
+                },
+                {
+                origNode: 9,
+                index: 32,
+                fragType: "unit",
+                match: "inch"
+                }
+            ]
         }
     ];
     deepEqual(nlp.fsmSearch(content.nodesToIndexedArray(nodes)), expected);
 });
-
-/*
-test("searcher", function() {
-    var nodes = [
-        {nodeValue: "The quick brown Lorem Ipsum didn't expect a Spanish Inquisition."},
-        {nodeValue: "placeholder"}, // "A 100 bloody "},
-        {nodeValue: "placeholder"}, // "miles"},
-        {nodeValue: "!"},
-        {nodeValue: "foo 1 mile 2 miles 3 miles baz"},
-        {nodeValue: "The Black Bear Trail is 0.6 miles long"},
-        {nodeValue: "The 1.35 mile self-guided nature trail"},
-        {nodeValue: "fly 3,600 miles and walk 3 miles"},
-        {nodeValue: "fly 100 yards and walk 1000 feet 40 Fahrenheit"},
-        {nodeValue: "60-inch telescope, 12 inches, 1 inch"}
-    ],
-        expected = [
-            {
-            origNode: 4,
-            results: [
-                {
-                    "index": 4,
-                    "match": "1 mile",
-                    "numeral": 1,
-                    "units": "mile"
-                },
-                {
-                    "index": 11,
-                    "match": "2 miles",
-                    "numeral": 2,
-                    "units": "mile"
-                },
-                {
-                    "index": 19,
-                    "match": "3 miles",
-                    "numeral": 3,
-                    "units": "mile"
-                }
-            ]
-        }, {
-            origNode: 5,
-            results: [
-                {
-                    index: 24,
-                    match: "0.6 miles",
-                    numeral: 0.6,
-                    units: "mile"
-                }
-            ]
-        }, {
-            origNode: 6,
-            results: [
-                {
-                    index: 4,
-                    match: "1.35 mile",
-                    numeral: 1.35,
-                    units: "mile"
-                }
-            ]
-        }, {
-            origNode: 7,
-            results: [
-                {
-                    index: 4,
-                    match: "3,600 miles",
-                    numeral: 3600,
-                    units: "mile"
-                },
-                {
-                    index: 25,
-                    match: "3 miles",
-                    numeral: 3,
-                    units: "mile"
-                }
-            ]
-        }, {
-            origNode: 8,
-            results: [
-                {
-                    index: 4,
-                    match: "100 yards",
-                    numeral: 100,
-                    units: "yard"
-                },
-                {
-                    index: 23,
-                    match: "1000 feet",
-                    numeral: 1000,
-                    units: "foot"
-                },
-                {
-                    index: 33,
-                    match: "40 Fahrenheit",
-                    numeral: 40,
-                    units: "fahrenheit"
-                }
-            ]
-        }, {
-            origNode: 9,
-            results: [
-                {
-                    index: 0,
-                    match: "60-inch",
-                    numeral: 60,
-                    units: "inch"
-                },
-                {
-                    index: 19,
-                    match: "12 inches",
-                    numeral: 12,
-                    units: "inch"
-                },
-                {
-                    index: 30,
-                    match: "1 inch",
-                    numeral: 1,
-                    units: "inch"
-                }
-            ]
-        }
-    ];
-    deepEqual(nlp.fsmSearch(content.nodesToIndexedArray(nodes)), expected);
-});
-*/
