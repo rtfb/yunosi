@@ -102,6 +102,21 @@ function makeReadable(value, unit) {
     return roundForReadability(value) + " " + pluralizeUnits(siUnit, value);
 }
 
+function readableUnits(value, unit) {
+    var unitMap = {
+        "mile": "kilometer",
+        "foot": "meter",
+        "fahrenheit": "Celsius",
+        "yard": "meter",
+        "gallon": "liter",
+        "ounce": "gram",
+        "pound": "kilogram",
+        "inch": "centimeter"
+    },
+        siUnit = unitMap[unit];
+    return pluralizeUnits(siUnit, value);
+}
+
 function convertImperialToSI(units, value) {
     var converters = {
         "mile": function(value) {
@@ -135,6 +150,41 @@ function convertImperialToSI(units, value) {
         return makeReadable(converter(value), reducedUnit);
     }
     return value + " " + units;
+}
+
+function convertValueToSI(units, value) {
+    var converters = {
+        "mile": function(value) {
+            return value * 1.60934;
+        },
+        "foot": function(value) {
+            return value * 0.3048;
+        },
+        "fahrenheit": function(value) {
+            return Math.round((value - 32) / 1.8);
+        },
+        "yard": function(value) {
+            return value * 0.9144;
+        },
+        "gallon": function(value) {
+            return value * 3.78541;
+        },
+        "ounce": function(value) {
+            return value * 28.3495;
+        },
+        "pound": function(value) {
+            return value * 0.453592;
+        },
+        "inch": function(value) {
+            return value * 2.54;
+        }
+    },
+        reducedUnit = reduceImperialUnitNames(units),
+        converter = converters[reducedUnit];
+    if (converter) {
+        return roundForReadability(converter(value));
+    }
+    return value;
 }
 
 function singularizeUnits(units) {
@@ -216,6 +266,54 @@ function splitBySearchResults(text, matches) {
     return results;
 }
 
+function substituteBySearchResults(data, matches) {
+    var results = [],
+        textIndex = 0;
+    matches.forEach(function(match) {
+        var si = convertValueToSI(match.units, match.numeral),
+            siUnit = readableUnits(si, reduceImperialUnitNames(match.units));
+        match.fragments.forEach(function(frag) {
+            var lastText = data[frag.origNode].text,
+                plainText = "";
+            if (textIndex < frag.index) {
+                plainText = lastText.substring(textIndex, frag.index);
+                console.log("plainText = '" + plainText + "' (" + textIndex + ", " + frag.index + ")");
+                results.push({
+                    origNode: frag.origNode,
+                    replacement: {
+                        text: plainText,
+                        altered: false
+                }});
+            }
+            textIndex = frag.index + frag.match.length;
+            if (frag.fragType === "numeral") {
+                results.push({
+                    origNode: frag.origNode,
+                    replacement: {
+                        text: si.toString(),
+                        altered: true
+                }});
+            } else {
+                results.push({
+                    origNode: frag.origNode,
+                    replacement: {
+                        text: siUnit,
+                        altered: true
+                }});
+            }
+            if (textIndex < lastText.length) {
+                results.push({
+                    origNode: frag.origNode,
+                    replacement: {
+                        text: lastText.substring(textIndex),
+                        altered: false
+                }});
+            }
+        });
+    });
+    return results;
+}
+
 function multisearchTextNodes(nodes) {
     var resultArray = [];
     nodes.forEach(function(node) {
@@ -231,23 +329,39 @@ function multisearchTextNodes(nodes) {
     return resultArray;
 }
 
-function processSearchResults(data, results) {
-    var processed = [];
-    results.forEach(function(result) {
-        var origText = data[result.origNode].text;
-        processed.push({
-            origNode: result.origNode,
-            replacement: splitBySearchResults(origText, result.results)
-        });
+function coalesce(data) {
+    var result = [],
+        newItem = {
+            origNode: -1,
+            replacement: []
+        };
+    data.forEach(function(item) {
+        if (newItem.origNode === -1) {
+            newItem.origNode = item.origNode;
+            newItem.replacement.push(item.replacement);
+            return;
+        }
+        if (newItem.origNode === item.origNode) {
+            newItem.replacement.push(item.replacement);
+            return;
+        }
+        result.push(newItem);
+        newItem = {
+            origNode: item.origNode,
+            replacement: []
+        };
+        newItem.replacement.push(item.replacement);
     });
-    return processed;
+    result.push(newItem);
+    return result;
 }
 
 chrome.runtime.onMessage.addListener(function(rq, sender, sendResponse) {
     var value = {},
         fsmResults,
         tmp = null,
-        tmp2 = null;
+        tmp2 = null,
+        tmp3 = null;
     if (rq.method === "checkbox-state") {
         value[rq.id] = rq.state;
         chrome.storage.local.set(value, function () {
@@ -266,8 +380,10 @@ chrome.runtime.onMessage.addListener(function(rq, sender, sendResponse) {
         log("fsm search results", fsmResults);
         tmp = multisearchTextNodes(rq.data);
         log("multisearchTextNodes", tmp);
-        tmp2 = processSearchResults(rq.data, fsmResults);
+        tmp2 = substituteBySearchResults(rq.data, fsmResults);
         log("fsm processed results", tmp2);
+        tmp3 = coalesce(tmp2);
+        log("coalesced results", tmp3);
         sendResponse(tmp);
     } else {
         sendResponse({error: true});
