@@ -403,5 +403,6 @@ module.exports = {
     splitBySearchResults: splitBySearchResults,
     pluralizeUnits: pluralizeUnits,
     splitWords: fsm.splitWords,
-    fsmSearch: fsm.search
+    fsmSearch: fsm.search,
+    substituteBySearchResults: substituteBySearchResults
 };

@@ -682,3 +682,59 @@ test("searcher", function() {
     ];
     deepEqual(nlp.fsmSearch(content.nodesToIndexedArray(nodes)), expected);
 });
+
+test("substitute", function() {
+    var nodes = [
+        {nodeValue: "The quick brown Lorem Ipsum didn't expect a Spanish Inquisition."},
+        {nodeValue: "foo"},
+        {nodeValue: "A 100 bloody "},
+        {nodeValue: "miles"},
+        {nodeValue: "!"}
+    ],
+        fsmProcessedResults = [
+        {
+            "numeral": 100,
+            "units": "mile",
+            "fragments": [
+                {
+                    "origNode": 2,
+                    "index": 2,
+                    "fragType": "numeral",
+                    "match": "100"
+                },
+                {
+                    "origNode": 3,
+                    "index": 0,
+                    "fragType": "unit",
+                    "match": "miles"
+                }
+            ]
+        }
+    ],
+        expected = [
+        {
+            origNode: 2,
+            replacement: {
+                altered: false,
+                text: "A "
+            }
+        },
+        {
+            origNode: 2,
+            replacement: {
+                altered: true,
+                text: "161"
+            }
+        },
+        {
+            origNode: 3,
+            replacement: {
+                altered: true,
+                text: "kilometers"
+            }
+        }
+    ],
+        arr = content.nodesToIndexedArray(nodes),
+        actual = nlp.substituteBySearchResults(arr, fsmProcessedResults);
+    deepEqual(actual, expected);
+});
