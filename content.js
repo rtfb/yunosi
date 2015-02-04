@@ -59,15 +59,12 @@ var content = (function() {
     }
 
     function nodesToIndexedArray(nodes) {
-        var ret = [],
-            i = 0;
-        for (i = 0; i < nodes.length; i += 1) {
-            ret.push({
-                index: i,
-                text: nodes[i].nodeValue
-            });
-        }
-        return ret;
+        return nodes.map(function(item, index) {
+            return {
+                index: index,
+                text: item.nodeValue
+            };
+        });
     }
 
     chrome.runtime.onMessage.addListener(function(rq, sender, sendResponse) {
