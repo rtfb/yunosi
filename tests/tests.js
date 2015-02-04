@@ -727,12 +727,28 @@ test("substitute", function() {
             }
         },
         {
+            origNode: 2,
+            replacement: {
+                altered: false,
+                text: " bloody "
+            }
+        },
+        {
             origNode: 3,
             replacement: {
                 altered: true,
                 text: "kilometers"
             }
         }
+    // TODO: it should actually also include this:
+    /*,
+        {
+            origNode: 4,
+            replacement: {
+                altered: false,
+                text: "!"
+            }
+        }*/
     ],
         arr = content.nodesToIndexedArray(nodes),
         actual = nlp.substituteBySearchResults(arr, fsmProcessedResults);
