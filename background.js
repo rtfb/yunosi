@@ -356,6 +356,67 @@ function coalesce(data) {
     return result;
 }
 
+function patchSingleNode(node, nodeIndex, matches) {
+    var results = [],
+        textIndex = 0,
+        lastText = "";
+    matches.forEach(function(match) {
+        var si = convertValueToSI(match.units, match.numeral),
+            siUnit = readableUnits(si, reduceImperialUnitNames(match.units));
+        match.fragments.forEach(function(frag) {
+            if (frag.origNode !== nodeIndex) {
+                return;
+            }
+            var plainText = "";
+            lastText = node;
+            if (textIndex < frag.index) {
+                plainText = lastText.substring(textIndex, frag.index);
+                results.push({
+                    origNode: frag.origNode,
+                    replacement: {
+                        text: plainText,
+                        altered: false
+                }});
+            }
+            textIndex = frag.index + frag.match.length;
+            if (frag.fragType === "numeral") {
+                results.push({
+                    origNode: frag.origNode,
+                    replacement: {
+                        text: si.toString(),
+                        altered: true
+                }});
+            } else {
+                results.push({
+                    origNode: frag.origNode,
+                    replacement: {
+                        text: siUnit,
+                        altered: true
+                }});
+            }
+            /*
+            if (textIndex < lastText.length) {
+                results.push({
+                    origNode: frag.origNode,
+                    replacement: {
+                        text: "<" + lastText.substring(textIndex) + ">",
+                        altered: false
+                }});
+            }
+            */
+        });
+    });
+    if (results.length === 0) {
+        results.push({
+            origNode: nodeIndex,
+            replacement: {
+                text: node,
+                altered: false
+        }});
+    }
+    return results;
+}
+
 chrome.runtime.onMessage.addListener(function(rq, sender, sendResponse) {
     var value = {},
         fsmResults,
@@ -404,5 +465,6 @@ module.exports = {
     pluralizeUnits: pluralizeUnits,
     splitWords: fsm.splitWords,
     fsmSearch: fsm.search,
-    substituteBySearchResults: substituteBySearchResults
+    substituteBySearchResults: substituteBySearchResults,
+    patchSingleNode: patchSingleNode
 };

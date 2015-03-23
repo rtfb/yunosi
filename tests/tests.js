@@ -754,3 +754,52 @@ test("substitute", function() {
         actual = nlp.substituteBySearchResults(arr, fsmProcessedResults);
     deepEqual(actual, expected);
 });
+
+module("Result Substitution");
+
+test("substitute in one node", function() {
+    var nodes = [
+        {nodeValue: ""},
+        {nodeValue: "x"},
+        {nodeValue: "!"},
+        {nodeValue: "foo"},
+        {nodeValue: "mile"},
+        {nodeValue: "1 mile"}
+    ],
+        fsmProcessedResults = [
+        {
+            "numeral": 1,
+            "units": "mile",
+            "fragments": [
+                {
+                    "origNode": 5,
+                    "index": 0,
+                    "fragType": "numeral",
+                    "match": "1"
+                },
+                {
+                    "origNode": 5,
+                    "index": 2,
+                    "fragType": "unit",
+                    "match": "mile"
+                }
+            ]
+        }
+    ],
+        expected = [
+        {nodeValue: ""},
+        {nodeValue: "x"},
+        {nodeValue: "!"},
+        {nodeValue: "foo"},
+        {nodeValue: "mile"},
+        {nodeValue: "1.61 kilometers"}
+    ],
+        actual = null;
+    nodes.forEach(function(node, i) {
+        actual = nlp.patchSingleNode(node.nodeValue, i, fsmProcessedResults);
+        actual = actual.map(function(item) {
+            return item.replacement.text;
+        });
+        deepEqual({nodeValue: actual.join("")}, expected[i]);
+    });
+});
