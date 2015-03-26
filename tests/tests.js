@@ -803,3 +803,76 @@ test("substitute in one node", function() {
         deepEqual({nodeValue: actual.join("")}, expected[i]);
     });
 });
+
+test("fsm result remapper", function() {
+    var fsmResults = [
+        {
+            "numeral": 1,
+            "units": "mile",
+            "fragments": [
+                {
+                    "origNode": 5,
+                    "index": 0,
+                    "fragType": "numeral",
+                    "match": "1"
+                },
+                {
+                    "origNode": 5,
+                    "index": 2,
+                    "fragType": "unit",
+                    "match": "mile"
+                }
+            ]
+        },
+        {
+            "numeral": 1,
+            "units": "mile",
+            "fragments": [{
+                "origNode": 3,
+                "index": 4,
+                "fragType": "numeral",
+                "match": "1"
+            }, {
+                "origNode": 3,
+                "index": 6,
+                "fragType": "unit",
+                "match": "mile"
+            }]
+        },
+        {
+            "numeral": 2,
+            "units": "mile",
+            "fragments": [{
+                "origNode": 3,
+                "index": 11,
+                "fragType": "numeral",
+                "match": "2"
+            }, {
+                "origNode": 3,
+                "index": 13,
+                "fragType": "unit",
+                "match": "miles"
+            }]
+        },
+        {
+            "numeral": 3,
+            "units": "mile",
+            "fragments": [{
+                "origNode": 3,
+                "index": 19,
+                "fragType": "numeral",
+                "match": "3"
+            }, {
+                "origNode": 3,
+                "index": 21,
+                "fragType": "unit",
+                "match": "miles"
+            }]
+        }
+    ],
+        expected = {
+            "5": [fsmResults[0]],
+            "3": [fsmResults[1], fsmResults[2], fsmResults[3]]
+        };
+    deepEqual(nlp.resultsToNodeMap(fsmResults), expected);
+})

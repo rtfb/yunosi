@@ -417,6 +417,23 @@ function patchSingleNode(node, nodeIndex, matches) {
     return results;
 }
 
+function resultsToNodeMap(fsmResults) {
+    var dict = {};
+    fsmResults.forEach(function(result) {
+        result.fragments.forEach(function(frag) {
+            if (!dict.hasOwnProperty(frag.origNode)) {
+                dict[frag.origNode] = [result];
+            } else {
+                // XXX: this is quite inefficient:
+                if (dict[frag.origNode].indexOf(result) === -1) {
+                    dict[frag.origNode].push(result);
+                }
+            }
+        });
+    });
+    return dict;
+}
+
 chrome.runtime.onMessage.addListener(function(rq, sender, sendResponse) {
     var value = {},
         fsmResults,
@@ -466,5 +483,6 @@ module.exports = {
     splitWords: fsm.splitWords,
     fsmSearch: fsm.search,
     substituteBySearchResults: substituteBySearchResults,
-    patchSingleNode: patchSingleNode
+    patchSingleNode: patchSingleNode,
+    resultsToNodeMap: resultsToNodeMap
 };
