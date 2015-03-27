@@ -764,7 +764,9 @@ test("substitute in one node", function() {
         {nodeValue: "!"},
         {nodeValue: "foo"},
         {nodeValue: "mile"},
-        {nodeValue: "1 mile"}
+        {nodeValue: "1 mile"},
+        {nodeValue: "1 mile, 2 miles"},
+        {nodeValue: "foo 1 mile baz"}
     ],
         fsmProcessedResults = [
         {
@@ -784,7 +786,61 @@ test("substitute in one node", function() {
                     "match": "mile"
                 }
             ]
-        }
+        },
+        {
+            "numeral": 1,
+            "units": "mile",
+            "fragments": [
+                {
+                    "origNode": 6,
+                    "index": 0,
+                    "fragType": "numeral",
+                    "match": "1"
+                },
+                {
+                    "origNode": 6,
+                    "index": 2,
+                    "fragType": "unit",
+                    "match": "mile"
+                }
+            ]
+        },
+        {
+            "numeral": 2,
+            "units": "mile",
+            "fragments": [
+                {
+                    "origNode": 6,
+                    "index": 8,
+                    "fragType": "numeral",
+                    "match": "2"
+                },
+                {
+                    "origNode": 6,
+                    "index": 10,
+                    "fragType": "unit",
+                    "match": "miles"
+                }
+            ]
+        },
+        {
+            "numeral": 1,
+            "units": "mile",
+            "fragments": [
+                {
+                    "origNode": 7,
+                    "index": 4,
+                    "fragType": "numeral",
+                    "match": "1"
+                },
+                {
+                    "origNode": 7,
+                    "index": 6,
+                    "fragType": "unit",
+                    "match": "mile"
+                }
+            ]
+        },
     ],
         expected = [
         {nodeValue: ""},
@@ -792,7 +848,9 @@ test("substitute in one node", function() {
         {nodeValue: "!"},
         {nodeValue: "foo"},
         {nodeValue: "mile"},
-        {nodeValue: "1.61 kilometers"}
+        {nodeValue: "1.61 kilometers"},
+        {nodeValue: "1.61 kilometers, 3.22 kilometers"},
+        {nodeValue: "foo 1.61 kilometers baz"}
     ],
         actual = null;
     nodes.forEach(function(node, i) {

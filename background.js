@@ -406,11 +406,11 @@ function patchSingleNode(node, nodeIndex, matches) {
             */
         });
     });
-    if (results.length === 0) {
+    if (textIndex < node.length) {
         results.push({
             origNode: nodeIndex,
             replacement: {
-                text: node,
+                text: node.substring(textIndex),
                 altered: false
         }});
     }
