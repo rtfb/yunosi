@@ -417,6 +417,21 @@ function patchSingleNode(node, nodeIndex, matches) {
     return results;
 }
 
+function substituteBySearchResults_new(nodes, nodeMap) {
+    return nodes.map(function(node) {
+        if (!nodeMap.hasOwnProperty(node.index)) {
+            return {
+                origNode: node.index,
+                replacement: {
+                    altered: false,
+                    text: node.text
+                }
+            };
+        }
+        return patchSingleNode(node.text, node.index, nodeMap[node.index]);
+    });
+}
+
 function resultsToNodeMap(fsmResults) {
     var dict = {};
     fsmResults.forEach(function(result) {
