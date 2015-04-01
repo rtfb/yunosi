@@ -358,8 +358,7 @@ function coalesce(data) {
 
 function patchSingleNode(node, nodeIndex, matches) {
     var results = [],
-        textIndex = 0,
-        lastText = "";
+        textIndex = 0;
     matches.forEach(function(match) {
         var si = convertValueToSI(match.units, match.numeral),
             siUnit = readableUnits(si, reduceImperialUnitNames(match.units));
@@ -367,14 +366,11 @@ function patchSingleNode(node, nodeIndex, matches) {
             if (frag.origNode !== nodeIndex) {
                 return;
             }
-            var plainText = "";
-            lastText = node;
             if (textIndex < frag.index) {
-                plainText = lastText.substring(textIndex, frag.index);
                 results.push({
                     origNode: frag.origNode,
                     replacement: {
-                        text: plainText,
+                        text: node.substring(textIndex, frag.index),
                         altered: false
                 }});
             }
@@ -394,16 +390,6 @@ function patchSingleNode(node, nodeIndex, matches) {
                         altered: true
                 }});
             }
-            /*
-            if (textIndex < lastText.length) {
-                results.push({
-                    origNode: frag.origNode,
-                    replacement: {
-                        text: "<" + lastText.substring(textIndex) + ">",
-                        altered: false
-                }});
-            }
-            */
         });
     });
     if (textIndex < node.length) {
