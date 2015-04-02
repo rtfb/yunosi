@@ -413,6 +413,7 @@ test("split words", function() {
     });
 });
 
+/*
 test("searcher", function() {
     var nodes = [
         {nodeValue: "The quick brown Lorem Ipsum didn't expect a Spanish Inquisition."},
@@ -682,6 +683,7 @@ test("searcher", function() {
     ];
     deepEqual(nlp.fsmSearch(content.nodesToIndexedArray(nodes)), expected);
 });
+*/
 
 test("substitute", function() {
     var nodes = [

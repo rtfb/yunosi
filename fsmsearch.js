@@ -61,6 +61,7 @@ function singularizeUnits(units) {
 var matchGroup = {
     numeral: -1,
     units: "",
+    continuous: true,
     fragments: []
 };
 var results = [];
@@ -99,11 +100,22 @@ var fsm = StateMachine.create({
             });
         },
         onAnyWord: logState,
+        onHaveNumAndInfix: function(evt, from, to, msg) {
+            matchGroup.continuous = false;
+        },
         onNumberFound: logState,
         onleaveEnd: function(evt, from, to, msg) {
             logState(evt, from, to, msg);
             if (matchGroup.fragments.length !== 2) {
                 return;
+            }
+            if (matchGroup.continuous) {
+                matchGroup.fragments = [{
+                    fragType: "numeral",
+                    index: matchGroup.fragments[0].index,
+                    match: matchGroup.fragments[0].match + " " + matchGroup.fragments[1].match,
+                    origNode: matchGroup.fragments[0].origNode
+                }];
             }
             results.push(matchGroup);
             log(">> yeah, " + matchGroup.numeral + " " + matchGroup.units + ".");
@@ -112,6 +124,7 @@ var fsm = StateMachine.create({
             matchGroup = {
                 numeral: -1,
                 units: "",
+                continuous: true,
                 fragments: []
             };
         }
