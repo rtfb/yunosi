@@ -691,7 +691,8 @@ test("substitute", function() {
         {nodeValue: "foo"},
         {nodeValue: "A 100 bloody "},
         {nodeValue: "miles"},
-        {nodeValue: "!"}
+        {nodeValue: "!"},
+        {nodeValue: "foo 1 mile 2 miles 3 miles baz"}
     ],
         fsmProcessedResults = [
         {
@@ -711,6 +712,39 @@ test("substitute", function() {
                     "match": "miles"
                 }
             ]
+        },
+        {
+            "numeral": 1,
+            "units": "mile",
+            continuous: true,
+            "fragments": [{
+                "origNode": 5,
+                "index": 4,
+                "fragType": "numeral",
+                "match": "1 mile"
+            }]
+        },
+        {
+            "numeral": 2,
+            "units": "mile",
+            continuous: true,
+            "fragments": [{
+                "origNode": 5,
+                "index": 11,
+                "fragType": "numeral",
+                "match": "2 miles"
+            }]
+        },
+        {
+            "numeral": 3,
+            "units": "mile",
+            continuous: true,
+            "fragments": [{
+                "origNode": 5,
+                "index": 19,
+                "fragType": "numeral",
+                "match": "3 miles"
+            }]
         }
     ],
         expected = [
@@ -741,19 +775,60 @@ test("substitute", function() {
                 altered: true,
                 text: "kilometers"
             }
-        }
-    // TODO: it should actually also include this:
-    /*,
+        },
         {
-            origNode: 4,
+            origNode: 5,
             replacement: {
                 altered: false,
-                text: "!"
+                text: "foo "
             }
-        }*/
+        },
+        {
+            origNode: 5,
+            replacement: {
+                altered: true,
+                text: "1.61 kilometers"
+            }
+        },
+        {
+            origNode: 5,
+            replacement: {
+                altered: false,
+                text: " "
+            }
+        },
+        {
+            origNode: 5,
+            replacement: {
+                altered: true,
+                text: "3.22 kilometers"
+            }
+        },
+        {
+            origNode: 5,
+            replacement: {
+                altered: false,
+                text: " "
+            }
+        },
+        {
+            origNode: 5,
+            replacement: {
+                altered: true,
+                text: "4.83 kilometers"
+            }
+        },
+        {
+            origNode: 5,
+            replacement: {
+                altered: false,
+                text: " baz"
+            }
+        }
     ],
         arr = content.nodesToIndexedArray(nodes),
-        actual = nlp.substituteBySearchResults(arr, fsmProcessedResults);
+        nodeMap = nlp.resultsToNodeMap(fsmProcessedResults),
+        actual = nlp.substituteBySearchResults(arr, nodeMap);
     deepEqual(actual, expected);
 });
 

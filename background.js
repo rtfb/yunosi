@@ -424,19 +424,16 @@ function patchSingleNode(node, nodeIndex, matches) {
     return results;
 }
 
-function substituteBySearchResults_new(nodes, nodeMap) {
-    return nodes.map(function(node) {
-        if (!nodeMap.hasOwnProperty(node.index)) {
-            return {
-                origNode: node.index,
-                replacement: {
-                    altered: false,
-                    text: node.text
-                }
-            };
+function substituteBySearchResults(nodes, nodeMap) {
+    var results = [];
+    nodes.forEach(function(node) {
+        if (nodeMap.hasOwnProperty(node.index)) {
+            var idx = node.index,
+                arr = patchSingleNode(node.text, idx, nodeMap[idx]);
+            Array.prototype.push.apply(results, arr);
         }
-        return patchSingleNode(node.text, node.index, nodeMap[node.index]);
     });
+    return results;
 }
 
 function resultsToNodeMap(fsmResults) {
@@ -480,11 +477,11 @@ chrome.runtime.onMessage.addListener(function(rq, sender, sendResponse) {
         log("fsm search results", fsmResults);
         tmp = multisearchTextNodes(rq.data);
         log("multisearchTextNodes", tmp);
-        tmp2 = substituteBySearchResults(rq.data, fsmResults);
+        tmp2 = substituteBySearchResults(rq.data, resultsToNodeMap(fsmResults));
         log("fsm processed results", tmp2);
         tmp3 = coalesce(tmp2);
         log("coalesced results", tmp3);
-        sendResponse(tmp);
+        sendResponse(tmp3);
     } else {
         sendResponse({error: true});
     }
