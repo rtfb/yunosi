@@ -64,6 +64,7 @@ var matchGroup = {
     continuous: true,
     fragments: []
 };
+var separator = " ";
 var results = [];
 var fsm = StateMachine.create({
     initial: 'AnyWord',
@@ -113,7 +114,7 @@ var fsm = StateMachine.create({
                 matchGroup.fragments = [{
                     fragType: "numeral",
                     index: matchGroup.fragments[0].index,
-                    match: matchGroup.fragments[0].match + " " + matchGroup.fragments[1].match,
+                    match: matchGroup.fragments[0].match + separator + matchGroup.fragments[1].match,
                     origNode: matchGroup.fragments[0].origNode
                 }];
             }
@@ -127,6 +128,7 @@ var fsm = StateMachine.create({
                 continuous: true,
                 fragments: []
             };
+            separator = " ";
         }
     }
 });
@@ -206,6 +208,7 @@ function processDash(word, index, origNode) {
         });
     }
     if (isUnit(parts[1])) {
+        separator = "-";
         fsm.unit({
             word: parts[1],
             index: index + parts[0].length + 1,

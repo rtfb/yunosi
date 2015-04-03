@@ -413,7 +413,6 @@ test("split words", function() {
     });
 });
 
-/*
 test("searcher", function() {
     var nodes = [
         {nodeValue: "The quick brown Lorem Ipsum didn't expect a Spanish Inquisition."},
@@ -431,60 +430,46 @@ test("searcher", function() {
         {
             numeral: 1,
             units: "mile",
+            continuous: true,
             fragments: [
                 {
                 origNode: 1,
                 index: 4,
                 fragType: "numeral",
-                match: "1",
-                },
-                {
-                origNode: 1,
-                index: 6,
-                fragType: "unit",
-                match: "mile"
+                match: "1 mile",
                 }
             ]
         },
         {
             numeral: 2,
             units: "mile",
+            continuous: true,
             fragments: [
                 {
                 origNode: 1,
                 index: 11,
                 fragType: "numeral",
-                match: "2",
-                },
-                {
-                origNode: 1,
-                index: 13,
-                fragType: "unit",
-                match: "miles"
+                match: "2 miles",
                 }
             ]
         },
         {
             numeral: 3,
             units: "mile",
+            continuous: true,
             fragments: [
                 {
                 origNode: 1,
                 index: 19,
                 fragType: "numeral",
-                match: "3",
-                },
-                {
-                origNode: 1,
-                index: 21,
-                fragType: "unit",
-                match: "miles"
+                match: "3 miles",
                 }
             ]
         },
         {
             numeral: 100,
             units: "mile",
+            continuous: false,
             fragments: [
                 {
                 origNode: 2,
@@ -503,187 +488,136 @@ test("searcher", function() {
         {
             numeral: 0.6,
             units: "mile",
+            continuous: true,
             fragments: [
                 {
                 origNode: 5,
                 index: 24,
                 fragType: "numeral",
-                match: "0.6",
-                },
-                {
-                origNode: 5,
-                index: 28,
-                fragType: "unit",
-                match: "miles"
+                match: "0.6 miles",
                 }
             ]
         },
         {
             numeral: 1.35,
             units: "mile",
+            continuous: true,
             fragments: [
                 {
                 origNode: 6,
                 index: 4,
                 fragType: "numeral",
-                match: "1.35",
-                },
-                {
-                origNode: 6,
-                index: 9,
-                fragType: "unit",
-                match: "mile"
+                match: "1.35 mile",
                 }
             ]
         },
         {
             numeral: 3600,
             units: "mile",
+            continuous: true,
             fragments: [
                 {
                 origNode: 7,
                 index: 4,
                 fragType: "numeral",
-                match: "3,600",
-                },
-                {
-                origNode: 7,
-                index: 10,
-                fragType: "unit",
-                match: "miles"
+                match: "3,600 miles",
                 }
             ]
         },
         {
             numeral: 3,
             units: "mile",
+            continuous: true,
             fragments: [
                 {
                 origNode: 7,
                 index: 25,
                 fragType: "numeral",
-                match: "3",
-                },
-                {
-                origNode: 7,
-                index: 27,
-                fragType: "unit",
-                match: "miles"
+                match: "3 miles",
                 }
             ]
         },
         {
             numeral: 100,
             units: "yard",
+            continuous: true,
             fragments: [
                 {
                 origNode: 8,
                 index: 4,
                 fragType: "numeral",
-                match: "100",
-                },
-                {
-                origNode: 8,
-                index: 8,
-                fragType: "unit",
-                match: "yards"
+                match: "100 yards",
                 }
             ]
         },
         {
             numeral: 1000,
             units: "foot",
+            continuous: true,
             fragments: [
                 {
                 origNode: 8,
                 index: 23,
                 fragType: "numeral",
-                match: "1000",
-                },
-                {
-                origNode: 8,
-                index: 28,
-                fragType: "unit",
-                match: "feet"
+                match: "1000 feet",
                 }
             ]
         },
         {
             numeral: 40,
             units: "fahrenheit",
+            continuous: true,
             fragments: [
                 {
                 origNode: 8,
                 index: 33,
                 fragType: "numeral",
-                match: "40",
-                },
-                {
-                origNode: 8,
-                index: 36,
-                fragType: "unit",
-                match: "Fahrenheit"
+                match: "40 Fahrenheit",
                 }
             ]
         },
         {
             numeral: 60,
             units: "inch",
+            continuous: true,
             fragments: [
                 {
                 origNode: 9,
                 index: 0,
                 fragType: "numeral",
-                match: "60",
-                },
-                {
-                origNode: 9,
-                index: 3,
-                fragType: "unit",
-                match: "inch"
+                match: "60-inch",
                 }
             ]
         },
         {
             numeral: 12,
             units: "inch",
+            continuous: true,
             fragments: [
                 {
                 origNode: 9,
                 index: 19,
                 fragType: "numeral",
-                match: "12",
-                },
-                {
-                origNode: 9,
-                index: 22,
-                fragType: "unit",
-                match: "inches"
+                match: "12 inches",
                 }
             ]
         },
         {
             numeral: 1,
             units: "inch",
+            continuous: true,
             fragments: [
                 {
                 origNode: 9,
                 index: 30,
                 fragType: "numeral",
-                match: "1",
-                },
-                {
-                origNode: 9,
-                index: 32,
-                fragType: "unit",
-                match: "inch"
+                match: "1 inch",
                 }
             ]
         }
     ];
     deepEqual(nlp.fsmSearch(content.nodesToIndexedArray(nodes)), expected);
 });
-*/
 
 test("substitute", function() {
     var nodes = [
