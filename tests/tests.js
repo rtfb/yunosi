@@ -615,8 +615,15 @@ test("searcher", function() {
                 }
             ]
         }
-    ];
-    deepEqual(nlp.fsmSearch(content.nodesToIndexedArray(nodes)), expected);
+    ],
+        actual = nlp.fsmSearch(content.nodesToIndexedArray(nodes));
+    if (actual.length != expected.length) {
+        deepEqual(actual, expected);
+    } else {
+        actual.forEach(function(actualItem, i) {
+            deepEqual(actualItem, expected[i]);
+        });
+    }
 });
 
 test("substitute", function() {
