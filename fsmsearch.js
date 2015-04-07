@@ -58,15 +58,22 @@ function singularizeUnits(units) {
         .replace("inches", "inch");
 }
 
-var matchGroup = {
-    numeral: -1,
-    units: "",
-    continuous: true,
-    fragments: []
-};
-var separator = " ";
-var results = [];
-var fsm = StateMachine.create({
+function mkMatch(state) {
+    var frags = state.matchGroup.fragments;
+    return frags[0].match + state.separator + frags[1].match;
+}
+
+var state = {
+    matchGroup: {
+        numeral: -1,
+        units: "",
+        continuous: true,
+        fragments: []
+    },
+    separator: " ",
+    resultSet: []
+},
+    fsm = StateMachine.create({
     initial: 'AnyWord',
     events: [
 {name: 'number',    from: ['AnyWord', 'NumberFound'],     to: 'NumberFound'},
@@ -82,8 +89,8 @@ var fsm = StateMachine.create({
     callbacks: {
         onnumber: function(evt, from, to, msg) {
             logEvt(evt, from, to, msg);
-            matchGroup.numeral = interpretNum(msg.word);
-            matchGroup.fragments.push({
+            state.matchGroup.numeral = interpretNum(msg.word);
+            state.matchGroup.fragments.push({
                 origNode: msg.origNode,
                 index: msg.index,
                 fragType: "numeral",
@@ -92,8 +99,8 @@ var fsm = StateMachine.create({
         },
         onunit: function(evt, from, to, msg) {
             logEvt(evt, from, to, msg);
-            matchGroup.units = singularizeUnits(msg.word.toLowerCase());
-            matchGroup.fragments.push({
+            state.matchGroup.units = singularizeUnits(msg.word.toLowerCase());
+            state.matchGroup.fragments.push({
                 origNode: msg.origNode,
                 index: msg.index,
                 fragType: "unit",
@@ -102,33 +109,33 @@ var fsm = StateMachine.create({
         },
         onAnyWord: logState,
         onHaveNumAndInfix: function(evt, from, to, msg) {
-            matchGroup.continuous = false;
+            state.matchGroup.continuous = false;
         },
         onNumberFound: logState,
         onleaveEnd: function(evt, from, to, msg) {
             logState(evt, from, to, msg);
-            if (matchGroup.fragments.length !== 2) {
+            if (state.matchGroup.fragments.length !== 2) {
                 return;
             }
-            if (matchGroup.continuous) {
-                matchGroup.fragments = [{
+            if (state.matchGroup.continuous) {
+                state.matchGroup.fragments = [{
                     fragType: "numeral",
-                    index: matchGroup.fragments[0].index,
-                    match: matchGroup.fragments[0].match + separator + matchGroup.fragments[1].match,
-                    origNode: matchGroup.fragments[0].origNode
+                    index: state.matchGroup.fragments[0].index,
+                    match: mkMatch(state),
+                    origNode: state.matchGroup.fragments[0].origNode
                 }];
             }
-            results.push(matchGroup);
-            log(">> yeah, " + matchGroup.numeral + " " + matchGroup.units + ".");
+            state.resultSet.push(state.matchGroup);
+            log(">> yeah, " + state.matchGroup.numeral + " " + state.matchGroup.units + ".");
         },
         onrestart: function() {
-            matchGroup = {
+            state.matchGroup = {
                 numeral: -1,
                 units: "",
                 continuous: true,
                 fragments: []
             };
-            separator = " ";
+            state.separator = " ";
         }
     }
 });
@@ -208,7 +215,7 @@ function processDash(word, index, origNode) {
         });
     }
     if (isUnit(parts[1])) {
-        separator = "-";
+        state.separator = "-";
         fsm.unit({
             word: parts[1],
             index: index + parts[0].length + 1,
@@ -219,7 +226,7 @@ function processDash(word, index, origNode) {
 }
 
 function fsmsearch(text, origNode) {
-    results = [];
+    state.resultSet = [];
     splitWords(text).forEach(function(wordInfo) {
         var word = wordInfo.word;
         if (isNumber(word)) {
@@ -241,7 +248,7 @@ function fsmsearch(text, origNode) {
             fsm.something(word);
         }
     });
-    return results;
+    return state.resultSet;
 }
 
 function search(data) {
