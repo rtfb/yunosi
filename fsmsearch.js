@@ -63,6 +63,16 @@ function mkMatch(state) {
     return frags[0].match + state.separator + frags[1].match;
 }
 
+function resetState(state) {
+    state.matchGroup = {
+        numeral: -1,
+        units: "",
+        continuous: true,
+        fragments: []
+    };
+    state.separator = " ";
+}
+
 var state = {
     matchGroup: {
         numeral: -1,
@@ -107,7 +117,10 @@ var state = {
                 match: msg.word
             });
         },
-        onAnyWord: logState,
+        onAnyWord: function(evt, from, to, msg) {
+            logState(evt, from, to, msg);
+            resetState(state);
+        },
         onHaveNumAndInfix: function(evt, from, to, msg) {
             state.matchGroup.continuous = false;
         },
@@ -129,13 +142,7 @@ var state = {
             log(">> yeah, " + state.matchGroup.numeral + " " + state.matchGroup.units + ".");
         },
         onrestart: function() {
-            state.matchGroup = {
-                numeral: -1,
-                units: "",
-                continuous: true,
-                fragments: []
-            };
-            state.separator = " ";
+            resetState(state);
         }
     }
 });
