@@ -29,6 +29,9 @@ function log(msg) {
 function fsmLog(prefix, evt, from, to, msg) {
     var details = '';
     if (msg) {
+        if (typeof msg === "object") {
+            msg = JSON.stringify(msg, 4, null);
+        }
         details = ' (' + msg + ')';
     }
     log(prefix + evt + ', ' + from + ' -> ' + to + details);
