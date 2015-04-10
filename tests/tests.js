@@ -425,7 +425,8 @@ test("searcher", function() {
         {nodeValue: "fly 3,600 miles and walk 3 miles"},
         {nodeValue: "fly 100 yards and walk 1000 feet 40 Fahrenheit"},
         {nodeValue: "60-inch telescope, 12 inches, 1 inch"},
-        {nodeValue: "2000 foo bar 25 miles"}
+        {nodeValue: "2000 foo bar 25 miles"},
+        {nodeValue: "2000 foo 25 miles"}
     ],
     expected = [
         {
@@ -624,6 +625,19 @@ test("searcher", function() {
                 {
                 origNode: 10,
                 index: 13,
+                fragType: "numeral",
+                match: "25 miles",
+                }
+            ]
+        },
+        {
+            numeral: 25,
+            units: "mile",
+            continuous: true,
+            fragments: [
+                {
+                origNode: 11,
+                index: 9,
                 fragType: "numeral",
                 match: "25 miles",
                 }

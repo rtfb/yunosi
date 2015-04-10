@@ -89,8 +89,8 @@ var state = {
     fsm = StateMachine.create({
     initial: 'AnyWord',
     events: [
-{name: 'number',    from: ['AnyWord', 'NumberFound'],     to: 'NumberFound'},
-{name: 'number',    from: 'HaveNumAndInfix',              to: 'AnyWord'},
+{name: 'number',    from: ['AnyWord', 'NumberFound',
+                           'HaveNumAndInfix'],            to: 'NumberFound'},
 {name: 'something', from: ['AnyWord', 'HaveNumAndInfix'], to: 'AnyWord'},
 {name: 'something', from: 'NumberFound',                  to: 'HaveNumAndInfix'},
 {name: 'unit',      from: 'NumberFound',                  to: 'End'},
@@ -102,6 +102,7 @@ var state = {
     callbacks: {
         onnumber: function(evt, from, to, msg) {
             logEvt(evt, from, to, msg);
+            resetState(state);
             state.matchGroup.numeral = interpretNum(msg.word);
             state.matchGroup.fragments.push({
                 origNode: msg.origNode,
