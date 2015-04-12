@@ -215,7 +215,7 @@ function hasDash(word) {
 function processDash(word, index, origNode) {
     log("processDash: " + word);
     var parts = word.split("-");
-    if (parts.length !== 2) {
+    if (parts.length < 2) {
         return;
     }
     if (isNumber(parts[0])) {

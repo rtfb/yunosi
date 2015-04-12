@@ -426,7 +426,13 @@ test("searcher", function() {
         {nodeValue: "fly 100 yards and walk 1000 feet 40 Fahrenheit"},
         {nodeValue: "60-inch telescope, 12 inches, 1 inch"},
         {nodeValue: "2000 foo bar 25 miles"},
-        {nodeValue: "2000 foo 25 miles"}
+        {nodeValue: "2000 foo 25 miles"},
+        // TODO: search now works fine in this case, but replacement should be
+        // improved. Now it works like this:
+        //     25-mile-diameter  ==>  40.2 kilometers-diameter
+        // but it should work like this:
+        //     25-mile-diameter  ==>  40.2-kilometer-diameter
+        {nodeValue: "build a 25-mile-diameter, 5,000-foot-tall lunar city"}
     ],
     expected = [
         {
@@ -642,6 +648,28 @@ test("searcher", function() {
                 match: "25 miles",
                 }
             ]
+        },
+        {
+            numeral: 25,
+            units: "mile",
+            continuous: true,
+            fragments: [{
+                origNode: 12,
+                index: 8,
+                fragType: "numeral",
+                match: "25-mile"
+            }]
+        },
+        {
+            numeral: 5000,
+            units: "foot",
+            continuous: true,
+            fragments: [{
+                origNode: 12,
+                index: 26,
+                fragType: "numeral",
+                match: "5,000-foot"
+            }]
         }
     ],
         actual = nlp.fsmSearch(content.nodesToIndexedArray(nodes));
