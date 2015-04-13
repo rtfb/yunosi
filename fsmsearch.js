@@ -236,28 +236,31 @@ function processDash(word, index, origNode) {
     }
 }
 
+function processWord(word, index, origNode) {
+    if (isNumber(word)) {
+        fsm.number({
+            word: word,
+            index: index,
+            origNode: origNode
+        });
+    } else if (isUnit(word)) {
+        fsm.unit({
+            word: word,
+            index: index,
+            origNode: origNode
+        });
+        fsm.restart();
+    } else if (hasDash(word)) {
+        processDash(word, index, origNode);
+    } else {
+        fsm.something(word);
+    }
+}
+
 function fsmsearch(text, origNode) {
     state.resultSet = [];
     splitWords(text).forEach(function(wordInfo) {
-        var word = wordInfo.word;
-        if (isNumber(word)) {
-            fsm.number({
-                word: word,
-                index: wordInfo.index,
-                origNode: origNode
-            });
-        } else if (isUnit(word)) {
-            fsm.unit({
-                word: word,
-                index: wordInfo.index,
-                origNode: origNode
-            });
-            fsm.restart();
-        } else if (hasDash(word)) {
-            processDash(word, wordInfo.index, origNode);
-        } else {
-            fsm.something(word);
-        }
+        processWord(wordInfo.word, wordInfo.index, origNode);
     });
     return state.resultSet;
 }
