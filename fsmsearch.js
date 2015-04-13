@@ -158,11 +158,11 @@ function stripPunctuation(word) {
     return word.replace(reLeft, "").replace(reRight, "");
 }
 
-function splitWords(text) {
+function splitWordsBy(text, regexp) {
     if (!text || text === "") {
         return [];
     }
-    var re = new RegExp("(\\s+)", "g"),
+    var re = new RegExp(regexp, "g"),
         index = 0,
         space,
         result = [];
@@ -184,6 +184,10 @@ function splitWords(text) {
         });
     }
     return result;
+}
+
+function splitWords(text) {
+    return splitWordsBy(text, "(\\s+)");
 }
 
 function isFullMatch(word, re) {
@@ -210,6 +214,11 @@ function isUnit(word) {
 function hasDash(word) {
     log("hasDash: " + word);
     return word.search('-') !== -1;
+}
+
+function hasSlash(word) {
+    log("hasSlash: " + word);
+    return word.search('/') !== -1;
 }
 
 function processDash(word, index, origNode) {
@@ -252,6 +261,10 @@ function processWord(word, index, origNode) {
         fsm.restart();
     } else if (hasDash(word)) {
         processDash(word, index, origNode);
+    } else if (hasSlash(word)) {
+        splitWordsBy(word, "/").forEach(function(slashPart) {
+            processWord(slashPart.word, index + slashPart.index, origNode);
+        });
     } else {
         fsm.something(word);
     }

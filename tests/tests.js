@@ -432,7 +432,8 @@ test("searcher", function() {
         //     25-mile-diameter  ==>  40.2 kilometers-diameter
         // but it should work like this:
         //     25-mile-diameter  ==>  40.2-kilometer-diameter
-        {nodeValue: "build a 25-mile-diameter, 5,000-foot-tall lunar city"}
+        {nodeValue: "build a 25-mile-diameter, 5,000-foot-tall lunar city"},
+        {nodeValue: "Size: 25 miles in diameter/5,000 feet tall"}
     ],
     expected = [
         {
@@ -669,6 +670,28 @@ test("searcher", function() {
                 index: 26,
                 fragType: "numeral",
                 match: "5,000-foot"
+            }]
+        },
+        {
+            numeral: 25,
+            units: "mile",
+            continuous: true,
+            fragments: [{
+                origNode: 13,
+                index: 6,
+                fragType: "numeral",
+                match: "25 miles"
+            }]
+        },
+        {
+            numeral: 5000,
+            units: "foot",
+            continuous: true,
+            fragments: [{
+                origNode: 13,
+                index: 27,
+                fragType: "numeral",
+                match: "5,000 feet"
             }]
         }
     ],
