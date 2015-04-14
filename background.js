@@ -361,28 +361,7 @@ function patchSingleNode(node, nodeIndex, matches) {
         textIndex = 0;
     matches.forEach(function(match) {
         var si = convertValueToSI(match.units, match.numeral),
-            siUnit = readableUnits(si, reduceImperialUnitNames(match.units)),
-            frag = match.fragments[0];
-        // TODO: there's quite a bit of duplication going on here, should be
-        // possible to DRY a bit
-        if (match.continuous) {
-            if (textIndex < frag.index) {
-                results.push({
-                    origNode: frag.origNode,
-                    replacement: {
-                        text: node.substring(textIndex, frag.index),
-                    altered: false
-                    }});
-            }
-            results.push({
-                origNode: frag.origNode,
-                replacement: {
-                    text: si.toString() + " " + siUnit,
-                    altered: true
-            }});
-            textIndex = frag.index + frag.match.length;
-            return;
-        }
+            siUnit = readableUnits(si, reduceImperialUnitNames(match.units));
         match.fragments.forEach(function(frag) {
             if (frag.origNode !== nodeIndex) {
                 return;
@@ -396,6 +375,15 @@ function patchSingleNode(node, nodeIndex, matches) {
                 }});
             }
             textIndex = frag.index + frag.match.length;
+            if (match.continuous) {
+                results.push({
+                    origNode: frag.origNode,
+                    replacement: {
+                        text: si.toString() + " " + siUnit,
+                        altered: true
+                }});
+                return;
+            }
             if (frag.fragType === "numeral") {
                 results.push({
                     origNode: frag.origNode,
