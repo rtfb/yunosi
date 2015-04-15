@@ -427,11 +427,6 @@ test("searcher", function() {
         {nodeValue: "60-inch telescope, 12 inches, 1 inch"},
         {nodeValue: "2000 foo bar 25 miles"},
         {nodeValue: "2000 foo 25 miles"},
-        // TODO: search now works fine in this case, but replacement should be
-        // improved. Now it works like this:
-        //     25-mile-diameter  ==>  40.2 kilometers-diameter
-        // but it should work like this:
-        //     25-mile-diameter  ==>  40.2-kilometer-diameter
         {nodeValue: "build a 25-mile-diameter, 5,000-foot-tall lunar city"},
         {nodeValue: "Size: 25 miles in diameter/5,000 feet tall"}
     ],
@@ -863,7 +858,8 @@ test("substitute in one node", function() {
         {nodeValue: "mile"},
         {nodeValue: "1 mile"},
         {nodeValue: "1 mile, 2 miles"},
-        {nodeValue: "foo 1 mile baz"}
+        {nodeValue: "foo 1 mile baz"},
+        {nodeValue: "25-mile-diameter"}
     ],
         fsmProcessedResults = [
         {
@@ -938,6 +934,17 @@ test("substitute in one node", function() {
                 }
             ]
         },
+        {
+            numeral: 25,
+            units: "mile",
+            continuous: true,
+            fragments: [{
+                origNode: 8,
+                index: 0,
+                fragType: "numeral",
+                match: "25-mile"
+            }]
+        }
     ],
         expected = [
         {nodeValue: ""},
@@ -947,7 +954,8 @@ test("substitute in one node", function() {
         {nodeValue: "mile"},
         {nodeValue: "1.61 kilometers"},
         {nodeValue: "1.61 kilometers, 3.22 kilometers"},
-        {nodeValue: "foo 1.61 kilometers baz"}
+        {nodeValue: "foo 1.61 kilometers baz"},
+        {nodeValue: "40.2-kilometer-diameter"}
     ],
         actual = null;
     nodes.forEach(function(node, i) {

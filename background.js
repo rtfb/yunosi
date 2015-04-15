@@ -360,9 +360,11 @@ function coalesce(data) {
 }
 
 function getContinuousText(frag, match, reducedUnit) {
-    var si = convertValueToSI(match.units, match.numeral),
-        siUnit = readableUnits(si, reducedUnit);
-    return si.toString() + " " + siUnit;
+    var si = convertValueToSI(match.units, match.numeral);
+    if (frag.match.indexOf("-") >= 0) {
+        return si.toString() + "-" + convertUnit(reducedUnit);
+    }
+    return si.toString() + " " + readableUnits(si, reducedUnit);
 }
 
 function patchSingleNode(node, nodeIndex, matches) {
