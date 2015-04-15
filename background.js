@@ -102,7 +102,7 @@ function makeReadable(value, unit) {
     return roundForReadability(value) + " " + pluralizeUnits(siUnit, value);
 }
 
-function readableUnits(value, unit) {
+function convertUnit(imperial) {
     var unitMap = {
         "mile": "kilometer",
         "foot": "meter",
@@ -112,9 +112,12 @@ function readableUnits(value, unit) {
         "ounce": "gram",
         "pound": "kilogram",
         "inch": "centimeter"
-    },
-        siUnit = unitMap[unit];
-    return pluralizeUnits(siUnit, value);
+    };
+    return unitMap[imperial];
+}
+
+function readableUnits(value, unit) {
+    return pluralizeUnits(convertUnit(unit), value);
 }
 
 function convertImperialToSI(units, value) {
@@ -356,12 +359,18 @@ function coalesce(data) {
     return result;
 }
 
+function getContinuousText(frag, match, reducedUnit) {
+    var si = convertValueToSI(match.units, match.numeral),
+        siUnit = readableUnits(si, reducedUnit);
+    return si.toString() + " " + siUnit;
+}
+
 function patchSingleNode(node, nodeIndex, matches) {
     var results = [],
         textIndex = 0;
     matches.forEach(function(match) {
         var si = convertValueToSI(match.units, match.numeral),
-            siUnit = readableUnits(si, reduceImperialUnitNames(match.units));
+            reducedUnit = reduceImperialUnitNames(match.units);
         match.fragments.forEach(function(frag) {
             if (frag.origNode !== nodeIndex) {
                 return;
@@ -379,7 +388,7 @@ function patchSingleNode(node, nodeIndex, matches) {
                 results.push({
                     origNode: frag.origNode,
                     replacement: {
-                        text: si.toString() + " " + siUnit,
+                        text: getContinuousText(frag, match, reducedUnit),
                         altered: true
                 }});
                 return;
@@ -395,7 +404,7 @@ function patchSingleNode(node, nodeIndex, matches) {
                 results.push({
                     origNode: frag.origNode,
                     replacement: {
-                        text: siUnit,
+                        text: readableUnits(si, reducedUnit),
                         altered: true
                 }});
             }
