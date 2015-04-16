@@ -18,7 +18,8 @@ var StateMachine = require("javascript-state-machine"),
         "inches",
         "inch",
         "in"
-    ];
+    ],
+        unitsRe = new RegExp(unitsForRegex.join("|"), "gi");
 
 function log(msg) {
     if (debugLog) {
@@ -206,9 +207,7 @@ function isNumber(word) {
 
 function isUnit(word) {
     log("isUnit: " + word);
-    var units = unitsForRegex.join("|"),
-        re = new RegExp(units, "gi");
-    return isFullMatch(word, re);
+    return isFullMatch(word, unitsRe);
 }
 
 function hasDash(word) {
