@@ -317,21 +317,6 @@ function substituteBySearchResults(data, matches) {
     return results;
 }
 
-function multisearchTextNodes(nodes) {
-    var resultArray = [];
-    nodes.forEach(function(node) {
-        var text = node.text,
-            searchResults = multisearch(text);
-        if (searchResults.length !== 0) {
-            resultArray.push({
-                origNode: node.index,
-                replacement: splitBySearchResults(text, searchResults)
-            });
-        }
-    });
-    return resultArray;
-}
-
 function coalesce(data) {
     var result = [],
         newItem = {
@@ -455,7 +440,6 @@ function resultsToNodeMap(fsmResults) {
 chrome.runtime.onMessage.addListener(function(rq, sender, sendResponse) {
     var value = {},
         fsmResults,
-        tmp = null,
         tmp2 = null,
         tmp3 = null;
     if (rq.method === "checkbox-state") {
@@ -474,8 +458,6 @@ chrome.runtime.onMessage.addListener(function(rq, sender, sendResponse) {
         log("text-for-processing", rq.data);
         fsmResults = fsm.search(rq.data);
         log("fsm search results", fsmResults);
-        tmp = multisearchTextNodes(rq.data);
-        log("multisearchTextNodes", tmp);
         tmp2 = substituteBySearchResults(rq.data, resultsToNodeMap(fsmResults));
         log("fsm processed results", tmp2);
         tmp3 = coalesce(tmp2);
@@ -493,7 +475,6 @@ module.exports = {
     convertImperialToSI: convertImperialToSI,
     singularizeUnits: singularizeUnits,
     multisearch: multisearch,
-    multisearchTextNodes: multisearchTextNodes,
     roundForReadability: roundForReadability,
     roundDecimal: roundDecimal,
     splitBySearchResults: splitBySearchResults,
