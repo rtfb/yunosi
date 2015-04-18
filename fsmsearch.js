@@ -290,5 +290,6 @@ function search(data) {
 
 module.exports = {
     search: search,
-    splitWords: splitWords
+    splitWords: splitWords,
+    singularizeUnits: singularizeUnits
 };

@@ -190,52 +190,6 @@ function convertValueToSI(units, value) {
     return value;
 }
 
-function singularizeUnits(units) {
-    return units.replace("miles", "mile")
-        .replace("feet", "foot")
-        .replace("fahrenheits", "fahrenheit")
-        .replace("yards", "yard")
-        .replace("gallons", "gallon")
-        .replace("ounces", "ounce")
-        .replace("pounds", "pound")
-        .replace("inches", "inch");
-}
-
-function interpretNum(what) {
-    what = what.replace(",", "");
-    return parseFloat(what);
-}
-
-function multisearch(where) {
-    var units = unitsForRegex.join("|"),
-        numberRe = "([\\d,]*\\.?\\d+)",
-        re = new RegExp(numberRe + "[\\s-]*(" + units + ")", "gi"),
-        result,
-        results = [],
-        preceding;
-    while (true) {
-        result = re.exec(where);
-        if (result === null) {
-            break;
-        }
-        if (result.index > 0) {
-            preceding = where.substring(result.index - 1, result.index);
-            // Only whitespace and punctuation can immediately precede the
-            // number. Make sure that's the case:
-            if (preceding.search(/[\s,.?!'"+\-]/) !== 0) {
-                continue;
-            }
-        }
-        results.push({
-            index: result.index,
-            match: result[0],
-            units: singularizeUnits(result[2].toLowerCase()),
-            numeral: interpretNum(result[1])
-        });
-    }
-    return results;
-}
-
 function splitBySearchResults(text, matches) {
     var i = 0,
         match,
@@ -266,54 +220,6 @@ function splitBySearchResults(text, matches) {
             altered: false
         });
     }
-    return results;
-}
-
-function substituteBySearchResults(data, matches) {
-    var results = [],
-        textIndex = 0;
-    matches.forEach(function(match) {
-        var si = convertValueToSI(match.units, match.numeral),
-            siUnit = readableUnits(si, reduceImperialUnitNames(match.units));
-        match.fragments.forEach(function(frag) {
-            var lastText = data[frag.origNode].text,
-                plainText = "";
-            if (textIndex < frag.index) {
-                plainText = lastText.substring(textIndex, frag.index);
-                console.log("plainText = '" + plainText + "' (" + textIndex + ", " + frag.index + ")");
-                results.push({
-                    origNode: frag.origNode,
-                    replacement: {
-                        text: plainText,
-                        altered: false
-                }});
-            }
-            textIndex = frag.index + frag.match.length;
-            if (frag.fragType === "numeral") {
-                results.push({
-                    origNode: frag.origNode,
-                    replacement: {
-                        text: si.toString(),
-                        altered: true
-                }});
-            } else {
-                results.push({
-                    origNode: frag.origNode,
-                    replacement: {
-                        text: siUnit,
-                        altered: true
-                }});
-            }
-            if (textIndex < lastText.length) {
-                results.push({
-                    origNode: frag.origNode,
-                    replacement: {
-                        text: lastText.substring(textIndex),
-                        altered: false
-                }});
-            }
-        });
-    });
     return results;
 }
 
@@ -473,8 +379,7 @@ module.exports = {
     reduceImperialUnitNames: reduceImperialUnitNames,
     unitsForRegex: unitsForRegex,
     convertImperialToSI: convertImperialToSI,
-    singularizeUnits: singularizeUnits,
-    multisearch: multisearch,
+    singularizeUnits: fsm.singularizeUnits,
     roundForReadability: roundForReadability,
     roundDecimal: roundDecimal,
     splitBySearchResults: splitBySearchResults,
