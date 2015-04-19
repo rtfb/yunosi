@@ -120,6 +120,7 @@ function readableUnits(value, unit) {
     return pluralizeUnits(convertUnit(unit), value);
 }
 
+// TODO: remove and port tests to use convertValueToSI
 function convertImperialToSI(units, value) {
     var converters = {
         "mile": function(value) {
@@ -188,39 +189,6 @@ function convertValueToSI(units, value) {
         return roundForReadability(converter(value));
     }
     return value;
-}
-
-function splitBySearchResults(text, matches) {
-    var i = 0,
-        match,
-        plainText,
-        si,
-        textIndex = 0,
-        results = [];
-    while (i < matches.length) {
-        match = matches[i];
-        plainText = text.substring(textIndex, match.index);
-        results.push({
-            text: plainText,
-            altered: false
-        });
-
-        si = convertImperialToSI(match.units, match.numeral);
-        textIndex = match.index + match.match.length;
-        results.push({
-            text: si,
-            altered: true
-        });
-
-        i += 1;
-    }
-    if (textIndex < text.length) {
-        results.push({
-            text: text.substring(textIndex),
-            altered: false
-        });
-    }
-    return results;
 }
 
 function coalesce(data) {
@@ -382,7 +350,6 @@ module.exports = {
     singularizeUnits: fsm.singularizeUnits,
     roundForReadability: roundForReadability,
     roundDecimal: roundDecimal,
-    splitBySearchResults: splitBySearchResults,
     pluralizeUnits: pluralizeUnits,
     splitWords: fsm.splitWords,
     fsmSearch: fsm.search,
