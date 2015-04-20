@@ -1,20 +1,23 @@
 module("Basic Tests");
 
 test("conversions", function() {
-    equal(nlp.convertImperialToSI("fahrenheit", "-40"), "-40 Celsius");
-    equal(nlp.convertImperialToSI("fahrenheit", "33.8"), "1 Celsius");
-
-    equal(nlp.convertImperialToSI("mile", "10"), "16.1 kilometers");
-    equal(nlp.convertImperialToSI("foot", "10"), "3.05 meters");
-    equal(nlp.convertImperialToSI("yard", "10"), "9.14 meters");
-    equal(nlp.convertImperialToSI("gallon", "10"), "37.9 liters");
-    equal(nlp.convertImperialToSI("ounce", "10"), "283 grams");
-    equal(nlp.convertImperialToSI("oz", "10"), "283 grams");
-    equal(nlp.convertImperialToSI("pound", "10"), "4.54 kilograms");
-    equal(nlp.convertImperialToSI("inch", "10"), "25.4 centimeters");
-    equal(nlp.convertImperialToSI("in", "10"), "25.4 centimeters");
-
-    equal(nlp.convertImperialToSI("disexisting-unit", "10"), "10 disexisting-unit");
+    var tests = [
+        {unit: "fahrenheit",       value: "-40",  expected: "-40"},
+        {unit: "fahrenheit",       value: "33.8", expected: "1"},
+        {unit: "mile",             value: "10",   expected: "16.1"},
+        {unit: "foot",             value: "10",   expected: "3.05"},
+        {unit: "yard",             value: "10",   expected: "9.14"},
+        {unit: "gallon",           value: "10",   expected: "37.9"},
+        {unit: "ounce",            value: "10",   expected: "283"},
+        {unit: "oz",               value: "10",   expected: "283"},
+        {unit: "pound",            value: "10",   expected: "4.54"},
+        {unit: "inch",             value: "10",   expected: "25.4"},
+        {unit: "in",               value: "10",   expected: "25.4"},
+        {unit: "disexisting-unit", value: "10",   expected: "10"}
+    ];
+    tests.forEach(function(test) {
+        equal(nlp.convertValueToSI(test.unit, test.value), test.expected);
+    });
 });
 
 test("whitespace", function() {

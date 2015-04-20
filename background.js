@@ -87,21 +87,6 @@ function pluralizeUnits(units, value) {
     return pluralize(units, value);
 }
 
-function makeReadable(value, unit) {
-    var unitMap = {
-        "mile": "kilometer",
-        "foot": "meter",
-        "fahrenheit": "Celsius",
-        "yard": "meter",
-        "gallon": "liter",
-        "ounce": "gram",
-        "pound": "kilogram",
-        "inch": "centimeter"
-    },
-        siUnit = unitMap[unit];
-    return roundForReadability(value) + " " + pluralizeUnits(siUnit, value);
-}
-
 function convertUnit(imperial) {
     var unitMap = {
         "mile": "kilometer",
@@ -118,42 +103,6 @@ function convertUnit(imperial) {
 
 function readableUnits(value, unit) {
     return pluralizeUnits(convertUnit(unit), value);
-}
-
-// TODO: remove and port tests to use convertValueToSI
-function convertImperialToSI(units, value) {
-    var converters = {
-        "mile": function(value) {
-            return value * 1.60934;
-        },
-        "foot": function(value) {
-            return value * 0.3048;
-        },
-        "fahrenheit": function(value) {
-            return Math.round((value - 32) / 1.8);
-        },
-        "yard": function(value) {
-            return value * 0.9144;
-        },
-        "gallon": function(value) {
-            return value * 3.78541;
-        },
-        "ounce": function(value) {
-            return value * 28.3495;
-        },
-        "pound": function(value) {
-            return value * 0.453592;
-        },
-        "inch": function(value) {
-            return value * 2.54;
-        }
-    },
-        reducedUnit = reduceImperialUnitNames(units),
-        converter = converters[reducedUnit];
-    if (converter) {
-        return makeReadable(converter(value), reducedUnit);
-    }
-    return value + " " + units;
 }
 
 function convertValueToSI(units, value) {
@@ -346,7 +295,7 @@ chrome.runtime.onMessage.addListener(function(rq, sender, sendResponse) {
 module.exports = {
     reduceImperialUnitNames: reduceImperialUnitNames,
     unitsForRegex: unitsForRegex,
-    convertImperialToSI: convertImperialToSI,
+    convertValueToSI: convertValueToSI,
     singularizeUnits: fsm.singularizeUnits,
     roundForReadability: roundForReadability,
     roundDecimal: roundDecimal,
