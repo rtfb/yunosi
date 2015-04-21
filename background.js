@@ -16,11 +16,14 @@ var unitsForRegex = [
     "in"
 ],
     pluralize = require('pluralize'),
-    fsm = require('./fsmsearch.js');
+    fsm = require('./fsmsearch.js'),
+    debug = false;
 pluralize.addIrregularRule('Celsius', 'Celsius');
 
 function log(str, obj) {
-    console.log(str + ": " + JSON.stringify(obj, null, 4));
+    if (debug) {
+        console.log(str + ": " + JSON.stringify(obj, null, 4));
+    }
 }
 
 function reduceImperialUnitNames(name) {
