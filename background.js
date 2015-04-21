@@ -260,11 +260,22 @@ function resultsToNodeMap(fsmResults) {
     return dict;
 }
 
+function processText(data) {
+    var fsmResults = null,
+        subst = null,
+        coalesced = null;
+    log("text-for-processing", data);
+    fsmResults = fsm.search(data);
+    log("fsm search results", fsmResults);
+    subst = substituteBySearchResults(data, resultsToNodeMap(fsmResults));
+    log("fsm processed results", subst);
+    coalesced = coalesce(subst);
+    log("coalesced results", coalesced);
+    return coalesced;
+}
+
 chrome.runtime.onMessage.addListener(function(rq, sender, sendResponse) {
-    var value = {},
-        fsmResults,
-        tmp2 = null,
-        tmp3 = null;
+    var value = {};
     if (rq.method === "checkbox-state") {
         value[rq.id] = rq.state;
         chrome.storage.local.set(value, function () {
@@ -278,14 +289,7 @@ chrome.runtime.onMessage.addListener(function(rq, sender, sendResponse) {
             sendResponse(result);
         });
     } else if (rq.method === "text-for-processing") {
-        log("text-for-processing", rq.data);
-        fsmResults = fsm.search(rq.data);
-        log("fsm search results", fsmResults);
-        tmp2 = substituteBySearchResults(rq.data, resultsToNodeMap(fsmResults));
-        log("fsm processed results", tmp2);
-        tmp3 = coalesce(tmp2);
-        log("coalesced results", tmp3);
-        sendResponse(tmp3);
+        sendResponse(processText(rq.data));
     } else {
         sendResponse({error: true});
     }
