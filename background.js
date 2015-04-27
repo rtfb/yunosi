@@ -1,21 +1,6 @@
 'use strict';
 
-var unitsForRegex = [
-    "miles?",
-    "foot",
-    "feet",
-    "ft",
-    "fahrenheit",
-    "yards?",
-    "gallons?",
-    "ounce",
-    "oz",
-    "pounds?",
-    "inches",
-    "inch",
-    "in"
-],
-    pluralize = require('pluralize'),
+var pluralize = require('pluralize'),
     fsm = require('./fsmsearch.js'),
     debug = false;
 pluralize.addIrregularRule('Celsius', 'Celsius');
@@ -135,8 +120,7 @@ function convertValueToSI(units, value) {
             return value * 2.54;
         }
     },
-        reducedUnit = reduceImperialUnitNames(units),
-        converter = converters[reducedUnit];
+        converter = converters[reduceImperialUnitNames(units)];
     if (converter) {
         return roundForReadability(converter(value));
     }
@@ -301,7 +285,7 @@ chrome.runtime.onMessage.addListener(function(rq, sender, sendResponse) {
 
 module.exports = {
     reduceImperialUnitNames: reduceImperialUnitNames,
-    unitsForRegex: unitsForRegex,
+    unitsForRegex: fsm.unitsForRegex,
     convertValueToSI: convertValueToSI,
     singularizeUnits: fsm.singularizeUnits,
     roundForReadability: roundForReadability,
