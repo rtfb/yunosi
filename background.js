@@ -247,12 +247,12 @@ function resultsToNodeMap(fsmResults) {
     return dict;
 }
 
-function processText(data) {
+function processText(data, uiState) {
     var fsmResults = null,
         subst = null,
         coalesced = null;
     log("text-for-processing", data);
-    fsmResults = fsm.search(data);
+    fsmResults = fsm.search(data, uiState);
     log("fsm search results", fsmResults);
     subst = substituteBySearchResults(data, resultsToNodeMap(fsmResults));
     log("fsm processed results", subst);
@@ -276,7 +276,7 @@ chrome.runtime.onMessage.addListener(function(rq, sender, sendResponse) {
             sendResponse(result);
         });
     } else if (rq.method === "text-for-processing") {
-        sendResponse(processText(rq.data));
+        sendResponse(processText(rq.data, rq.uiState));
     } else {
         sendResponse({error: true});
     }

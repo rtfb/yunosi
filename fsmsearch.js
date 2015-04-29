@@ -277,7 +277,7 @@ function fsmsearch(text, origNode) {
     return state.resultSet;
 }
 
-function search(data) {
+function search(data, uiState) {
     //fsm.restart();
     var resultArray = [];
     data.forEach(function(node) {
