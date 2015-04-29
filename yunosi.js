@@ -28,34 +28,39 @@
         }
     }
 
+    function convertUnitsToSi(uiState) {
+        // Get the active tab
+        chrome.tabs.query({
+            active: true,
+            currentWindow: true
+        },
+        function(tabs) {
+            // If there is an active tab...
+            if (tabs.length > 0) {
+                // ...send a message requesting the DOM...
+                chrome.tabs.sendMessage(tabs[0].id, {
+                    method: "convert-to-si",
+                    uiState: uiState
+                }, function(response) {
+                    if (chrome.runtime.lastError) {
+                        // An error occurred :(
+                        console.log("ERROR: ", chrome.runtime.lastError);
+                    } else {
+                        // Do something useful with the HTML content
+                        console.log(response.text);
+                    }
+                });
+            }
+        });
+    }
+
     function addMainButtonListener() {
         var deimperialize = document.getElementById("deimperialize");
         deimperialize.addEventListener("click", function() {
             var highlight = document.getElementById("highlight"),
                 highlightChecked = highlight.checked;
             console.log("highlightChecked = " + highlightChecked);
-            // Get the active tab
-            chrome.tabs.query({
-                active: true,
-                currentWindow: true
-            }, function(tabs) {
-                // If there is an active tab...
-                if (tabs.length > 0) {
-                    // ...send a message requesting the DOM...
-                    chrome.tabs.sendMessage(tabs[0].id, {
-                        method: "convert-to-si",
-                        highlight: highlightChecked
-                    }, function(response) {
-                        if (chrome.runtime.lastError) {
-                            // An error occurred :(
-                            console.log("ERROR: ", chrome.runtime.lastError);
-                        } else {
-                            // Do something useful with the HTML content
-                            console.log(response.text);
-                        }
-                    });
-                }
-            });
+            convertUnitsToSi({highlight: highlightChecked});
         });
     }
 
