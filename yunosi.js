@@ -3,7 +3,7 @@
 
     function checkboxClickListener() {
         var checkboxState = {
-            method: "checkbox-state",
+            method: "set-checkbox-state",
             id: this.id,
             state: this.checked
         };

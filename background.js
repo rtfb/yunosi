@@ -263,7 +263,7 @@ function processText(data, uiState) {
 
 chrome.runtime.onMessage.addListener(function(rq, sender, sendResponse) {
     var value = {};
-    if (rq.method === "checkbox-state") {
+    if (rq.method === "set-checkbox-state") {
         value[rq.id] = rq.state;
         chrome.storage.local.set(value, function () {
             log("chrome.storage.local.set", rq);
