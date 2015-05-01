@@ -54,18 +54,26 @@
         });
     }
 
+    function getUiState(callback) {
+        chrome.runtime.sendMessage({method: "get-ui-state"}, function(resp) {
+            callback(resp);
+        });
+    }
+
     function addMainButtonListener() {
         var deimperialize = document.getElementById("deimperialize");
         deimperialize.addEventListener("click", function() {
             var highlight = document.getElementById("highlight"),
                 highlightChecked = highlight.checked;
             console.log("highlightChecked = " + highlightChecked);
-            convertUnitsToSi({highlight: highlightChecked});
+            getUiState(function(resp) {
+                convertUnitsToSi({highlight: highlightChecked, ui: resp});
+            });
         });
     }
 
     function restoreUiState() {
-        chrome.runtime.sendMessage({method: "get-ui-state"}, function(resp) {
+        getUiState(function(resp) {
             var key = null, elem = null;
             console.log("response: " + JSON.stringify(resp, null, 4));
             for (key in resp) {
