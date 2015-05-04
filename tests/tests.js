@@ -195,22 +195,32 @@ test("split words", function() {
     });
 });
 
+function strArrToObjArr(arr) {
+    return arr.map(function(item) {
+        return {nodeValue: item};
+    });
+}
+
+function strArrToIndexedNodesArr(arr) {
+    return content.nodesToIndexedArray(strArrToObjArr(arr));
+}
+
 test("searcher", function() {
     var nodes = [
-        {nodeValue: "The quick brown Lorem Ipsum didn't expect a Spanish Inquisition."},
-        {nodeValue: "foo 1 mile 2 miles 3 miles baz"},
-        {nodeValue: "A 100 bloody "},
-        {nodeValue: "miles"},
-        {nodeValue: "!"},
-        {nodeValue: "The Black Bear Trail is 0.6 miles long"},
-        {nodeValue: "The 1.35 mile self-guided nature trail"},
-        {nodeValue: "fly 3,600 miles and walk 3 miles"},
-        {nodeValue: "fly 100 yards and walk 1000 feet 40 Fahrenheit"},
-        {nodeValue: "60-inch telescope, 12 inches, 1 inch"},
-        {nodeValue: "2000 foo bar 25 miles"},
-        {nodeValue: "2000 foo 25 miles"},
-        {nodeValue: "build a 25-mile-diameter, 5,000-foot-tall lunar city"},
-        {nodeValue: "Size: 25 miles in diameter/5,000 feet tall"}
+        "The quick brown Lorem Ipsum didn't expect a Spanish Inquisition.",
+        "foo 1 mile 2 miles 3 miles baz",
+        "A 100 bloody ",
+        "miles",
+        "!",
+        "The Black Bear Trail is 0.6 miles long",
+        "The 1.35 mile self-guided nature trail",
+        "fly 3,600 miles and walk 3 miles",
+        "fly 100 yards and walk 1000 feet 40 Fahrenheit",
+        "60-inch telescope, 12 inches, 1 inch",
+        "2000 foo bar 25 miles",
+        "2000 foo 25 miles",
+        "build a 25-mile-diameter, 5,000-foot-tall lunar city",
+        "Size: 25 miles in diameter/5,000 feet tall"
     ],
     expected = [
         {
@@ -472,7 +482,7 @@ test("searcher", function() {
             }]
         }
     ],
-        actual = nlp.fsmSearch(content.nodesToIndexedArray(nodes));
+        actual = nlp.fsmSearch(strArrToIndexedNodesArr(nodes), {});
     if (actual.length != expected.length) {
         deepEqual(actual, expected);
     } else {
@@ -484,26 +494,26 @@ test("searcher", function() {
 
 test("searcher, negative tests", function() {
     var tests = [
-        {nodeValue: "This turns the ESP8266 into something much better than a UART"},
-        {nodeValue: "create a Internet of Things thing with just $5 in hardware"},
+        "This turns the ESP8266 into something much better than a UART",
+        "create a Internet of Things thing with just $5 in hardware",
         // A bug used to match this, treating "." as a malformed number and
         // "In" as inches. Adding this negative test here to guard against
         // regressions:
-        {nodeValue: "follow. Instead"}
+        "follow. Instead"
     ],
-        actual = nlp.fsmSearch(content.nodesToIndexedArray(tests));
+        actual = nlp.fsmSearch(strArrToIndexedNodesArr(tests), {});
     equal(actual.length, 0,
         "expected no results, but got " + JSON.stringify(actual, null, 4));
 });
 
 test("substitute", function() {
     var nodes = [
-        {nodeValue: "The quick brown Lorem Ipsum didn't expect a Spanish Inquisition."},
-        {nodeValue: "foo"},
-        {nodeValue: "A 100 bloody "},
-        {nodeValue: "miles"},
-        {nodeValue: "!"},
-        {nodeValue: "foo 1 mile 2 miles 3 miles baz"}
+        "The quick brown Lorem Ipsum didn't expect a Spanish Inquisition.",
+        "foo",
+        "A 100 bloody ",
+        "miles",
+        "!",
+        "foo 1 mile 2 miles 3 miles baz"
     ],
         fsmProcessedResults = [
         {
@@ -637,7 +647,7 @@ test("substitute", function() {
             }
         }
     ],
-        arr = content.nodesToIndexedArray(nodes),
+        arr = strArrToIndexedNodesArr(nodes),
         nodeMap = nlp.resultsToNodeMap(fsmProcessedResults),
         actual = nlp.substituteBySearchResults(arr, nodeMap);
     deepEqual(actual, expected);
@@ -647,15 +657,15 @@ module("Result Substitution");
 
 test("substitute in one node", function() {
     var nodes = [
-        {nodeValue: ""},
-        {nodeValue: "x"},
-        {nodeValue: "!"},
-        {nodeValue: "foo"},
-        {nodeValue: "mile"},
-        {nodeValue: "1 mile"},
-        {nodeValue: "1 mile, 2 miles"},
-        {nodeValue: "foo 1 mile baz"},
-        {nodeValue: "25-mile-diameter"}
+        "",
+        "x",
+        "!",
+        "foo",
+        "mile",
+        "1 mile",
+        "1 mile, 2 miles",
+        "foo 1 mile baz",
+        "25-mile-diameter"
     ],
         fsmProcessedResults = [
         {
@@ -754,7 +764,7 @@ test("substitute in one node", function() {
         {nodeValue: "40.2-kilometer-diameter"}
     ],
         actual = null;
-    nodes.forEach(function(node, i) {
+    strArrToObjArr(nodes).forEach(function(node, i) {
         actual = nlp.patchSingleNode(node.nodeValue, i, fsmProcessedResults);
         actual = actual.map(function(item) {
             return item.replacement.text;
