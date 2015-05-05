@@ -506,6 +506,68 @@ test("searcher, negative tests", function() {
         "expected no results, but got " + JSON.stringify(actual, null, 4));
 });
 
+function fillDefaults(dict, defaultValue) {
+    var keys = [
+        "convert-miles",
+        "convert-feet",
+        "convert-inches",
+        "convert-yards",
+        "convert-fahrenheit",
+        "convert-gallons",
+        "convert-ounces",
+        "convert-pounds"
+    ];
+    if (!dict) {
+        return dict;
+    }
+    keys.forEach(function(key) {
+        if (!dict.hasOwnProperty(key)) {
+            dict[key] = defaultValue;
+        }
+    });
+    return dict;
+}
+
+test("search with options", function() {
+    var nodes = [
+        "The quick brown Lorem Ipsum didn't expect a Spanish Inquisition.",
+        "foo 1 mile 2 miles 3 miles baz",
+        "A 100 bloody ",
+        "miles",
+        "!",
+        "The Black Bear Trail is 0.6 miles long",
+        "The 1.35 mile self-guided nature trail",
+        "fly 3,600 miles and walk 3 miles",
+        "fly 100 yards and walk 1000 feet 40 Fahrenheit",
+        "60-inch telescope, 12 inches, 1 inch",
+        "2000 foo bar 25 miles",
+        "2000 foo 25 miles",
+        "build a 25-mile-diameter, 5,000-foot-tall lunar city",
+        "Size: 25 miles in diameter/5,000 feet tall"
+    ],
+        r = function(t) {
+            return nlp.fsmSearch(strArrToIndexedNodesArr(nodes), fillDefaults(t, false));
+    };
+    equal(r(null).length, 0);
+    equal(r({"convert-miles": true}).length, 12);
+    equal(r({
+        "convert-miles": false,
+        "convert-feet": true}).length, 3);
+    /*
+    XXX: this is a very interesting test case:
+         turning miles OFF and inches ON, makes this string:
+         "25 miles in diameter" to be treated as if it were
+         "<number (25)>, <infix (miles)>, <units (in)>, <other (diameter)>".
+         Frankly, I'm unsure what to do about this case (and possibly, some
+         other equivalent cases). Always search for all possible units, but
+         mark some results as not to be displayed?
+
+    equal(r({
+        "convert-miles": false,
+        "convert-inches": true}).length, 3);
+    */
+});
+
 test("substitute", function() {
     var nodes = [
         "The quick brown Lorem Ipsum didn't expect a Spanish Inquisition.",

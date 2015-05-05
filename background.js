@@ -252,7 +252,7 @@ function processText(data, uiState) {
         subst = null,
         coalesced = null;
     log("text-for-processing", data);
-    fsmResults = fsm.search(data, uiState);
+    fsmResults = fsm.search(data, uiState.ui);
     log("fsm search results", fsmResults);
     subst = substituteBySearchResults(data, resultsToNodeMap(fsmResults));
     log("fsm processed results", subst);

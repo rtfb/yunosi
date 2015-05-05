@@ -66,7 +66,8 @@ module.exports = function(grunt) {
                     node: true,
                     todo: true,
                     unparam: true,
-                    white: true
+                    white: true,
+                    nomen: true
                 }
             }
         }

@@ -19,7 +19,61 @@ var StateMachine = require("javascript-state-machine"),
         "inch",
         "in"
     ],
-        unitsRe = new RegExp(unitsForRegex.join("|"), "gi");
+    unitsRe = null,
+    allUnitsRe = new RegExp(unitsForRegex.join("|"), "gi");
+
+function isEmptyObject(obj) {
+    if (typeof obj !== "object") {
+        return false;
+    }
+    return Object.keys(obj).length === 0;
+}
+
+function strStartsWith(str, prefix) {
+    return str.substr(0, prefix.length) === prefix;
+}
+
+function _compileUnitsRe(uiState) {
+    var reParts = [],
+        partsMap = {
+            "convert-miles": ["miles?"],
+            "convert-feet": ["foot", "feet", "ft"],
+            "convert-inches": ["inches", "inch", "in"],
+            "convert-yards": ["yards?"],
+            "convert-fahrenheit": ["fahrenheit"],
+            "convert-gallons": ["gallons?"],
+            "convert-ounces": ["ounce", "oz"],
+            "convert-pounds": ["pounds?"]
+        };
+    Object.keys(partsMap).forEach(function(key) {
+        if (uiState.hasOwnProperty(key)) {
+            var propParts = key.split("-");
+            if (propParts.length !== 2) {
+                return;
+            }
+            if (propParts[0] !== "convert") {
+                return;
+            }
+            if (!uiState[key]) {
+                return;
+            }
+            reParts = reParts.concat(partsMap[key]);
+        } else {
+            reParts = reParts.concat(partsMap[key]);
+        }
+    });
+    return new RegExp(reParts.join("|"), "gi");
+}
+
+function compileUnitsRe(uiState) {
+    if (!uiState) {
+        return new RegExp("", "gi");
+    }
+    if (isEmptyObject(uiState)) {
+        return allUnitsRe;
+    }
+    return _compileUnitsRe(uiState);
+}
 
 function log(msg) {
     if (debugLog) {
@@ -279,6 +333,7 @@ function fsmsearch(text, origNode) {
 
 function search(data, uiState) {
     //fsm.restart();
+    unitsRe = compileUnitsRe(uiState);
     var resultArray = [];
     data.forEach(function(node) {
         var text = node.text,
