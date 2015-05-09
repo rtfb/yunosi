@@ -507,20 +507,10 @@ test("searcher, negative tests", function() {
 });
 
 function fillDefaults(dict, defaultValue) {
-    var keys = [
-        "convert-miles",
-        "convert-feet",
-        "convert-inches",
-        "convert-yards",
-        "convert-fahrenheit",
-        "convert-gallons",
-        "convert-ounces",
-        "convert-pounds"
-    ];
     if (!dict) {
         return dict;
     }
-    keys.forEach(function(key) {
+    Object.keys(nlp.regexPartsMap).forEach(function(key) {
         if (!dict.hasOwnProperty(key)) {
             dict[key] = defaultValue;
         }

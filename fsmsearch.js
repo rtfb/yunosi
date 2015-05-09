@@ -4,6 +4,18 @@
 
 var StateMachine = require("javascript-state-machine"),
     debugLog = false,
+    regexPartsMap = {
+        "convert-miles": ["miles?"],
+        "convert-feet": ["foot", "feet", "ft"],
+        "convert-inches": ["inches", "inch", "in"],
+        "convert-yards": ["yards?"],
+        "convert-fahrenheit": ["fahrenheit"],
+        "convert-gallons": ["gallons?"],
+        "convert-ounces": ["ounce", "oz"],
+        "convert-pounds": ["pounds?"]
+    },
+    // TODO: unitsForRegex can be constructed by flattening all values from
+    // regexPartsMap
     unitsForRegex = [
         "miles?",
         "foot",
@@ -34,18 +46,8 @@ function strStartsWith(str, prefix) {
 }
 
 function _compileUnitsRe(uiState) {
-    var reParts = [],
-        partsMap = {
-            "convert-miles": ["miles?"],
-            "convert-feet": ["foot", "feet", "ft"],
-            "convert-inches": ["inches", "inch", "in"],
-            "convert-yards": ["yards?"],
-            "convert-fahrenheit": ["fahrenheit"],
-            "convert-gallons": ["gallons?"],
-            "convert-ounces": ["ounce", "oz"],
-            "convert-pounds": ["pounds?"]
-        };
-    Object.keys(partsMap).forEach(function(key) {
+    var reParts = [];
+    Object.keys(regexPartsMap).forEach(function(key) {
         if (uiState.hasOwnProperty(key)) {
             var propParts = key.split("-");
             if (propParts.length !== 2) {
@@ -57,9 +59,9 @@ function _compileUnitsRe(uiState) {
             if (!uiState[key]) {
                 return;
             }
-            reParts = reParts.concat(partsMap[key]);
+            reParts = reParts.concat(regexPartsMap[key]);
         } else {
-            reParts = reParts.concat(partsMap[key]);
+            reParts = reParts.concat(regexPartsMap[key]);
         }
     });
     return new RegExp(reParts.join("|"), "gi");
@@ -347,5 +349,6 @@ module.exports = {
     search: search,
     splitWords: splitWords,
     singularizeUnits: singularizeUnits,
-    unitsForRegex: unitsForRegex
+    unitsForRegex: unitsForRegex,
+    regexPartsMap: regexPartsMap
 };
