@@ -51,8 +51,9 @@ test("reduction", function() {
         "inches": "inches",
         "inch": "inch",
         "in": "inch"
-    }
-    equal(Object.keys(tests).length, nlp.unitsForRegex.length);
+    },
+        allParts = nlp.allRegexpParts(nlp.regexPartsMap);
+    equal(Object.keys(tests).length, allParts.length);
     for (var key in tests) {
         equal(nlp.reduceImperialUnitNames(key), tests[key]);
     }

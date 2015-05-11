@@ -14,25 +14,15 @@ var StateMachine = require("javascript-state-machine"),
         "convert-ounces": ["ounce", "oz"],
         "convert-pounds": ["pounds?"]
     },
-    // TODO: unitsForRegex can be constructed by flattening all values from
-    // regexPartsMap
-    unitsForRegex = [
-        "miles?",
-        "foot",
-        "feet",
-        "ft",
-        "fahrenheit",
-        "yards?",
-        "gallons?",
-        "ounce",
-        "oz",
-        "pounds?",
-        "inches",
-        "inch",
-        "in"
-    ],
-    unitsRe = null,
-    allUnitsRe = new RegExp(unitsForRegex.join("|"), "gi");
+    unitsRe = null;
+
+function allRegexpParts(dict) {
+    // Extract all values from a given dict (all have to be arrays) and squish
+    // them together into a single array:
+    return [].concat.apply([], Object.keys(dict).map(function(key) {
+        return dict[key];
+    }));
+}
 
 function isEmptyObject(obj) {
     if (typeof obj !== "object") {
@@ -72,7 +62,7 @@ function compileUnitsRe(uiState) {
         return new RegExp("", "gi");
     }
     if (isEmptyObject(uiState)) {
-        return allUnitsRe;
+        return new RegExp(allRegexpParts(regexPartsMap).join("|"), "gi");
     }
     return _compileUnitsRe(uiState);
 }
@@ -349,6 +339,6 @@ module.exports = {
     search: search,
     splitWords: splitWords,
     singularizeUnits: singularizeUnits,
-    unitsForRegex: unitsForRegex,
+    allRegexpParts: allRegexpParts,
     regexPartsMap: regexPartsMap
 };

@@ -285,7 +285,7 @@ chrome.runtime.onMessage.addListener(function(rq, sender, sendResponse) {
 
 module.exports = {
     reduceImperialUnitNames: reduceImperialUnitNames,
-    unitsForRegex: fsm.unitsForRegex,
+    allRegexpParts: fsm.allRegexpParts,
     regexPartsMap: fsm.regexPartsMap,
     convertValueToSI: convertValueToSI,
     singularizeUnits: fsm.singularizeUnits,
