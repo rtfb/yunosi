@@ -262,7 +262,8 @@ function processText(data, uiState) {
 }
 
 chrome.runtime.onMessage.addListener(function(rq, sender, sendResponse) {
-    var value = {};
+    var value = {},
+        yunosiUrl = "http://github.com/rtfb/yunosi#readme";
     if (rq.method === "set-checkbox-state") {
         value[rq.id] = rq.state;
         chrome.storage.local.set(value, function () {
@@ -277,6 +278,8 @@ chrome.runtime.onMessage.addListener(function(rq, sender, sendResponse) {
         });
     } else if (rq.method === "text-for-processing") {
         sendResponse(processText(rq.data, rq.uiState));
+    } else if (rq.method === "show-readme") {
+        chrome.tabs.create({url: yunosiUrl});
     } else {
         sendResponse({error: true});
     }

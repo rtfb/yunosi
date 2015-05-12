@@ -72,6 +72,15 @@
         });
     }
 
+    function addShowReadmeButtonListener() {
+        var showLicense = document.getElementById("show-readme");
+        showLicense.addEventListener("click", function() {
+            chrome.runtime.sendMessage({method: "show-readme"}, function(resp) {
+                console.log("show-readme: " + resp);
+            });
+        });
+    }
+
     function restoreUiState() {
         getUiState(function(resp) {
             var key = null, elem = null;
@@ -87,6 +96,7 @@
 
     window.addEventListener("DOMContentLoaded", function() {
         addMainButtonListener();
+        addShowReadmeButtonListener();
         addCheckboxClickListeners(document.getElementsByTagName("input"));
         restoreUiState();
     });
