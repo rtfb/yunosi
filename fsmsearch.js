@@ -12,7 +12,7 @@ var StateMachine = require("javascript-state-machine"),
         "convert-fahrenheit": ["fahrenheit"],
         "convert-gallons": ["gallons?"],
         "convert-ounces": ["ounce", "oz"],
-        "convert-pounds": ["pounds?"]
+        "convert-pounds": ["pounds?", "lbs?"]
     },
     unitsRe = null;
 

@@ -50,7 +50,8 @@ test("reduction", function() {
         "pounds": "pounds",
         "inches": "inches",
         "inch": "inch",
-        "in": "inch"
+        "in": "inch",
+        "lb": "pound"
     },
         allParts = nlp.allRegexpParts(nlp.regexPartsMap);
     equal(Object.keys(tests).length, allParts.length);

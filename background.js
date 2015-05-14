@@ -15,7 +15,9 @@ function reduceImperialUnitNames(name) {
     var abbrevs = {
         "oz": "ounce",
         "in": "inch",
-        "ft": "foot"
+        "ft": "foot",
+        "lb": "pound",
+        "lbs": "pound"
     };
     if (abbrevs.hasOwnProperty(name)) {
         return abbrevs[name];
