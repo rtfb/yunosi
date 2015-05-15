@@ -222,7 +222,9 @@ test("searcher", function() {
         "2000 foo bar 25 miles",
         "2000 foo 25 miles",
         "build a 25-mile-diameter, 5,000-foot-tall lunar city",
-        "Size: 25 miles in diameter/5,000 feet tall"
+        "Size: 25 miles in diameter/5,000 feet tall",
+        "long, wide six-inch thick planks",
+        "The three-inch-thick planks"
     ],
     expected = [
         {
@@ -481,6 +483,28 @@ test("searcher", function() {
                 index: 27,
                 fragType: "numeral",
                 match: "5,000 feet"
+            }]
+        },
+        {
+            numeral: 6,
+            units: "inch",
+            continuous: true,
+            fragments: [{
+                origNode: 14,
+                index: 11,
+                fragType: "numeral",
+                match: "six-inch"
+            }]
+        },
+        {
+            numeral: 3,
+            units: "inch",
+            continuous: true,
+            fragments: [{
+                origNode: 15,
+                index: 4,
+                fragType: "numeral",
+                match: "three-inch"
             }]
         }
     ],

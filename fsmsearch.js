@@ -14,7 +14,13 @@ var StateMachine = require("javascript-state-machine"),
         "convert-ounces": ["ounce", "oz"],
         "convert-pounds": ["pounds?", "lbs?"]
     },
-    unitsRe = null;
+    unitsRe = null,
+    numerals = [
+        "one", "two", "three", "four", "five", "six", "seven", "eight",
+        "nine", "ten", "eleven", "twelve", "thirteen", "fourteen",
+        "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty"
+    ],
+    numeralsRe = new RegExp(numerals.join("|"), "gi");
 
 function allRegexpParts(dict) {
     // Extract all values from a given dict (all have to be arrays) and squish
@@ -93,7 +99,12 @@ function logState(evt, from, to, msg) {
 }
 
 function interpretNum(what) {
+    var index = -1;
     what = what.replace(",", "");
+    index = numerals.indexOf(what.toLowerCase());
+    if (index !== -1) {
+        return index + 1;
+    }
     return parseFloat(what);
 }
 
@@ -248,7 +259,7 @@ function isFullMatch(word, re) {
 function isNumber(word) {
     log("isNumber: " + word);
     var numberRe = /-?\+?[\d,]*\.?\d+/g;
-    return isFullMatch(word, numberRe);
+    return isFullMatch(word, numberRe) || isFullMatch(word, numeralsRe);
 }
 
 function isUnit(word) {
