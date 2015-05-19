@@ -298,7 +298,7 @@ module.exports = {
     roundDecimal: roundDecimal,
     pluralizeUnits: pluralizeUnits,
     splitWords: fsm.splitWords,
-    fsmSearch: fsm.search,
+    search: fsm.search,
     substituteBySearchResults: substituteBySearchResults,
     patchSingleNode: patchSingleNode,
     resultsToNodeMap: resultsToNodeMap

@@ -508,7 +508,7 @@ test("searcher", function() {
             }]
         }
     ],
-        actual = nlp.fsmSearch(strArrToIndexedNodesArr(nodes), {});
+        actual = nlp.search(strArrToIndexedNodesArr(nodes), {});
     if (actual.length != expected.length) {
         deepEqual(actual, expected);
     } else {
@@ -527,7 +527,7 @@ test("searcher, negative tests", function() {
         // regressions:
         "follow. Instead"
     ],
-        actual = nlp.fsmSearch(strArrToIndexedNodesArr(tests), {});
+        actual = nlp.search(strArrToIndexedNodesArr(tests), {});
     equal(actual.length, 0,
         "expected no results, but got " + JSON.stringify(actual, null, 4));
 });
@@ -562,7 +562,7 @@ test("search with options", function() {
         "Size: 25 miles in diameter/5,000 feet tall"
     ],
         r = function(t) {
-            return nlp.fsmSearch(strArrToIndexedNodesArr(nodes), fillDefaults(t, false));
+            return nlp.search(strArrToIndexedNodesArr(nodes), fillDefaults(t, false));
     };
     equal(r(null).length, 0);
     equal(r({"convert-miles": true}).length, 12);
