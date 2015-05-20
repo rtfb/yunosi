@@ -9,7 +9,7 @@ module.exports = function(grunt) {
                 files: {
                     'build/background.js': [
                         'background.js'
-                    ],
+                    ]
                 },
                 options: {
                     browserifyOptions: {
