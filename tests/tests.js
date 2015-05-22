@@ -60,14 +60,6 @@ test("reduction", function() {
     }
 });
 
-test("singularization", function() {
-    var str = "mile miles foot feet fahrenheit fahrenheits yard yards "
-        + "gallon gallons ounce ounces pound pounds inch inches";
-    var exp = "mile mile foot foot fahrenheit fahrenheit yard yard "
-        + "gallon gallon ounce ounce pound pound inch inch";
-    equal(nlp.singularizeUnits(str), exp);
-});
-
 test("pluralization", function() {
     equal(nlp.pluralizeUnits('kilometer', 1), 'kilometer');
     equal(nlp.pluralizeUnits('kilometer', 5), 'kilometers');

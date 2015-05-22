@@ -279,3 +279,11 @@ test("search with options", function() {
         "convert-inches": true}).length, 3);
     */
 });
+
+test("singularization", function() {
+    var str = "mile miles foot feet fahrenheit fahrenheits yard yards "
+        + "gallon gallons ounce ounces pound pounds inch inches";
+    var exp = "mile mile foot foot fahrenheit fahrenheit yard yard "
+        + "gallon gallon ounce ounce pound pound inch inch";
+    equal(nlp.singularizeUnits(str), exp);
+});
