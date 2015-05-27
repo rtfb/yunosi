@@ -18,8 +18,13 @@ module.exports = function(grunt) {
                 }
             }
         },
-        qunit: { // internal task or name of a plugin (like "qunit")
-            all: ['tests/*.html']
+        blanket_qunit: {
+            all: {
+                options: {
+                    urls: ['tests/index.html?coverage=true&gruntReport'],
+                    threshold: 50
+                }
+            }
         },
         watch: {
             files: [
@@ -27,7 +32,7 @@ module.exports = function(grunt) {
                 'tests/*.html',
                 '*.js'
             ],
-            tasks: ['browserify', 'qunit', 'jslint']
+            tasks: ['browserify', 'blanket_qunit', 'jslint']
         },
         jslint: {
             client: {
@@ -73,10 +78,10 @@ module.exports = function(grunt) {
         }
     });
     // load up your plugins
-    grunt.loadNpmTasks('grunt-contrib-qunit');
+    grunt.loadNpmTasks('grunt-blanket-qunit');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-jslint');
     grunt.loadNpmTasks('grunt-browserify');
     // register one or more task lists (you should ALWAYS have a "default" task list)
-    grunt.registerTask('default', ['browserify', 'qunit', 'jslint']);
+    grunt.registerTask('default', ['browserify', 'blanket_qunit', 'jslint']);
 };
