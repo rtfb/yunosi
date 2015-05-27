@@ -1,6 +1,10 @@
 {
   "name": "yunosi",
   "version": "0.0.4",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:rtfb/yunosi.git"
+  },
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-browserify": "~3.2.0",
