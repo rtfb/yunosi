@@ -21,9 +21,17 @@ module.exports = function(grunt) {
         blanket_qunit: {
             all: {
                 options: {
-                    urls: ['tests/index.html?coverage=true&gruntReport'],
+                    urls: ['tests/index.html?coverage=true&gruntReport&lcovReport'],
                     threshold: 50
                 }
+            }
+        },
+        coveralls: {
+            options: {
+                force: true
+            },
+            all: {
+                src: '.coverage-results/core.lcov',
             }
         },
         watch: {
@@ -76,6 +84,9 @@ module.exports = function(grunt) {
                 }
             }
         }
+    });
+    grunt.event.on('qunit.report', function(data) {
+        grunt.file.write('.coverage-results/core.lcov', data);
     });
     // load up your plugins
     grunt.loadNpmTasks('grunt-blanket-qunit');
