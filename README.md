@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/rtfb/yunosi.svg?branch=master)](https://travis-ci.org/rtfb/yunosi)
+[![Build Status](travis-image)](travis-url)
 [![Coverage Status][coveralls-image]][coveralls-url]
 
 Y U NO SI?!
@@ -12,9 +12,7 @@ proper units are two easy clicks away.
 
 ## Installing
 
-Just head to [Chrome
-store](https://chrome.google.com/webstore/detail/y-u-no-si/hmmkmklkdfmocajnanplbjmpajjjhhob)
-and click through.
+Just head to [Chrome store](chrome-store-url) and click through.
 
 ## Developer's build
 
@@ -26,5 +24,8 @@ grunt-cli`, `npm install` and you're ready to `grunt` to run tests once or
 
 AGPL, see [LICENSE](LICENSE).
 
+[chrome-store-url]: https://chrome.google.com/webstore/detail/y-u-no-si/hmmkmklkdfmocajnanplbjmpajjjhhob
+[travis-image]: https://travis-ci.org/rtfb/yunosi.svg?branch=master
+[travis-url]: https://travis-ci.org/rtfb/yunosi
 [coveralls-image]: https://coveralls.io/repos/rtfb/yunosi/badge.svg
 [coveralls-url]: https://coveralls.io/r/rtfb/yunosi
