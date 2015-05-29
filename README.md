@@ -1,4 +1,4 @@
-[![Build Status](travis-image)](travis-url)
+[![Build Status][travis-image]][travis-url]
 [![Coverage Status][coveralls-image]][coveralls-url]
 
 Y U NO SI?!
@@ -12,7 +12,7 @@ proper units are two easy clicks away.
 
 ## Installing
 
-Just head to [Chrome store](chrome-store-url) and click through.
+Just head to [Chrome store][chrome-store-url] and click through.
 
 ## Developer's build
 
