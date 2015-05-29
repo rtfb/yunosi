@@ -15,6 +15,7 @@ node_modules/qunitjs:
 
 yunosi.zip: node_modules/qunitjs $(addprefix build/, ${TARGETS})
 	grunt
+	grunt test_cover
 	cd build && zip yunosi.zip *
 
 build/%.js: %.js

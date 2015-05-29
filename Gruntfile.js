@@ -21,8 +21,26 @@ module.exports = function(grunt) {
         blanket_qunit: {
             all: {
                 options: {
-                    urls: ['tests/index.html?coverage=true&gruntReport&lcovReport'],
+                    urls: ['tests/index.html?coverage=true&gruntReport'],
                     threshold: 50
+                }
+            }
+        },
+        qunit: {
+            all: {
+                options: {
+                    urls: ['tests/index.html?coverage=true']
+                }
+            }
+        },
+        qunit_blanket_lcov: {
+            all: {
+                files: [{
+                    src: ['content.js', './build/background.js']
+                }],
+                options: {
+                    dest: '.coverage-results/core.lcov',
+                    force: true
                 }
             }
         },
@@ -85,14 +103,14 @@ module.exports = function(grunt) {
             }
         }
     });
-    grunt.event.on('qunit.report', function(data) {
-        grunt.file.write('.coverage-results/core.lcov', data);
-    });
     // load up your plugins
     grunt.loadNpmTasks('grunt-blanket-qunit');
+    grunt.loadNpmTasks('grunt-contrib-qunit');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-jslint');
     grunt.loadNpmTasks('grunt-browserify');
+    grunt.loadNpmTasks('grunt-qunit-blanket-lcov');
     // register one or more task lists (you should ALWAYS have a "default" task list)
+    grunt.registerTask('test_cover', ['qunit_blanket_lcov', 'qunit']);
     grunt.registerTask('default', ['browserify', 'blanket_qunit', 'jslint']);
 };
