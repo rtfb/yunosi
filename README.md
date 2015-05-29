@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/rtfb/yunosi.svg?branch=master)](https://travis-ci.org/rtfb/yunosi)
+[![Coverage Status][coveralls-image]][coveralls-url]
 
 Y U NO SI?!
 ===========
@@ -24,3 +25,6 @@ grunt-cli`, `npm install` and you're ready to `grunt` to run tests once or
 ## License
 
 AGPL, see [LICENSE](LICENSE).
+
+[coveralls-image]: https://coveralls.io/repos/rtfb/yunosi/badge.svg
+[coveralls-url]: https://coveralls.io/r/rtfb/yunosi
