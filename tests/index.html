@@ -19,16 +19,6 @@
 if (location.href.match(/(\?|&)gruntReport($|&|=)/)) {
     blanket.options("reporter", "../node_modules/grunt-blanket-qunit/reporter/grunt-reporter.js");
 }
-// LCOV reporter, only if called with "lcovReport" parameter
-if (location.href.match(/(\?|&)lcovReport($|&|=)/)) {
-    blanket.options("reporter", "../node_modules/blanket/src/reporters/lcov_reporter.js");
-    blanket.options("reporter_options", {toHTML: false});
-
-    // send results to PhantomJS
-    QUnit.done(function() {
-        alert(JSON.stringify(['qunit.report', window._$blanket_LCOV]));
-    });
-}
 </script>
 
 
