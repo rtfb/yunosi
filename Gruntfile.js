@@ -36,7 +36,9 @@ module.exports = function(grunt) {
         qunit_blanket_lcov: {
             all: {
                 files: [{
-                    src: ['content.js', './build/background.js']
+                    src: 'build/background.js'
+                }, {
+                    src: 'content.js'
                 }],
                 options: {
                     dest: '.coverage-results/core.lcov',
