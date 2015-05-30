@@ -5,6 +5,7 @@
     "type": "git",
     "url": "git@github.com:rtfb/yunosi.git"
   },
+  "license": "AGPL-1.0",
   "devDependencies": {
     "blanket": "=1.1.7",
     "grunt": "~0.4.1",
