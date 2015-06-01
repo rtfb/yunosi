@@ -36,6 +36,20 @@ test("whitespace", function() {
     });
 });
 
+test("make nodes", function() {
+    var tmp = document.createTextNode;
+    document.createTextNode = function(text) {
+        equal(text, "foo");
+    }
+    content.makeTextOrSpanNode({text: "foo"}, false);
+    content.makeTextOrSpanNode({text: "foo", altered: false}, false);
+    content.makeTextOrSpanNode({text: "foo", altered: false}, true);
+    document.createTextNode = tmp;
+    var elem = content.makeTextOrSpanNode({text: "foo", altered: true}, true);
+    equal(elem.getAttribute("style"), "background-color: yellow;");
+    equal(elem.tagName, "SPAN");
+});
+
 test("reduction", function() {
     var tests = {
         "miles": "miles",

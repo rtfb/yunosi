@@ -91,6 +91,7 @@ var content = (function() {
     });
 
     return {
+        makeTextOrSpanNode: makeTextOrSpanNode,
         isWhiteSpaceOnly: isWhiteSpaceOnly,
         getAllTextNodes: getAllTextNodes,
         nodesToIndexedArray: nodesToIndexedArray
