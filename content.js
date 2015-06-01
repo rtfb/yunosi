@@ -36,14 +36,22 @@ var content = (function() {
         return arr;
     }
 
-    function makeTextOrSpanNode(data, highlight) {
-        if (!data.altered || !highlight) {
-            return document.createTextNode(data.text);
-        }
+    function makeTextNode(text) {
+        return document.createTextNode(text);
+    }
+
+    function makeSpanNode(text) {
         var span = document.createElement('span');
         span.setAttribute("style", "background-color: yellow;");
-        span.appendChild(document.createTextNode(data.text));
+        span.appendChild(document.createTextNode(text));
         return span;
+    }
+
+    function makeTextOrSpanNode(data, highlight) {
+        if (!data.altered || !highlight) {
+            return makeTextNode(data.text);
+        }
+        return makeSpanNode(data.text);
     }
 
     function replaceTextNodes(origNodes, newData, highlight) {
