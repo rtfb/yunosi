@@ -347,6 +347,8 @@ function search(data, uiState) {
 }
 
 module.exports = {
+    isEmptyObject: isEmptyObject,
+    strStartsWith: strStartsWith,
     search: search,
     splitWords: splitWords,
     singularizeUnits: singularizeUnits,

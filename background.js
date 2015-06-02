@@ -289,6 +289,8 @@ chrome.runtime.onMessage.addListener(function(rq, sender, sendResponse) {
 });
 
 module.exports = {
+    isEmptyObject: fsm.isEmptyObject,
+    strStartsWith: fsm.strStartsWith,
     reduceImperialUnitNames: reduceImperialUnitNames,
     allRegexpParts: fsm.allRegexpParts,
     regexPartsMap: fsm.regexPartsMap,

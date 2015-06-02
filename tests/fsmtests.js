@@ -287,3 +287,15 @@ test("singularization", function() {
         + "gallon gallon ounce ounce pound pound inch inch";
     equal(nlp.singularizeUnits(str), exp);
 });
+
+test("helpers", function() {
+    equal(nlp.isEmptyObject({}), true);
+    equal(nlp.isEmptyObject("a"), false);
+    equal(nlp.isEmptyObject(1), false);
+    equal(nlp.isEmptyObject([]), true); // apparently...
+
+    equal(nlp.strStartsWith("", ""), true);
+    equal(nlp.strStartsWith("x", "x"), true);
+    equal(nlp.strStartsWith("xxx", "x"), true);
+    equal(nlp.strStartsWith("xxx", "a"), false);
+});
