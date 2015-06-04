@@ -45,13 +45,6 @@ function _compileUnitsRe(uiState) {
     var reParts = [];
     Object.keys(regexPartsMap).forEach(function(key) {
         if (uiState.hasOwnProperty(key)) {
-            var propParts = key.split("-");
-            if (propParts.length !== 2) {
-                return;
-            }
-            if (propParts[0] !== "convert") {
-                return;
-            }
             if (!uiState[key]) {
                 return;
             }
@@ -60,17 +53,21 @@ function _compileUnitsRe(uiState) {
             reParts = reParts.concat(regexPartsMap[key]);
         }
     });
-    return new RegExp(reParts.join("|"), "gi");
+    return reParts.join("|");
+}
+
+function constructUnitsRe(uiState) {
+    if (!uiState) {
+        return "";
+    }
+    if (isEmptyObject(uiState)) {
+        return allRegexpParts(regexPartsMap).join("|");
+    }
+    return _compileUnitsRe(uiState);
 }
 
 function compileUnitsRe(uiState) {
-    if (!uiState) {
-        return new RegExp("", "gi");
-    }
-    if (isEmptyObject(uiState)) {
-        return new RegExp(allRegexpParts(regexPartsMap).join("|"), "gi");
-    }
-    return _compileUnitsRe(uiState);
+    return new RegExp(constructUnitsRe(uiState), "gi");
 }
 
 function log(msg) {
@@ -349,6 +346,7 @@ function search(data, uiState) {
 module.exports = {
     isEmptyObject: isEmptyObject,
     strStartsWith: strStartsWith,
+    constructUnitsRe: constructUnitsRe,
     search: search,
     splitWords: splitWords,
     singularizeUnits: singularizeUnits,

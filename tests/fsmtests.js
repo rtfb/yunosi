@@ -299,3 +299,12 @@ test("helpers", function() {
     equal(nlp.strStartsWith("xxx", "x"), true);
     equal(nlp.strStartsWith("xxx", "a"), false);
 });
+
+test("units by UI state", function() {
+    var allUnits = "miles?|foot|feet|ft|inches|inch|in|yards?|fahrenheit|gallons?|ounce|oz|pounds?|lbs?";
+    equal(nlp.constructUnitsRe(), "");
+    equal(nlp.constructUnitsRe({}), allUnits);
+    equal(nlp.constructUnitsRe(fillDefaults({"convert-miles": true}, false)), "miles?");
+    equal(nlp.constructUnitsRe({"goo": true}), allUnits);
+    equal(nlp.constructUnitsRe({"quaff-gallons": true}), allUnits);
+});
