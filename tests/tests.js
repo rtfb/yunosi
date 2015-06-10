@@ -482,3 +482,18 @@ test("fsm result remapper", function() {
         };
     deepEqual(nlp.resultsToNodeMap(fsmResults), expected);
 })
+
+test("content listener", function() {
+    chrome.runtime.sendMessage = function(rq, cb) {
+        equal("text-for-processing", rq.method);
+        cb([]);
+    }
+    content.contentMsgListener({
+        method: "convert-to-si",
+        uiState: {
+            highlight: true
+        }
+    }, null, function(response) {
+        equal("ok", response.text);
+    });
+});

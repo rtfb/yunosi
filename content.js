@@ -75,8 +75,8 @@ var content = (function() {
         });
     }
 
-    chrome.runtime.onMessage.addListener(function(rq, sender, sendResponse) {
-        if (rq.method && (rq.method === "convert-to-si")) {
+    var contentMsgListener = function(rq, sender, sendResponse) {
+        if (rq.method === "convert-to-si") {
             var textNodes = getAllTextNodes(document.body);
             chrome.runtime.sendMessage({
                 method: "text-for-processing",
@@ -88,12 +88,15 @@ var content = (function() {
                 sendResponse({"text": "ok"});
             });
         }
-    });
+    };
+
+    chrome.runtime.onMessage.addListener(contentMsgListener);
 
     return {
         makeTextOrSpanNode: makeTextOrSpanNode,
         isWhiteSpaceOnly: isWhiteSpaceOnly,
         getAllTextNodes: getAllTextNodes,
-        nodesToIndexedArray: nodesToIndexedArray
+        nodesToIndexedArray: nodesToIndexedArray,
+        contentMsgListener: contentMsgListener
     };
 }());
