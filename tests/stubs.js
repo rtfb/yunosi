@@ -4,5 +4,13 @@ var chrome = {
             addListener: function() {
             }
         }
+    },
+    storage: {
+        local: {
+            set: function() {}
+        }
+    },
+    tabs: {
+        create: function() {}
     }
 };

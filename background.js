@@ -263,7 +263,7 @@ function processText(data, uiState) {
     return coalesced;
 }
 
-chrome.runtime.onMessage.addListener(function(rq, sender, sendResponse) {
+var backgroundMsgListener = function(rq, sender, sendResponse) {
     var value = {},
         yunosiUrl = "http://github.com/rtfb/yunosi#readme";
     if (rq.method === "set-checkbox-state") {
@@ -286,7 +286,9 @@ chrome.runtime.onMessage.addListener(function(rq, sender, sendResponse) {
         sendResponse({error: true});
     }
     return true;
-});
+};
+
+chrome.runtime.onMessage.addListener(backgroundMsgListener);
 
 module.exports = {
     isEmptyObject: fsm.isEmptyObject,
@@ -304,5 +306,6 @@ module.exports = {
     search: fsm.search,
     substituteBySearchResults: substituteBySearchResults,
     patchSingleNode: patchSingleNode,
-    resultsToNodeMap: resultsToNodeMap
+    resultsToNodeMap: resultsToNodeMap,
+    backgroundMsgListener: backgroundMsgListener
 };

@@ -497,3 +497,44 @@ test("content listener", function() {
         equal("ok", response.text);
     });
 });
+
+test("background listener: set-checkbox-state", function() {
+    chrome.storage.local.set = function(value, cb) {
+        equal(value["goo"], "foo");
+        cb();
+    };
+    nlp.backgroundMsgListener({
+        method: "set-checkbox-state",
+        id: "goo",
+        state: "foo"
+    }, null, function(response) {
+        equal(response.success, true);
+    });
+});
+
+test("background listener: get-ui-state", function() {
+    expect(0);
+});
+
+test("background listener: text-for-processing", function() {
+    expect(0);
+});
+
+test("background listener: show-readme", function() {
+    chrome.tabs.create = function(rq) {
+        equal(rq.url, "http://github.com/rtfb/yunosi#readme");
+    };
+    nlp.backgroundMsgListener({
+        method: "show-readme"
+    }, null, function(response) {
+        equal(response.success, true);
+    });
+});
+
+test("background listener: unknown message", function() {
+    nlp.backgroundMsgListener({
+        method: "disexistant"
+    }, null, function(response) {
+        equal(response.error, true);
+    });
+});
