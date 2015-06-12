@@ -485,7 +485,7 @@ test("fsm result remapper", function() {
 
 test("content listener", function() {
     chrome.runtime.sendMessage = function(rq, cb) {
-        equal("text-for-processing", rq.method);
+        equal(rq.method, "text-for-processing");
         cb([]);
     }
     content.contentMsgListener({
@@ -494,7 +494,7 @@ test("content listener", function() {
             highlight: true
         }
     }, null, function(response) {
-        equal("ok", response.text);
+        equal(response.text, "ok");
     });
 });
 
