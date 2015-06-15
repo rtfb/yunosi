@@ -483,6 +483,49 @@ test("fsm result remapper", function() {
     deepEqual(nlp.resultsToNodeMap(fsmResults), expected);
 })
 
+test("coalesce results", function() {
+    var tests = [{
+        data: [],
+        expected: []
+    }, {
+        data: [{
+            origNode: 1,
+            replacement: {}
+        }],
+        expected: [{
+            origNode: 1,
+            replacement: [{}]
+        }]
+    }, {
+        data: [{
+            origNode: 1,
+            replacement: {k: 'a'}
+        }, {
+            origNode: 1,
+            replacement: {k: 'b'}
+        }, {
+            origNode: 2,
+            replacement: {k: 'c'}
+        }, {
+            origNode: 1,
+            replacement: {k: 'd'}
+        }],
+        expected: [{
+            origNode: 1,
+            replacement: [{k: 'a'}, {k: 'b'}]
+        }, {
+            origNode: 2,
+            replacement: [{k: 'c'}]
+        }, {
+            origNode: 1,
+            replacement: [{k: 'd'}]
+        }]
+    }];
+    tests.forEach(function(test) {
+        deepEqual(nlp.coalesce(test.data), test.expected);
+    });
+});
+
 test("content listener", function() {
     chrome.runtime.sendMessage = function(rq, cb) {
         equal(rq.method, "text-for-processing");

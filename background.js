@@ -152,7 +152,9 @@ function coalesce(data) {
         };
         newItem.replacement.push(item.replacement);
     });
-    result.push(newItem);
+    if (newItem.origNode !== -1) {
+        result.push(newItem);
+    }
     return result;
 }
 
@@ -307,5 +309,6 @@ module.exports = {
     substituteBySearchResults: substituteBySearchResults,
     patchSingleNode: patchSingleNode,
     resultsToNodeMap: resultsToNodeMap,
-    backgroundMsgListener: backgroundMsgListener
+    backgroundMsgListener: backgroundMsgListener,
+    coalesce: coalesce
 };
