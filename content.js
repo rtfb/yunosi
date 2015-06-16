@@ -2,10 +2,7 @@ var content = (function() {
     'use strict';
 
     function isScriptNode(node) {
-        if (node.nodeType !== Node.ELEMENT_NODE) {
-            return false;
-        }
-        if (node.nodeName === "SCRIPT") {
+        if (node.nodeType === Node.ELEMENT_NODE && node.nodeName === "SCRIPT") {
             return true;
         }
         return false;
@@ -95,6 +92,7 @@ var content = (function() {
     return {
         makeTextOrSpanNode: makeTextOrSpanNode,
         isWhiteSpaceOnly: isWhiteSpaceOnly,
+        isScriptNode: isScriptNode,
         getAllTextNodes: getAllTextNodes,
         nodesToIndexedArray: nodesToIndexedArray,
         contentMsgListener: contentMsgListener

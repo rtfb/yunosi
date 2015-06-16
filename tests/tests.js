@@ -141,6 +141,8 @@ test("get all text nodes", function() {
         });
         deepEqual(resultText, testCase.expected, testCase.input);
     });
+    var tn = document.createTextNode('foo');
+    equal(content.isScriptNode(tn), false);
 });
 
 module("Result Substitution");
