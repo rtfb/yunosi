@@ -558,7 +558,15 @@ test("background listener: set-checkbox-state", function() {
 });
 
 test("background listener: get-ui-state", function() {
-    expect(0);
+    chrome.storage.local.get = function(rq, cb) {
+        equal(rq, null);
+        cb({result: "synthetic"});
+    };
+    nlp.backgroundMsgListener({
+        method: "get-ui-state"
+    }, null, function(response) {
+        equal(response.result, "synthetic");
+    });
 });
 
 test("background listener: text-for-processing", function() {
