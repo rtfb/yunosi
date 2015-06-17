@@ -570,7 +570,22 @@ test("background listener: get-ui-state", function() {
 });
 
 test("background listener: text-for-processing", function() {
-    expect(0);
+    nlp.backgroundMsgListener({
+        method: "text-for-processing",
+        data: [{
+            "index": 0,
+            "text": "7 inches"
+        }],
+        uiState: {ui: {}}
+    }, null, function(response) {
+        deepEqual(response, [{
+            "origNode": 0,
+            "replacement": [{
+                "altered": true,
+                "text": "17.7 centimeters"
+            }]
+        }]);
+    });
 });
 
 test("background listener: show-readme", function() {
