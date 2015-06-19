@@ -228,18 +228,6 @@ test("searcher, negative tests", function() {
         "expected no results, but got " + JSON.stringify(actual, null, 4));
 });
 
-function fillDefaults(dict, defaultValue) {
-    if (!dict) {
-        return dict;
-    }
-    Object.keys(nlp.regexPartsMap).forEach(function(key) {
-        if (!dict.hasOwnProperty(key)) {
-            dict[key] = defaultValue;
-        }
-    });
-    return dict;
-}
-
 test("search with options", function() {
     var nodes = [
         "The quick brown Lorem Ipsum didn't expect a Spanish Inquisition.",
