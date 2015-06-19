@@ -528,6 +528,8 @@ test("coalesce results", function() {
     });
 });
 
+module("Messaging");
+
 test("content listener", function() {
     chrome.runtime.sendMessage = function(rq, cb) {
         equal(rq.method, "text-for-processing");
