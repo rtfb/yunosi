@@ -85,7 +85,6 @@ var content = (function() {
                 data: nodesToIndexedArray(textNodes),
                 uiState: rq.uiState
             }, function(response) {
-                console.log("response: " + JSON.stringify(response, null, 4));
                 replaceTextNodes(textNodes, response, rq.uiState.highlight);
                 sendResponse({"text": "ok"});
             });
