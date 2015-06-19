@@ -74,7 +74,12 @@ var content = (function() {
 
     var contentMsgListener = function(rq, sender, sendResponse) {
         if (rq.method === "convert-to-si") {
-            var textNodes = getAllTextNodes(document.body);
+            var textNodes = null;
+            if (rq.rootElem) {
+                textNodes = getAllTextNodes(document.getElementById(rq.rootElem));
+            } else {
+                textNodes = getAllTextNodes(document.body);
+            }
             chrome.runtime.sendMessage({
                 method: "text-for-processing",
                 data: nodesToIndexedArray(textNodes),
