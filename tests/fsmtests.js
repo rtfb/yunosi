@@ -296,3 +296,20 @@ test("units by UI state", function() {
     equal(nlp.constructUnitsRe({"goo": true}), allUnits);
     equal(nlp.constructUnitsRe({"quaff-gallons": true}), allUnits);
 });
+
+test("token detection: numbers", function() {
+    var positives = [
+        "17", "17.1", "one", "two", "three", "four", "five", "six", "seven",
+        "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen",
+        "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty"
+        ],
+        negatives = [
+            "foo", "17.1a"
+        ];
+    positives.forEach(function(t) {
+        equal(nlp.isNumber(t), true, "isNumber(" + t + ")=false, expected true");
+    });
+    negatives.forEach(function(t) {
+        equal(nlp.isNumber(t), false, "isNumber(" + t + ")=true, expected false");
+    });
+});

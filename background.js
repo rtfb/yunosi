@@ -301,6 +301,7 @@ module.exports = {
     singularizeUnits: fsm.singularizeUnits,
     splitWords: fsm.splitWords,
     search: fsm.search,
+    isNumber: fsm.isNumber,
 
     convertValueToSI: convertValueToSI,
     reduceImperialUnitNames: reduceImperialUnitNames,

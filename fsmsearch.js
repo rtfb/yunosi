@@ -20,7 +20,7 @@ var StateMachine = require("javascript-state-machine"),
         "nine", "ten", "eleven", "twelve", "thirteen", "fourteen",
         "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty"
     ],
-    numeralsRe = new RegExp(numerals.join("|"), "gi");
+    numeralsRe = new RegExp("\\b(" + numerals.join("|") + ")\\b", "gi");
 
 function allRegexpParts(dict) {
     // Extract all values from a given dict (all have to be arrays) and squish
@@ -347,6 +347,7 @@ module.exports = {
     isEmptyObject: isEmptyObject,
     strStartsWith: strStartsWith,
     constructUnitsRe: constructUnitsRe,
+    isNumber: isNumber,
     search: search,
     splitWords: splitWords,
     singularizeUnits: singularizeUnits,
