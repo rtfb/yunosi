@@ -40,6 +40,9 @@ test("simplified searcher", function() {
     }, {
         text: "The three-inch-thick planks",
         expected: ["three-inch"]
+    }, {
+        text: "chop into ½-inch pieces",
+        expected: ["½-inch"]
     }];
     tests.forEach(function(test) {
         var actual = nlp.search(strArrToIndexedNodesArr([test.text]), {});
@@ -301,10 +304,11 @@ test("token detection: numbers", function() {
     var positives = [
         "17", "17.1", "one", "two", "three", "four", "five", "six", "seven",
         "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen",
-        "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty"
+        "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty",
+        "1/2", "17/31", "3 / 4", "-2/5", "⅓", "⅗"
         ],
         negatives = [
-            "foo", "17.1a"
+            "foo", "17.1a", "z2/7"
         ];
     positives.forEach(function(t) {
         equal(nlp.isNumber(t), true, "isNumber(" + t + ")=false, expected true");

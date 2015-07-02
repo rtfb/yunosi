@@ -20,6 +20,23 @@ var StateMachine = require("javascript-state-machine"),
         "nine", "ten", "eleven", "twelve", "thirteen", "fourteen",
         "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty"
     ],
+    fractions = {
+        "¼": "1/4",
+        "½": "1/2",
+        "¾": "3/4",
+        "⅓": "1/3",
+        "⅔": "2/3",
+        "⅕": "1/5",
+        "⅖": "2/5",
+        "⅗": "3/5",
+        "⅘": "4/5",
+        "⅙": "1/6",
+        "⅚": "5/6",
+        "⅛": "1/8",
+        "⅜": "3/8",
+        "⅝": "5/8",
+        "⅞": "7/8"
+    },
     numeralsRe = new RegExp("\\b(" + numerals.join("|") + ")\\b", "gi");
 
 function allRegexpParts(dict) {
@@ -95,12 +112,20 @@ function logState(evt, from, to, msg) {
     fsmLog('-- ', evt, from, to, msg);
 }
 
+function parseFraction(frac) {
+    var parts = frac.split("/");
+    return parseFloat(parts[0]) / parseFloat(parts[1]);
+}
+
 function interpretNum(what) {
     var index = -1;
     what = what.replace(",", "");
     index = numerals.indexOf(what.toLowerCase());
     if (index !== -1) {
         return index + 1;
+    }
+    if (fractions.hasOwnProperty(what)) {
+        return parseFraction(fractions[what]);
     }
     return parseFloat(what);
 }
@@ -255,8 +280,15 @@ function isFullMatch(word, re) {
 
 function isNumber(word) {
     log("isNumber: " + word);
-    var numberRe = /-?\+?[\d,]*\.?\d+/g;
-    return isFullMatch(word, numberRe) || isFullMatch(word, numeralsRe);
+    var numberRe = /-?\+?[\d,]*\.?\d+/g,
+        fractionRe = /-?\+?\d+\s?\/\s?\d+/g,
+        index = Object.keys(fractions).indexOf(word);
+    if (index !== -1) {
+        return true;
+    }
+    return isFullMatch(word, numberRe)
+        || isFullMatch(word, fractionRe)
+        || isFullMatch(word, numeralsRe);
 }
 
 function isUnit(word) {
