@@ -10,3 +10,13 @@ function fillDefaults(dict, defaultValue) {
     });
     return dict;
 }
+
+function strArrToObjArr(arr) {
+    return arr.map(function(item) {
+        return {nodeValue: item};
+    });
+}
+
+function strArrToIndexedNodesArr(arr) {
+    return content.nodesToIndexedArray(strArrToObjArr(arr));
+}

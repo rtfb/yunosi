@@ -115,16 +115,6 @@ test("split words", function() {
     });
 });
 
-function strArrToObjArr(arr) {
-    return arr.map(function(item) {
-        return {nodeValue: item};
-    });
-}
-
-function strArrToIndexedNodesArr(arr) {
-    return content.nodesToIndexedArray(strArrToObjArr(arr));
-}
-
 test("searcher", function() {
     var nodes = [
         "The quick brown Lorem Ipsum didn't expect a Spanish Inquisition.",
