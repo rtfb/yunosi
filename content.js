@@ -39,7 +39,7 @@ var content = (function() {
 
     function makeSpanNode(text) {
         var span = document.createElement('span');
-        span.setAttribute("style", "background-color: yellow;");
+        span.setAttribute("style", "background-color: yellow; color: black;");
         span.appendChild(document.createTextNode(text));
         return span;
     }

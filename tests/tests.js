@@ -46,7 +46,7 @@ test("make nodes", function() {
     content.makeTextOrSpanNode({text: "foo", altered: false}, true);
     document.createTextNode = tmp;
     var elem = content.makeTextOrSpanNode({text: "foo", altered: true}, true);
-    equal(elem.getAttribute("style"), "background-color: yellow;");
+    equal(elem.getAttribute("style"), "background-color: yellow; color: black;");
     equal(elem.tagName, "SPAN");
 });
 
