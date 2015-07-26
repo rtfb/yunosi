@@ -117,6 +117,11 @@ function parseFraction(frac) {
     return parseFloat(parts[0]) / parseFloat(parts[1]);
 }
 
+function hasSlash(word) {
+    log("hasSlash: " + word);
+    return word.search('/') !== -1;
+}
+
 function interpretNum(what) {
     var index = -1;
     what = what.replace(",", "");
@@ -126,6 +131,9 @@ function interpretNum(what) {
     }
     if (fractions.hasOwnProperty(what)) {
         return parseFraction(fractions[what]);
+    }
+    if (hasSlash(what)) {
+        return parseFraction(what);
     }
     return parseFloat(what);
 }
@@ -301,11 +309,6 @@ function hasDash(word) {
     return word.search('-') !== -1;
 }
 
-function hasSlash(word) {
-    log("hasSlash: " + word);
-    return word.search('/') !== -1;
-}
-
 function processDash(word, index, origNode) {
     log("processDash: " + word);
     var parts = word.split("-");
@@ -384,5 +387,6 @@ module.exports = {
     splitWords: splitWords,
     singularizeUnits: singularizeUnits,
     allRegexpParts: allRegexpParts,
-    regexPartsMap: regexPartsMap
+    regexPartsMap: regexPartsMap,
+    interpretNum: interpretNum
 };

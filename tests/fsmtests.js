@@ -307,3 +307,21 @@ test("token detection: numbers", function() {
         equal(nlp.isNumber(t), false, "isNumber(" + t + ")=true, expected false");
     });
 });
+
+test("number interpretation", function() {
+    var tests = [
+        {t: "1", e: 1},
+        {t: "17", e: 17},
+        {t: "1.7", e: 1.7},
+        {t: ".7", e: 0.7},
+        {t: "one", e: 1},
+        {t: "seventeen", e: 17},
+        {t: "1/2", e: 0.5},
+        {t: "3/4", e: 0.75},
+        {t: "⅓", e: 1/3},
+        {t: "⅘", e: 0.8}
+    ];
+    tests.forEach(function(t) {
+        equal(nlp.interpretNum(t.t), t.e);
+    });
+});
