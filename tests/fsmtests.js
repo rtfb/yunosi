@@ -308,6 +308,23 @@ test("token detection: numbers", function() {
     });
 });
 
+test("token detection: units", function() {
+    var positives = [
+        "mile", "miles", "feet", "fahrenheit", "Fahrenheit", "MILES",
+        "gallons", "oz", "lb"
+        ],
+    negatives = [
+        "zoo", "file", "parrot"
+    ];
+    nlp.search([], {}); // reset units regexp
+    positives.forEach(function(t) {
+        equal(nlp.isUnit(t), true, "isUnit(" + t + ")=false, expected true");
+    });
+    negatives.forEach(function(t) {
+        equal(nlp.isUnit(t), false, "isUnit(" + t + ")=true, expected false");
+    });
+});
+
 test("number interpretation", function() {
     var tests = [
         {t: "1", e: 1},

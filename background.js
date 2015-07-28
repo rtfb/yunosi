@@ -302,6 +302,7 @@ module.exports = {
     splitWords: fsm.splitWords,
     search: fsm.search,
     isNumber: fsm.isNumber,
+    isUnit: fsm.isUnit,
     interpretNum: fsm.interpretNum,
 
     convertValueToSI: convertValueToSI,

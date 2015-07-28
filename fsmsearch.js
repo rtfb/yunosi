@@ -383,6 +383,7 @@ module.exports = {
     strStartsWith: strStartsWith,
     constructUnitsRe: constructUnitsRe,
     isNumber: isNumber,
+    isUnit: isUnit,
     search: search,
     splitWords: splitWords,
     singularizeUnits: singularizeUnits,
