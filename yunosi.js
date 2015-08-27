@@ -88,7 +88,9 @@
             for (key in resp) {
                 if (resp.hasOwnProperty(key)) {
                     elem = document.getElementById(key);
-                    elem.checked = resp[key];
+                    if (elem) {
+                        elem.checked = resp[key];
+                    }
                 }
             }
         });
