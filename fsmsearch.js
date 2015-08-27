@@ -251,31 +251,20 @@ function splitWordsBy(text, regexp) {
         return [];
     }
     var re = new RegExp(regexp, "g"),
-        index = 0,
-        space,
+        nonSpace = re.exec(text),
         result = [];
-    while (true) {
-        space = re.exec(text);
-        if (space === null) {
-            break;
-        }
+    while (nonSpace !== null) {
         result.push({
-            index: index,
-            word: stripPunctuation(text.substring(index, space.index))
+            index: nonSpace.index,
+            word: stripPunctuation(nonSpace[0])
         });
-        index = space.index + 1;
-    }
-    if (index < text.length) {
-        result.push({
-            index: index,
-            word: stripPunctuation(text.substring(index))
-        });
+        nonSpace = re.exec(text);
     }
     return result;
 }
 
 function splitWords(text) {
-    return splitWordsBy(text, "(\\s+)");
+    return splitWordsBy(text, "([^\\s]+)");
 }
 
 function isFullMatch(word, re) {
@@ -350,7 +339,7 @@ function processWord(word, index, origNode) {
     } else if (hasDash(word)) {
         processDash(word, index, origNode);
     } else if (hasSlash(word)) {
-        splitWordsBy(word, "/").forEach(function(slashPart) {
+        splitWordsBy(word, "([^/]+)").forEach(function(slashPart) {
             processWord(slashPart.word, index + slashPart.index, origNode);
         });
     } else {

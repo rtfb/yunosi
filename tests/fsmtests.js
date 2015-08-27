@@ -108,6 +108,14 @@ test("split words", function() {
             expected: [
                 {index: 0, word: "single_word"}
             ]
+        },
+        {
+            text: "foo\n     bar \n baz",
+            expected: [
+                {index: 0, word: "foo"},
+                {index: 9, word: "bar"},
+                {index: 15, word: "baz"}
+            ]
         }
     ];
     cases.forEach(function(testCase) {
