@@ -51,7 +51,7 @@ test("simplified searcher", function() {
             return;
         }
         actual.forEach(function(item, i) {
-            equal(1, item.fragments.length);
+            equal(item.fragments.length, 1);
             equal(item.fragments[0].match, test.expected[i]);
         });
     });
