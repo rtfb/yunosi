@@ -9,3 +9,5 @@ http://blogs.discovermagazine.com/imageo/2014/11/10/polar-vortex-arrive-with-ven
 
 http://www.bostonglobe.com/magazine/2014/09/13/recipes-for-hearty-grilled-eggplant-salads/KntyLBomM8ypB5KWRniZ7M/story.html
 ("3 pounds eggplant, trimmed, peeled if desired, and cut into ¾-inch-thick planks")
+
+http://www.bankrate.com/calculators/home-equity/how-much-carpet-calculator.aspx
