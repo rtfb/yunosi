@@ -137,6 +137,7 @@ test("searcher", function() {
             numeral: 1,
             units: "mile",
             continuous: true,
+            dimension: 1,
             fragments: [
                 {
                 origNode: 1,
@@ -150,6 +151,7 @@ test("searcher", function() {
             numeral: 2,
             units: "mile",
             continuous: true,
+            dimension: 1,
             fragments: [
                 {
                 origNode: 1,
@@ -163,6 +165,7 @@ test("searcher", function() {
             numeral: 3,
             units: "mile",
             continuous: true,
+            dimension: 1,
             fragments: [
                 {
                 origNode: 1,
@@ -176,6 +179,7 @@ test("searcher", function() {
             numeral: 100,
             units: "mile",
             continuous: false,
+            dimension: 1,
             fragments: [
                 {
                 origNode: 2,
@@ -195,6 +199,7 @@ test("searcher", function() {
             numeral: 0.6,
             units: "mile",
             continuous: true,
+            dimension: 1,
             fragments: [
                 {
                 origNode: 5,

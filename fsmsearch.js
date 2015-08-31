@@ -162,6 +162,7 @@ function resetState(state) {
         fragments: []
     };
     state.separator = " ";
+    state.dimension = 1;
 }
 
 var state = {
@@ -172,6 +173,7 @@ var state = {
         fragments: []
     },
     separator: " ",
+    dimension: 1,
     resultSet: []
 },
     fsm = StateMachine.create({
@@ -209,12 +211,13 @@ var state = {
                 match: msg.word
             });
         },
+        onsomething: function(evt, from, to, msg) {
+            logEvt(evt, from, to, msg);
+            state.matchGroup.continuous = false;
+        },
         onAnyWord: function(evt, from, to, msg) {
             logState(evt, from, to, msg);
             resetState(state);
-        },
-        onHaveNumAndInfix: function(evt, from, to, msg) {
-            state.matchGroup.continuous = false;
         },
         onNumberFound: logState,
         onleaveEnd: function(evt, from, to, msg) {
@@ -230,6 +233,7 @@ var state = {
                     origNode: state.matchGroup.fragments[0].origNode
                 }];
             }
+            state.matchGroup.dimension = state.dimension;
             state.resultSet.push(state.matchGroup);
             log(">> yeah, " + state.matchGroup.numeral + " " + state.matchGroup.units + ".");
         },
@@ -343,7 +347,11 @@ function processWord(word, index, origNode) {
             processWord(slashPart.word, index + slashPart.index, origNode);
         });
     } else {
-        fsm.something(word);
+        fsm.something({
+            word: word,
+            index: index,
+            origNode: origNode
+        });
     }
 }
 
