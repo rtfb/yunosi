@@ -34,8 +34,9 @@ test("integration test, inline test data", function() {
     }, null, function(response) {
         equal(response.text, "ok");
         var td = document.getElementById("test-data");
-        equal(td.childElementCount, 2);
+        equal(td.childElementCount, 3);
         childEquals(td, 0, "161 kilometers");
         childEquals(td, 1, "1.27-centimeter");
+        childEquals(td, 2, "5.18 square kilometers");
     });
 });

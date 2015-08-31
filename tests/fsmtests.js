@@ -57,6 +57,35 @@ test("simplified searcher", function() {
     });
 });
 
+test("searcher with dimensions", function() {
+    var tests = [{
+        text: "occupies 7 square miles",
+        expected: {
+            match: "7 miles",
+            dim: 2
+        }
+    }, {
+        text: "a square yard equals 9 square feet",
+        expected: {
+            match: "9 feet",
+            dim: 2
+        }
+    }, {
+        text: "two cubic feet",
+        expected: {
+            match: "two feet",
+            dim: 3
+        }
+    }];
+    tests.forEach(function(test) {
+        var actual = nlp.search(strArrToIndexedNodesArr([test.text]), {});
+        equal(actual.length, 1);
+        equal(actual[0].fragments.length, 1);
+        equal(actual[0].fragments[0].match, test.expected.match);
+        equal(actual[0].dimension, test.expected.dim);
+    });
+});
+
 test("split words", function() {
     var cases = [
         {

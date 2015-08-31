@@ -95,36 +95,43 @@ function readableUnits(value, unit) {
     return pluralizeUnits(convertUnit(unit), value);
 }
 
-function convertValueToSI(units, value) {
+function dim(factor, dimension) {
+    if (dimension > 1) {
+        return Math.pow(factor, dimension);
+    }
+    return factor;
+}
+
+function convertValueToSI(units, value, dimension) {
     var converters = {
-        "mile": function(value) {
-            return value * 1.60934;
+        "mile": function(value, dimension) {
+            return value * dim(1.60934, dimension);
         },
-        "foot": function(value) {
-            return value * 0.3048;
+        "foot": function(value, dimension) {
+            return value * dim(0.3048, dimension);
         },
-        "fahrenheit": function(value) {
+        "inch": function(value, dimension) {
+            return value * dim(2.54, dimension);
+        },
+        "yard": function(value, dimension) {
+            return value * dim(0.9144, dimension);
+        },
+        "fahrenheit": function(value, dimension) {
             return Math.round((value - 32) / 1.8);
         },
-        "yard": function(value) {
-            return value * 0.9144;
-        },
-        "gallon": function(value) {
+        "gallon": function(value, dimension) {
             return value * 3.78541;
         },
-        "ounce": function(value) {
+        "ounce": function(value, dimension) {
             return value * 28.3495;
         },
-        "pound": function(value) {
+        "pound": function(value, dimension) {
             return value * 0.453592;
-        },
-        "inch": function(value) {
-            return value * 2.54;
         }
     },
         converter = converters[reduceImperialUnitNames(units)];
     if (converter) {
-        return roundForReadability(converter(value));
+        return roundForReadability(converter(value, dimension));
     }
     return value;
 }
@@ -159,18 +166,29 @@ function coalesce(data) {
 }
 
 function getContinuousText(frag, match, reducedUnit) {
-    var si = convertValueToSI(match.units, match.numeral);
-    if (frag.match.indexOf("-") >= 0) {
-        return si.toString() + "-" + convertUnit(reducedUnit);
+    var si = convertValueToSI(match.units, match.numeral, match.dimension),
+        separator = " ",
+        dimension = "",
+        units = "";
+    if (frag.match.indexOf("-") >= 0) { // XXX: this test will match negative number!
+        separator = "-";
+        units = convertUnit(reducedUnit);
+    } else {
+        units = readableUnits(si, reducedUnit);
     }
-    return si.toString() + " " + readableUnits(si, reducedUnit);
+    if (match.dimension === 2) {
+        dimension = "square" + separator;
+    } else if (match.dimension === 3) {
+        dimension = "cubic" + separator;
+    }
+    return si.toString() + separator + dimension + units;
 }
 
 function patchSingleNode(node, nodeIndex, matches) {
     var results = [],
         textIndex = 0;
     matches.forEach(function(match) {
-        var si = convertValueToSI(match.units, match.numeral),
+        var si = convertValueToSI(match.units, match.numeral, match.dimension),
             reducedUnit = reduceImperialUnitNames(match.units);
         match.fragments.forEach(function(frag) {
             if (frag.origNode !== nodeIndex) {

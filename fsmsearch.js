@@ -165,6 +165,12 @@ function resetState(state) {
     state.dimension = 1;
 }
 
+function isOneOf(str, strs) {
+    return strs.some(function(s) {
+        return str === s;
+    });
+}
+
 var state = {
     matchGroup: {
         numeral: -1,
@@ -213,7 +219,14 @@ var state = {
         },
         onsomething: function(evt, from, to, msg) {
             logEvt(evt, from, to, msg);
-            state.matchGroup.continuous = false;
+            var word = msg.word.toLowerCase();
+            if (isOneOf(word, ["square", "sq", "sqr"])) {
+                state.dimension = 2;
+            } else if (isOneOf(word, ["cube", "cubic"])) {
+                state.dimension = 3;
+            } else {
+                state.matchGroup.continuous = false;
+            }
         },
         onAnyWord: function(evt, from, to, msg) {
             logState(evt, from, to, msg);
