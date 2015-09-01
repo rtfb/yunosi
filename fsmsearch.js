@@ -124,7 +124,7 @@ function hasSlash(word) {
 
 function interpretNum(what) {
     var index = -1;
-    what = what.replace(",", "");
+    what = what.replace(/,/g, "");
     index = numerals.indexOf(what.toLowerCase());
     if (index !== -1) {
         return index + 1;

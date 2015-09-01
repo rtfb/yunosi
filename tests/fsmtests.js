@@ -378,7 +378,8 @@ test("number interpretation", function() {
         {t: "1/2", e: 0.5},
         {t: "3/4", e: 0.75},
         {t: "⅓", e: 1/3},
-        {t: "⅘", e: 0.8}
+        {t: "⅘", e: 0.8},
+        {t: "196,935,000", e: 196935000},
     ];
     tests.forEach(function(t) {
         equal(nlp.interpretNum(t.t), t.e);
