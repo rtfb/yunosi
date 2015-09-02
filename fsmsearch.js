@@ -149,9 +149,10 @@ function singularizeUnits(units) {
         .replace("inches", "inch");
 }
 
-function mkMatch(state) {
-    var frags = state.matchGroup.fragments;
-    return frags[0].match + state.separator + frags[1].match;
+function joinMatchFrags(state) {
+    return state.matchGroup.fragments.map(function(frag) {
+        return frag.match;
+    }).join(state.separator);
 }
 
 function resetState(state) {
@@ -219,11 +220,22 @@ var state = {
         },
         onsomething: function(evt, from, to, msg) {
             logEvt(evt, from, to, msg);
+            if (state.dimension > 1) {
+                resetState(state);
+            }
             var word = msg.word.toLowerCase();
             if (isOneOf(word, ["square", "sq", "sqr"])) {
                 state.dimension = 2;
             } else if (isOneOf(word, ["cube", "cubic"])) {
                 state.dimension = 3;
+            }
+            if (state.dimension > 1) {
+                state.matchGroup.fragments.push({
+                    origNode: msg.origNode,
+                    index: msg.index,
+                    fragType: "unit",
+                    match: msg.word
+                });
             } else {
                 state.matchGroup.continuous = false;
             }
@@ -235,14 +247,14 @@ var state = {
         onNumberFound: logState,
         onleaveEnd: function(evt, from, to, msg) {
             logState(evt, from, to, msg);
-            if (state.matchGroup.fragments.length !== 2) {
+            if (state.matchGroup.fragments.length < 2) {
                 return;
             }
             if (state.matchGroup.continuous) {
                 state.matchGroup.fragments = [{
                     fragType: "numeral",
                     index: state.matchGroup.fragments[0].index,
-                    match: mkMatch(state),
+                    match: joinMatchFrags(state),
                     origNode: state.matchGroup.fragments[0].origNode
                 }];
             }

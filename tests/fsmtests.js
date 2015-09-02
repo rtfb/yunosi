@@ -61,20 +61,26 @@ test("searcher with dimensions", function() {
     var tests = [{
         text: "occupies 7 square miles",
         expected: {
-            match: "7 miles",
+            match: "7 square miles",
             dim: 2
         }
     }, {
         text: "a square yard equals 9 square feet",
         expected: {
-            match: "9 feet",
+            match: "9 square feet",
             dim: 2
         }
     }, {
         text: "two cubic feet",
         expected: {
-            match: "two feet",
+            match: "two cubic feet",
             dim: 3
+        }
+    }, {
+        text: "two sq feet",
+        expected: {
+            match: "two sq feet",
+            dim: 2
         }
     }];
     tests.forEach(function(test) {
