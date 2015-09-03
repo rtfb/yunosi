@@ -262,7 +262,11 @@ test("searcher, negative tests", function() {
         // A bug used to match this, treating "." as a malformed number and
         // "In" as inches. Adding this negative test here to guard against
         // regressions:
-        "follow. Instead"
+        "follow. Instead",
+        // Another bug: "1981" is matched as number, then "F-202" fools
+        // processDash and gets skipped unnoticed, then "Data" is swallowed as
+        // infix and "in" is treated as inches.
+        ". Chemical Rubber Co., 1981: F-202. \"Data in regard to the earth"
     ],
         actual = nlp.search(strArrToIndexedNodesArr(tests), {});
     equal(actual.length, 0,

@@ -347,8 +347,8 @@ function processDash(word, index, origNode) {
             index: index + parts[0].length + 1,
             origNode: origNode
         });
-        fsm.restart();
     }
+    fsm.restart();
 }
 
 function processWord(word, index, origNode) {
