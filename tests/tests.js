@@ -392,23 +392,21 @@ test("substitute in one node", function() {
         }
     ],
         expected = [
-        {nodeValue: ""},
-        {nodeValue: "x"},
-        {nodeValue: "!"},
-        {nodeValue: "foo"},
-        {nodeValue: "mile"},
-        {nodeValue: "1.61 kilometers"},
-        {nodeValue: "1.61 kilometers, 3.22 kilometers"},
-        {nodeValue: "foo 1.61 kilometers baz"},
-        {nodeValue: "40.2-kilometer-diameter"}
-    ],
-        actual = null;
-    strArrToObjArr(nodes).forEach(function(node, i) {
-        actual = nlp.patchSingleNode(node.nodeValue, i, fsmProcessedResults);
-        actual = actual.map(function(item) {
+        "",
+        "x",
+        "!",
+        "foo",
+        "mile",
+        "1.61 kilometers",
+        "1.61 kilometers, 3.22 kilometers",
+        "foo 1.61 kilometers baz",
+        "40.2-kilometer-diameter"
+    ];
+    nodes.forEach(function(node, i) {
+        var actual = nlp.patchSingleNode(node, i, fsmProcessedResults);
+        equal(actual.map(function(item) {
             return item.replacement.text;
-        });
-        deepEqual({nodeValue: actual.join("")}, expected[i]);
+        }).join(""), expected[i]);
     });
 });
 
