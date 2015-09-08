@@ -304,12 +304,14 @@ test("substitute in one node", function() {
         "1 mile",
         "1 mile, 2 miles",
         "foo 1 mile baz",
-        "25-mile-diameter"
+        "25-mile-diameter",
+        "If you bought 100 square feet, you would have to do a lot of cutting"
     ],
         fsmProcessedResults = [
         {
             "numeral": 1,
             "units": "mile",
+            continuous: true,
             "fragments": [
                 {
                     "origNode": 5,
@@ -328,6 +330,7 @@ test("substitute in one node", function() {
         {
             "numeral": 1,
             "units": "mile",
+            continuous: true,
             "fragments": [
                 {
                     "origNode": 6,
@@ -346,6 +349,7 @@ test("substitute in one node", function() {
         {
             "numeral": 2,
             "units": "mile",
+            continuous: true,
             "fragments": [
                 {
                     "origNode": 6,
@@ -364,6 +368,7 @@ test("substitute in one node", function() {
         {
             "numeral": 1,
             "units": "mile",
+            continuous: true,
             "fragments": [
                 {
                     "origNode": 7,
@@ -389,6 +394,26 @@ test("substitute in one node", function() {
                 fragType: "numeral",
                 match: "25-mile"
             }]
+        },
+        {
+            numeral: 100,
+            units: "foot",
+            dimension: 2,
+            continuous: true,
+            fragments: [
+                {
+                    origNode: 9,
+                    index: 14,
+                    fragType: "numeral",
+                    match: "100"
+                },
+                {
+                    origNode: 9,
+                    index: 18,
+                    fragType: "unit",
+                    match: "square feet"
+                }
+            ]
         }
     ],
         expected = [
@@ -400,7 +425,8 @@ test("substitute in one node", function() {
         "1.61 kilometers",
         "1.61 kilometers, 3.22 kilometers",
         "foo 1.61 kilometers baz",
-        "40.2-kilometer-diameter"
+        "40.2-kilometer-diameter",
+        "If you bought 9.29 square meters, you would have to do a lot of cutting",
     ];
     nodes.forEach(function(node, i) {
         var actual = nlp.patchSingleNode(node, i, fsmProcessedResults);

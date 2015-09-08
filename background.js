@@ -190,9 +190,9 @@ function patchSingleNode(node, nodeIndex, matches) {
     matches.forEach(function(match) {
         var si = convertValueToSI(match.units, match.numeral, match.dimension),
             reducedUnit = reduceImperialUnitNames(match.units);
-        match.fragments.forEach(function(frag) {
+        match.fragments.some(function(frag, i) {
             if (frag.origNode !== nodeIndex) {
-                return;
+                return false;
             }
             if (textIndex < frag.index) {
                 results.push({
@@ -210,7 +210,11 @@ function patchSingleNode(node, nodeIndex, matches) {
                         text: getContinuousText(frag, match, reducedUnit),
                         altered: true
                 }});
-                return;
+                // grok remaining frags:
+                textIndex += match.fragments.slice(i + 1).reduce(function(acc, frag) {
+                    return acc + frag.match.length + 1;
+                }, 0);
+                return true;
             }
             if (frag.fragType === "numeral") {
                 results.push({
