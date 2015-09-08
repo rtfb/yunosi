@@ -1,6 +1,18 @@
 var content = (function() {
     'use strict';
 
+    var debugLog = false,
+        contentMsgListener;
+
+    function log(msg) {
+        if (debugLog) {
+            if (typeof msg === "object") {
+                msg = JSON.stringify(msg, 4, null);
+            }
+            console.log(msg);
+        }
+    }
+
     function isScriptNode(node) {
         if (node.nodeType === Node.ELEMENT_NODE && node.nodeName === "SCRIPT") {
             return true;
@@ -72,7 +84,7 @@ var content = (function() {
         });
     }
 
-    var contentMsgListener = function(rq, sender, sendResponse) {
+    contentMsgListener = function(rq, sender, sendResponse) {
         if (rq.method === "convert-to-si") {
             var textNodes = null;
             if (rq.rootElem) {
@@ -80,6 +92,7 @@ var content = (function() {
             } else {
                 textNodes = getAllTextNodes(document.body);
             }
+            log(nodesToIndexedArray(textNodes));
             chrome.runtime.sendMessage({
                 method: "text-for-processing",
                 data: nodesToIndexedArray(textNodes),
