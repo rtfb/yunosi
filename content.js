@@ -27,9 +27,9 @@ var content = (function() {
         return false;
     }
 
-    function getAllTextNodes(elem) {
+    function getAllTextNodes(doc, elem) {
         var filter = NodeFilter.SHOW_TEXT,
-            walker = document.createTreeWalker(elem, filter, null, false),
+            walker = doc.createTreeWalker(elem, filter, null, false),
             arr = [],
             node;
         while (walker.nextNode()) {
@@ -45,30 +45,30 @@ var content = (function() {
         return arr;
     }
 
-    function makeTextNode(text) {
-        return document.createTextNode(text);
+    function makeTextNode(doc, text) {
+        return doc.createTextNode(text);
     }
 
-    function makeSpanNode(text) {
-        var span = document.createElement('span');
+    function makeSpanNode(doc, text) {
+        var span = doc.createElement('span');
         span.setAttribute("style", "background-color: yellow; color: black;");
-        span.appendChild(document.createTextNode(text));
+        span.appendChild(doc.createTextNode(text));
         return span;
     }
 
-    function makeTextOrSpanNode(data, highlight) {
+    function makeTextOrSpanNode(doc, data, highlight) {
         if (!data.altered || !highlight) {
-            return makeTextNode(data.text);
+            return makeTextNode(doc, data.text);
         }
-        return makeSpanNode(data.text);
+        return makeSpanNode(doc, data.text);
     }
 
-    function replaceTextNodes(origNodes, newData, highlight) {
+    function replaceTextNodes(doc, origNodes, newData, highlight) {
         newData.forEach(function(result) {
             var origNode = origNodes[result.origNode],
                 parentNode = origNode.parentNode;
             result.replacement.forEach(function(repl) {
-                var newNode = makeTextOrSpanNode(repl, highlight);
+                var newNode = makeTextOrSpanNode(doc, repl, highlight);
                 parentNode.insertBefore(newNode, origNode);
             });
             parentNode.removeChild(origNode);
@@ -86,19 +86,19 @@ var content = (function() {
 
     contentMsgListener = function(rq, sender, sendResponse) {
         if (rq.method === "convert-to-si") {
-            var textNodes = null;
+            var textNodes = null,
+                root = document.body;
             if (rq.rootElem) {
-                textNodes = getAllTextNodes(document.getElementById(rq.rootElem));
-            } else {
-                textNodes = getAllTextNodes(document.body);
+                root = document.getElementById(rq.rootElem);
             }
+            textNodes = getAllTextNodes(document, root);
             log(nodesToIndexedArray(textNodes));
             chrome.runtime.sendMessage({
                 method: "text-for-processing",
                 data: nodesToIndexedArray(textNodes),
                 uiState: rq.uiState
             }, function(response) {
-                replaceTextNodes(textNodes, response, rq.uiState.highlight);
+                replaceTextNodes(document, textNodes, response, rq.uiState.highlight);
                 sendResponse({"text": "ok"});
             });
         }

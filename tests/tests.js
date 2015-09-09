@@ -37,15 +37,16 @@ test("whitespace", function() {
 });
 
 test("make nodes", function() {
-    var tmp = document.createTextNode;
+    var tmp = document.createTextNode,
+        doc = document;
     document.createTextNode = function(text) {
         equal(text, "foo");
     }
-    content.makeTextOrSpanNode({text: "foo"}, false);
-    content.makeTextOrSpanNode({text: "foo", altered: false}, false);
-    content.makeTextOrSpanNode({text: "foo", altered: false}, true);
+    content.makeTextOrSpanNode(doc, {text: "foo"}, false);
+    content.makeTextOrSpanNode(doc, {text: "foo", altered: false}, false);
+    content.makeTextOrSpanNode(doc, {text: "foo", altered: false}, true);
     document.createTextNode = tmp;
-    var elem = content.makeTextOrSpanNode({text: "foo", altered: true}, true);
+    var elem = content.makeTextOrSpanNode(doc, {text: "foo", altered: true}, true);
     equal(elem.getAttribute("style"), "background-color: yellow; color: black;");
     equal(elem.tagName, "SPAN");
 });
@@ -134,7 +135,7 @@ test("get all text nodes", function() {
     cases.forEach(function(testCase) {
         var div = document.createElement('div');
         div.innerHTML = testCase.input;
-        var resultNodes = content.getAllTextNodes(div);
+        var resultNodes = content.getAllTextNodes(document, div);
         var resultText = [];
         resultNodes.forEach(function(node) {
             resultText.push(node.nodeValue);
