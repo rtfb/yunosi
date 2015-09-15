@@ -1,4 +1,4 @@
-TARGETS=content.js \
+TARGETS=\
 	icon.png \
 	icon128.png \
 	yunosi.js \
@@ -23,6 +23,7 @@ build/%.js: %.js
 	cp $< $@
 
 build/%.png: %.png
+	@mkdir -p build
 	cp $< $@
 
 build/yunosi.html: yunosi.html

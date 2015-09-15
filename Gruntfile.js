@@ -16,6 +16,18 @@ module.exports = function(grunt) {
                         standalone: 'nlp'
                     }
                 }
+            },
+            content: {
+                files: {
+                    'build/content.js': [
+                        'content.js'
+                    ]
+                },
+                options: {
+                    browserifyOptions: {
+                        standalone: 'content'
+                    }
+                }
             }
         },
         blanket_qunit: {
@@ -38,7 +50,7 @@ module.exports = function(grunt) {
                 files: [{
                     src: 'build/background.js'
                 }, {
-                    src: 'content.js'
+                    src: 'build/content.js'
                 }],
                 options: {
                     dest: '.coverage-results/core.lcov',
@@ -74,6 +86,7 @@ module.exports = function(grunt) {
                 ],
                 directives: {
                     browser: true,
+                    node: true,
                     predef: [
                         'chrome',
                         'console',
