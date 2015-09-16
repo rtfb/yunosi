@@ -1,17 +1,11 @@
 'use strict';
 
 function isWhiteSpaceOnly(node) {
-    if (node.nodeValue.replace(/[\n\t ]+/, "") === "") {
-        return true;
-    }
-    return false;
+    return node.nodeValue.replace(/[\n\t ]+/, "") === "";
 }
 
 function isScriptNode(node) {
-    if (node.nodeType === Node.ELEMENT_NODE && node.nodeName === "SCRIPT") {
-        return true;
-    }
-    return false;
+    return node.nodeType === Node.ELEMENT_NODE && node.nodeName === "SCRIPT";
 }
 
 function getAllTextNodes(doc, elem) {
