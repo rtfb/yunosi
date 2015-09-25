@@ -17,12 +17,18 @@ function log(msg) {
 contentMsgListener = function(rq, sender, sendResponse) {
     if (rq.method === "convert-to-si") {
         var textNodes = null,
+            textNodesArr,
             root = document.body;
         if (rq.rootElem) {
             root = document.getElementById(rq.rootElem);
         }
         textNodes = scraper.getAllTextNodes(document, root);
-        log(scraper.nodesToIndexedArray(textNodes));
+        if (rq.debug) {
+            textNodesArr = scraper.nodesToIndexedArray(textNodes);
+            sendResponse({
+                "text": JSON.stringify(textNodesArr, null, 4)
+            });
+        }
         chrome.runtime.sendMessage({
             method: "text-for-processing",
             data: scraper.nodesToIndexedArray(textNodes),

@@ -1,6 +1,8 @@
 (function() {
     'use strict';
 
+    var debug = false;
+
     function checkboxClickListener() {
         var checkboxState = {
             method: "set-checkbox-state",
@@ -28,7 +30,7 @@
         }
     }
 
-    function convertUnitsToSi(uiState) {
+    function convertUnitsToSi(uiState, debug) {
         // Get the active tab
         chrome.tabs.query({
             active: true,
@@ -40,7 +42,8 @@
                 // ...send a message requesting the DOM...
                 chrome.tabs.sendMessage(tabs[0].id, {
                     method: "convert-to-si",
-                    uiState: uiState
+                    uiState: uiState,
+                    debug: debug
                 }, function(response) {
                     if (chrome.runtime.lastError) {
                         // An error occurred :(
@@ -48,6 +51,10 @@
                     } else {
                         // Do something useful with the HTML content
                         console.log(response.text);
+                        var debugDump = document.getElementById("debug-dump");
+                        if (debugDump) {
+                            debugDump.value = response.text;
+                        }
                     }
                 });
             }
@@ -81,6 +88,20 @@
         });
     }
 
+    function addDebugListeners() {
+        var debugSection, debugButton;
+        if (!debug) {
+            debugSection = document.getElementById("debug-section");
+            debugSection.parentNode.removeChild(debugSection);
+            return;
+        }
+        debugButton = document.getElementById("debug-button");
+        debugButton.addEventListener("click", function() {
+            console.log("buttonklyk");
+            convertUnitsToSi({}, true);
+        });
+    }
+
     function restoreUiState() {
         getUiState(function(resp) {
             var key = null, elem = null;
@@ -100,6 +121,7 @@
         addMainButtonListener();
         addShowReadmeButtonListener();
         addCheckboxClickListeners(document.getElementsByTagName("input"));
+        addDebugListeners();
         restoreUiState();
     });
 }());
