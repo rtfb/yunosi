@@ -97,7 +97,6 @@
         }
         debugButton = document.getElementById("debug-button");
         debugButton.addEventListener("click", function() {
-            console.log("buttonklyk");
             convertUnitsToSi({}, true);
         });
     }
