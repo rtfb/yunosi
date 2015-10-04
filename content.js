@@ -18,25 +18,27 @@ contentMsgListener = function(rq, sender, sendResponse) {
     if (rq.method === "convert-to-si") {
         var textNodes = null,
             textNodesArr,
-            root = document.body;
+            root = document.body,
+            resp = {
+                "status": "ok"
+            };
         if (rq.rootElem) {
             root = document.getElementById(rq.rootElem);
         }
         textNodes = scraper.getAllTextNodes(document, root);
-        if (rq.debug) {
-            textNodesArr = scraper.nodesToIndexedArray(textNodes);
-            sendResponse({
-                "text": JSON.stringify(textNodesArr, null, 4)
-            });
-        }
+        textNodesArr = scraper.nodesToIndexedArray(textNodes);
         chrome.runtime.sendMessage({
             method: "text-for-processing",
-            data: scraper.nodesToIndexedArray(textNodes),
-            uiState: rq.uiState
+            data: textNodesArr,
+            uiState: rq.uiState,
+            debug: rq.debug
         }, function(response) {
             replacer.replaceTextNodes(document, textNodes, response, rq.uiState.highlight);
-            sendResponse({"text": "ok"});
         });
+        if (rq.debug) {
+            resp.dump = JSON.stringify(textNodesArr, null, 4);
+        }
+        sendResponse(resp);
     }
 };
 

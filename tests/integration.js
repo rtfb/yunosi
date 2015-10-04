@@ -32,7 +32,7 @@ test("integration test, inline test data", function() {
             highlight: true
         }
     }, null, function(response) {
-        equal(response.text, "ok");
+        equal(response.status, "ok");
         var td = document.getElementById("test-data");
         equal(td.childElementCount, 3);
         childEquals(td, 0, "161 kilometers");

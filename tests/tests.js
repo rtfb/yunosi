@@ -566,7 +566,7 @@ test("content listener", function() {
             highlight: true
         }
     }, null, function(response) {
-        equal(response.text, "ok");
+        equal(response.status, "ok");
     });
 });
 

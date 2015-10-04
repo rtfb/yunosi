@@ -50,10 +50,9 @@
                         console.log("ERROR: ", chrome.runtime.lastError);
                     } else {
                         // Do something useful with the HTML content
-                        console.log(response.text);
                         var debugDump = document.getElementById("debug-dump");
                         if (debugDump) {
-                            debugDump.value = response.text;
+                            debugDump.value = response.dump;
                         }
                     }
                 });
