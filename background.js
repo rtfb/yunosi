@@ -287,27 +287,38 @@ function processText(data, uiState) {
     return coalesced;
 }
 
+function setCheckBoxState(rq) {
+    var value = {};
+    value[rq.id] = rq.state;
+    chrome.storage.local.set(value, function () {
+        log("chrome.storage.local.set", rq);
+    });
+}
+
 var backgroundMsgListener = function(rq, sender, sendResponse) {
-    var value = {},
-        yunosiUrl = "http://github.com/rtfb/yunosi#readme";
-    if (rq.method === "set-checkbox-state") {
-        value[rq.id] = rq.state;
-        chrome.storage.local.set(value, function () {
-            log("chrome.storage.local.set", rq);
-        });
-        sendResponse({success: true});
-    } else if (rq.method === "get-ui-state") {
-        // get(null) retrieves whole storage
-        chrome.storage.local.get(null, function (result) {
-            log("chrome.storage.local.get", result);
-            sendResponse(result);
-        });
-    } else if (rq.method === "text-for-processing") {
-        sendResponse(processText(rq.data, rq.uiState));
-    } else if (rq.method === "show-readme") {
-        chrome.tabs.create({url: yunosiUrl});
-    } else {
-        sendResponse({error: true});
+    switch (rq.method) {
+        case "set-checkbox-state":
+            setCheckBoxState(rq);
+            sendResponse({success: true});
+            break;
+        case "get-ui-state":
+            // get(null) retrieves whole storage
+            chrome.storage.local.get(null, function (result) {
+                log("chrome.storage.local.get", result);
+                sendResponse(result);
+            });
+            break;
+        case "text-for-processing":
+            sendResponse(processText(rq.data, rq.uiState));
+            break;
+        case "show-readme":
+            chrome.tabs.create({
+                url: "http://github.com/rtfb/yunosi#readme"
+            });
+            break;
+        default:
+            sendResponse({error: true});
+            break;
     }
     return true;
 };
