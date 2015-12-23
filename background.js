@@ -347,5 +347,6 @@ module.exports = {
     patchSingleNode: patchSingleNode,
     resultsToNodeMap: resultsToNodeMap,
     backgroundMsgListener: backgroundMsgListener,
-    coalesce: coalesce
+    coalesce: coalesce,
+    getContinuousText: getContinuousText
 };

@@ -553,6 +553,25 @@ test("coalesce results", function() {
     });
 });
 
+test("get continuous text", function() {
+    equal(nlp.getContinuousText({match: "1 mile"}, {
+        units: "mile",
+        numeral: 1,
+        dimension: 1
+    }, "mile"), "1.61 kilometers");
+    equal(nlp.getContinuousText({match: "1-mile"}, {
+        units: "mile",
+        numeral: 1,
+        dimension: 1
+    }, "mile"), "1.61-kilometer");
+    // XXX: this exposes a bug in getContinuousText(). See XXX comment there.
+    equal(nlp.getContinuousText({match: "-1 mile"}, {
+        units: "mile",
+        numeral: -1,
+        dimension: 1
+    }, "mile"), "-1.61-kilometer");
+});
+
 module("Messaging");
 
 test("content listener", function() {
