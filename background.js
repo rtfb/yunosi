@@ -170,7 +170,7 @@ function getContinuousText(frag, match, reducedUnit) {
         separator = " ",
         dimension = "",
         units = "";
-    if (frag.match.indexOf("-") >= 0) { // XXX: this test will match negative number!
+    if (frag.match.indexOf("-") > 0) {
         separator = "-";
         units = convertUnit(reducedUnit);
     } else {

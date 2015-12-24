@@ -564,12 +564,12 @@ test("get continuous text", function() {
         numeral: 1,
         dimension: 1
     }, "mile"), "1.61-kilometer");
-    // XXX: this exposes a bug in getContinuousText(). See XXX comment there.
+    // Make sure negative number doesn't trigger dash-separated match
     equal(nlp.getContinuousText({match: "-1 mile"}, {
         units: "mile",
         numeral: -1,
         dimension: 1
-    }, "mile"), "-1.61-kilometer");
+    }, "mile"), "-1.61 kilometers");
 });
 
 module("Messaging");
